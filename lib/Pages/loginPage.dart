@@ -245,7 +245,7 @@ class LoginPage extends StatelessWidget {
             child: SizedBox(
               width: responsive.wp(80),
               height: responsive.hp(7),
-              child: RaisedButton(
+              child: MaterialButton(
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(30.0),
                 ),

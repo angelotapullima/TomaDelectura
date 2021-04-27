@@ -52,9 +52,9 @@ class DatabaseProvider {
           ')');
 
       await db.execute('CREATE TABLE Sedes ('
-          'id_sede VARCHAR  PRIMARY KEY,'
-          'id_empresa VARCHAR,'
-          'sede_nombre VARCHAR'
+          'idSede VARCHAR  PRIMARY KEY,'
+          'idEmpresa VARCHAR,'
+          'nombreSede VARCHAR'
           ')');
 
 //http://gis.sedaayacucho.pe/api_appSysco/index.php/ciclos

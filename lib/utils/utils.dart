@@ -1,12 +1,8 @@
 import 'package:flutter/material.dart';
 
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:toast/toast.dart' as T;
 
-void showToast(BuildContext context, String msg,
-    {int duration = 2, int gravity}) {
-  T.Toast.show(msg, context, duration: duration, gravity: gravity);
-}
+
 
 void showToast1(String msg, int duration, ToastGravity gravity) {
   Fluttertoast.showToast(
@@ -18,14 +14,14 @@ void showToast1(String msg, int duration, ToastGravity gravity) {
       textColor: Colors.white,
       fontSize: 16.0);
 }
-
+/* 
 TextStyle titulotexto =TextStyle(fontFamily: 'Syne', fontSize: 24, fontWeight: FontWeight.bold);
 TextStyle subtitulotexto = TextStyle(fontFamily: 'Syne', fontSize: 20);
 TextStyle gridTitulo =TextStyle(fontFamily: 'Syne', fontSize: 16, fontWeight: FontWeight.bold);
 TextStyle formtexto = TextStyle(fontFamily: 'Syne', fontSize: 18,fontWeight: FontWeight.bold);
 TextStyle form2 = TextStyle(fontFamily: 'Syne', fontSize: 16);
 
-
+ */
 
 // Widget getDatePickerEnabled(BuildContext context) {
 //   final String _labelText = "Ingrese algo";
