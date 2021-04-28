@@ -2,7 +2,7 @@
 // Api related 
  import 'package:flutter/material.dart';
 
-const apiBaseURL = "https://gis.sedaayacucho.pe/api_appSysco/index.php";
+const apiBaseURL = "https://gis.sedaayacucho.pe/api_appSysco/index.php"; 
 
  const kPrimaryColor = Color(0xFF1E88E5);
 const kPrimaryLightColor = Color(0xFFE3F2FD);
