@@ -1,12 +1,16 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:toma_de_lectura/Bloc/ProviderBloc.dart';
+import 'package:toma_de_lectura/Bloc/loginBloc.dart';
 import 'package:toma_de_lectura/Models/ciclosModel.dart';
 import 'package:toma_de_lectura/Models/sedesModel.dart';
+import 'package:toma_de_lectura/Pages/loginPage.dart';
 import 'package:toma_de_lectura/utils/responsive.dart';
 import 'package:toma_de_lectura/widgets/rounded_button.dart';
 import 'package:toma_de_lectura/widgets/rounded_input_field.dart';
 import 'package:toma_de_lectura/widgets/rounded_password_field.dart';
+import 'package:toma_de_lectura/utils/utils.dart' as utils;
 
 class LoginScreen extends StatelessWidget {
   @override
@@ -48,89 +52,21 @@ class _LoginState extends State<Login> {
     Size size = MediaQuery.of(context).size;
     final responsive = Responsive.of(context);
     return SafeArea(
-      child: Container(
-        height: size.height,
-        width: double.infinity,
-        child: SingleChildScrollView(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              Text(
-                "LOGIN",
-                style: TextStyle(fontWeight: FontWeight.bold),
-              ),
-              SizedBox(height: size.height * 0.03),
-              Image.asset('assets/images/logo_sedaayacucho.png',
-                  height: size.height * 0.25),
-              SizedBox(height: size.height * 0.03),
-              Container(
-                width: responsive.wp(80),
-                height: responsive.hp(10),
-                child: RoundedInputField(
-                  hintText: "Email",
-                  onChanged: (value) {},
-                ),
-              ),
-              Container(
-                width: responsive.wp(80),
-                height: responsive.hp(10),
-                child: RoundedPasswordField(
-                  onChanged: (value) {},
-                ),
-              ),
-              Container(
-                width: responsive.wp(80),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'Sede Operativa',
-                      style: TextStyle(
-                          fontSize: responsive.ip(1.9),
-                          fontWeight: FontWeight.w500),
-                    ), SizedBox(height: responsive.hp(.5),),
-                    _sedes(context, responsive),
-                  ],
-                ),
-              ),
-              SizedBox(
-                height: responsive.hp(2),
-              ),
-              Container(
-                width: responsive.wp(80),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'Ciclo',
-                      style: TextStyle(
-                          fontSize: responsive.ip(1.9),
-                          fontWeight: FontWeight.w500),
-                    ),
-                    SizedBox(height: responsive.hp(.5),),
-                    _ciclos(context, responsive),
-                  ],
-                ),
-              ),
-              SizedBox(
-                height: responsive.hp(2),
-              ),
-              Container(
-                height: responsive.hp(6),
-                child: RoundedButton(
-                  text: "INGRESAR",
-                  press: () {},
-                ),
-              ),
-              SizedBox(height: size.height * 0.03),
-            ],
-          ),
+      child: SingleChildScrollView(
+        child: Column(
+          children: [
+            SizedBox(height: responsive.hp(15)),
+            _seleccion(responsive),
+            // SizedBox(height: responsive.hp(10)),
+            LoginPage(),
+          ],
         ),
       ),
     );
   }
 
   var list;
+  var listSedes;
 
   Widget _sedes(BuildContext context, Responsive responsive) {
     final sedesBloc = ProviderBloc.sedes(context);
@@ -141,17 +77,17 @@ class _LoginState extends State<Login> {
         if (snapshot.hasData) {
           if (snapshot.data.length > 0) {
             if (cantItems == 0) {
-              list = List<String>();
+              listSedes = List<String>();
 
-              list.add('Seleccionar');
+              listSedes.add('Seleccionar');
               for (int i = 0; i < snapshot.data.length; i++) {
                 String nombreSedes = snapshot.data[i].nombreSede;
-                list.add(nombreSedes);
+                listSedes.add(nombreSedes);
               }
               dropdownSedes = "Seleccionar";
               //dropdownNegocio = snapshot.data[1].nombre;
             }
-            return _sedesItem(responsive, snapshot.data, list);
+            return _sedesItem(responsive, snapshot.data, listSedes);
           } else {
             return Center(child: CupertinoActivityIndicator());
           }
@@ -296,5 +232,202 @@ class _LoginState extends State<Login> {
         ).toList(),
       ),
     );
+  }
+
+  Widget _seleccion(Responsive responsive) {
+    return Column(
+      children: [
+        Container(
+          width: responsive.wp(80),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                'Sede Operativa',
+                style: TextStyle(
+                    fontSize: responsive.ip(1.9), fontWeight: FontWeight.w500),
+              ),
+              SizedBox(
+                height: responsive.hp(.5),
+              ),
+              _sedes(context, responsive),
+            ],
+          ),
+        ),
+        SizedBox(
+          height: responsive.hp(2),
+        ),
+        Container(
+          width: responsive.wp(80),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                'Ciclo',
+                style: TextStyle(
+                    fontSize: responsive.ip(1.9), fontWeight: FontWeight.w500),
+              ),
+              SizedBox(
+                height: responsive.hp(.5),
+              ),
+              _ciclos(context, responsive),
+            ],
+          ),
+        ),
+        // SizedBox(
+        //   height: responsive.hp(10),
+        // ),
+      ],
+    );
+  }
+}
+
+class LoginPage extends StatefulWidget {
+  LoginPage({Key key}) : super(key: key);
+
+  @override
+  _LoginPageState createState() => _LoginPageState();
+}
+
+class _LoginPageState extends State<LoginPage> {
+  @override
+  Widget build(BuildContext context) {
+    final responsive = Responsive.of(context);
+    final loginBloc = ProviderBloc.login(context);
+    loginBloc.changeCargando(false);
+    return StreamBuilder(
+        stream: loginBloc.cargandoStream,
+        builder: (context, AsyncSnapshot<bool> snapshot) {
+          if (snapshot.hasData) {
+            return Stack(
+              children: [
+                _form(context, responsive, loginBloc),
+                (snapshot.data)
+                    ? Center(
+                        child: CircularProgressIndicator(),
+                      )
+                    : Container(),
+              ],
+            );
+          } else {
+            return _form(context, responsive, loginBloc);
+          }
+        });
+  }
+
+  Widget _form(
+      BuildContext context, Responsive responsive, LoginBloc loginBloc) {
+    return Stack(
+      children: [
+        SingleChildScrollView(
+          child: SafeArea(
+            child: Container(
+              //color: Colors.red,
+              height: responsive.hp(90),
+              width: double.infinity,
+              padding: EdgeInsets.only(top: responsive.hp(4)),
+              child: Column(
+                children: <Widget>[
+                  Text(
+                    "Inicie Sesión",
+                    style: TextStyle(
+                        fontSize: responsive.ip(2.7),
+                        fontWeight: FontWeight.bold),
+                  ),
+                  _usuario(loginBloc, responsive),
+                  _pass(loginBloc, responsive),
+                  _botonLogin2(context, loginBloc, responsive),
+                  Padding(
+                    padding: EdgeInsets.all(
+                      responsive.ip(4.5),
+                    ),
+                    child: Text(
+                      "Olvidé mi Contraseña",
+                      style: TextStyle(
+                          fontSize: responsive.ip(2.2), color: Colors.white),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _usuario(LoginBloc bloc, Responsive responsive) {
+    return StreamBuilder(
+      stream: bloc.emailStream,
+      builder: (BuildContext context, AsyncSnapshot snapshot) {
+        return Container(
+          width: responsive.wp(80),
+          height: responsive.hp(10),
+          child: TextFieldRedondo(
+              // controlador: _usercontroller,
+              hintText: "Usuario",
+              onChanged: bloc.changeEmail),
+        );
+      },
+    );
+  }
+
+  Widget _pass(LoginBloc bloc, Responsive responsive) {
+    return StreamBuilder(
+      stream: bloc.passwordStream,
+      builder: (BuildContext context, AsyncSnapshot snapshot) {
+        return Container(
+          width: responsive.wp(80),
+          height: responsive.hp(10),
+          child: TextfieldPassword(onChanged: bloc.changePassword),
+        );
+      },
+    );
+  }
+
+  Widget _botonLogin2(
+      BuildContext context, LoginBloc bloc, Responsive responsive) {
+    return StreamBuilder(
+        stream: bloc.formValidStream,
+        builder: (BuildContext context, AsyncSnapshot snapshot) {
+          return Padding(
+            padding: EdgeInsets.only(
+              top: responsive.hp(8),
+              left: responsive.wp(6),
+              right: responsive.wp(6),
+            ),
+            child: SizedBox(
+              width: responsive.wp(80),
+              height: responsive.hp(7),
+              child: MaterialButton(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(30.0),
+                ),
+                padding: EdgeInsets.all(0.0),
+                child: Text(
+                  'Iniciar Sesión',
+                  style:
+                      TextStyle(fontSize: responsive.ip(2), color: Colors.white),
+                ),
+                color: Colors.blue[800],
+               // textColor: Colors.white,
+                onPressed:
+                    (snapshot.hasData) ? () => _submit(context, bloc) : null,
+              ),
+            ),
+          );
+        });
+  }
+
+  _submit(BuildContext context, LoginBloc bloc) async {
+    final  res = await bloc.login('${bloc.email}', '${bloc.password}');
+
+    if (res) {
+      print(res);
+      Navigator.pushReplacementNamed(context, 'home');
+    } else {
+      print(res);
+      utils.showToast1('Datos incorrectos', 2, ToastGravity.CENTER);
+    }
   }
 }

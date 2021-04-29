@@ -24,14 +24,14 @@ class DatabaseProvider {
 
     return await openDatabase(path, version: 1, onOpen: (db) {},
         onCreate: (Database db, int version) async {
-      await db.execute('CREATE TABLE Inspectores ('
+      await db.execute('CREATE TABLE Inspector ('
           'id_inspector VARCHAR  PRIMARY KEY,'
           'id_sede VARCHAR,'
           'inspector_dni VARCHAR,'
           'inspector_nombre VARCHAR,'
           'inspector_fecha_registro VARCHAR,'
           'inspector_usuario VARCHAR,'
-          'inspector_clave VARCHAR,'
+          //'inspector_clave VARCHAR,'
           'inspector_asignado_reclamo VARCHAR,'
           'inspector_asignado_lectura VARCHAR,'
           'inspector_asignado_corte VARCHAR,'
@@ -50,7 +50,7 @@ class DatabaseProvider {
           'empresa_ruc VARCHAR,'
           'empresa_direccion VARCHAR'
           ')');
-
+//http://gis.sedaayacucho.pe/api_appSysco/index.php/sedeoperacional
       await db.execute('CREATE TABLE Sedes ('
           'idSede VARCHAR  PRIMARY KEY,'
           'idEmpresa VARCHAR,'

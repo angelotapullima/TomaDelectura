@@ -3,21 +3,22 @@ import 'package:rxdart/rxdart.dart';
 import 'package:toma_de_lectura/Apis/LoginApi.dart';
 import 'package:toma_de_lectura/Bloc/validators.dart';
 
-
 class LoginBloc with Validators {
-
   final loginApi = LoginApi();
 
-final _emailController = BehaviorSubject<String>();
+  final _emailController = BehaviorSubject<String>();
   final _passwordController = BehaviorSubject<String>();
   final _cargandoLoginController = new BehaviorSubject<bool>();
 
   //Recuperaer los datos del Stream
-  Stream<String> get emailStream =>_emailController.stream.transform(validarname);
-  Stream<String> get passwordStream =>_passwordController.stream.transform(validarPassword);
+  Stream<String> get emailStream =>
+      _emailController.stream.transform(validarname);
+  Stream<String> get passwordStream =>
+      _passwordController.stream.transform(validarPassword);
   Stream<bool> get cargandoStream => _cargandoLoginController.stream;
 
-  Stream<bool> get formValidStream =>Rx.combineLatest2(emailStream, passwordStream, (e, p) => true);
+  Stream<bool> get formValidStream =>
+      Rx.combineLatest2(emailStream, passwordStream, (e, p) => true);
 
   //inserta valores al Stream
   Function(String) get changeEmail => _emailController.sink.add;
@@ -27,8 +28,6 @@ final _emailController = BehaviorSubject<String>();
   //obtener el ultimo valor ingresado a los stream
   String get email => _emailController.value;
   String get password => _passwordController.value;
-  
-
 
   dispose() {
     _emailController?.close();
@@ -39,14 +38,12 @@ final _emailController = BehaviorSubject<String>();
   void cargandoFalse() {
     _cargandoLoginController.sink.add(false);
   }
-  
-  Future<int> login(String user, String pass) async {
+
+  Future<bool> login(String user, String pass) async {
     _cargandoLoginController.sink.add(true);
-    final resp = await loginApi.login(email, pass);
+    final res=await loginApi.login(email, pass);
     _cargandoLoginController.sink.add(false);
 
-    return resp;
+    return res;
   }
-
 }
-

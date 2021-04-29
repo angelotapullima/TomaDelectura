@@ -14,26 +14,24 @@ class LoginPage extends StatelessWidget {
     final responsive = Responsive.of(context);
     final loginBloc = ProviderBloc.login(context);
     loginBloc.changeCargando(false);
-    return Scaffold(
-      body: StreamBuilder(
-          stream: loginBloc.cargandoStream,
-          builder: (context, AsyncSnapshot<bool> snapshot) {
-            if (snapshot.hasData) {
-              return Stack(
-                children: [
-                  _form(context, responsive, loginBloc),
-                  (snapshot.data)
-                      ? Center(
-                          child: CircularProgressIndicator(),
-                        )
-                      : Container(),
-                ],
-              );
-            } else {
-              return _form(context, responsive, loginBloc);
-            }
-          }),
-    );
+    return StreamBuilder(
+        stream: loginBloc.cargandoStream,
+        builder: (context, AsyncSnapshot<bool> snapshot) {
+          if (snapshot.hasData) {
+            return Stack(
+              children: [
+                _form(context, responsive, loginBloc),
+                (snapshot.data)
+                    ? Center(
+                        child: CircularProgressIndicator(),
+                      )
+                    : Container(),
+              ],
+            );
+          } else {
+            return _form(context, responsive, loginBloc);
+          }
+        });
   }
 
   Widget _form(
@@ -41,10 +39,10 @@ class LoginPage extends StatelessWidget {
     return Stack(
       children: [
         Container(
-          decoration: BoxDecoration(
-            image: DecorationImage(
-                image: AssetImage("assets/fondo4.jpg"), fit: BoxFit.cover),
-          ),
+          // decoration: BoxDecoration(
+          //   image: DecorationImage(
+          //       image: AssetImage("assets/fondo4.jpg"), fit: BoxFit.cover),
+          // ),
         ),
         SingleChildScrollView(
           child: SafeArea(
@@ -53,8 +51,8 @@ class LoginPage extends StatelessWidget {
               child: Column(
                 children: <Widget>[
                   //FlutterLogo(size: responsive.ip(20),),
-                  Image(image: AssetImage("assets/logo.png"),
-                  width: responsive.hp(40),),
+                  // Image(image: AssetImage("assets/logo.png"),
+                  // width: responsive.hp(40),),
                   // Text(
                   //   "Bienvenido",
                   //   style: TextStyle(
@@ -94,35 +92,6 @@ class LoginPage extends StatelessWidget {
                           fontSize: responsive.ip(2.2), color: Colors.white),
                     ),
                   ),
-
-                  // Row(
-                  //   mainAxisSize: MainAxisSize.max,
-                  //   mainAxisAlignment: MainAxisAlignment.center,
-                  //   children: <Widget>[
-                  //     Text(
-                  //       "¿No tienes una cuenta?  ",
-                  //       style: TextStyle(
-                  //           fontSize: responsive.ip(2.2), color: Colors.white),
-                  //     ),
-                  //     GestureDetector(
-                  //       onTap: () {
-                  //         Navigator.pushNamed(
-                  //           context,
-                  //           'registroUsuario',
-                  //         );
-                  //       },
-                  //       child: Text(
-                  //         "Regístrate",
-                  //         style: TextStyle(
-                  //           color: Colors.white,
-                  //           //Theme.of(context).primaryColor,
-                  //           fontWeight: FontWeight.bold,
-                  //           fontSize: responsive.ip(2.4),
-                  //         ),
-                  //       ),
-                  //     ),
-                  //   ],
-                  // ),
                 ],
               ),
             ),
@@ -147,7 +116,8 @@ class LoginPage extends StatelessWidget {
               color: Colors.lime[400],
               borderRadius: BorderRadius.circular(30),
             ),
-            child: TextField(
+            child: 
+            TextField(
               textAlign: TextAlign.left,
               keyboardType: TextInputType.text,
               decoration: InputDecoration(
@@ -252,30 +222,32 @@ class LoginPage extends StatelessWidget {
                 padding: EdgeInsets.all(0.0),
                 child: Text(
                   'Iniciar Sesión',
-                  style: TextStyle(fontSize: responsive.ip(2), color: Colors.white),
+                  style: TextStyle(
+                      fontSize: responsive.ip(2), color: Colors.white),
                 ),
                 color: Colors.blue[800],
                 textColor: Colors.white,
-                onPressed:
-                    (snapshot.hasData) ? () => _submit(context, bloc) : null,
+                //onPressed:
+                    //(snapshot.hasData) ? () => 
+                    //_submit(context, bloc) : null,
               ),
             ),
           );
         });
   }
 
-  _submit(BuildContext context, LoginBloc bloc) async {
-    final int code = await bloc.login('${bloc.email}', '${bloc.password}');
+  // _submit(BuildContext context, LoginBloc bloc) async {
+  //   final int code = await bloc.login('${bloc.email}', '${bloc.password}');
 
-    if (code == 1) {
-      print(code);
-      Navigator.pushReplacementNamed(context, 'home');
-    } else if (code == 2) {
-      print(code);
-       utils.showToast1('Ocurrio un error', 2, ToastGravity.CENTER);
-    } else if (code == 3) {
-      print(code);
-      utils.showToast1('Datos incorrectos', 2, ToastGravity.CENTER);
-    }
-  }
+  //   if (code == 1) {
+  //     print(code);
+  //     Navigator.pushReplacementNamed(context, 'home');
+  //   } else if (code == 2) {
+  //     print(code);
+  //     utils.showToast1('Ocurrio un error', 2, ToastGravity.CENTER);
+  //   } else if (code == 3) {
+  //     print(code);
+  //     utils.showToast1('Datos incorrectos', 2, ToastGravity.CENTER);
+  //   }
+  // }
 }
