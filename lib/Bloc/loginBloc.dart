@@ -39,9 +39,9 @@ class LoginBloc with Validators {
     _cargandoLoginController.sink.add(false);
   }
 
-  Future<bool> login(String user, String pass) async {
+  Future<bool> login(String user, String pass, String sede) async {
     _cargandoLoginController.sink.add(true);
-    final res=await loginApi.login(email, pass);
+    final res=await loginApi.login(email, pass, sede);
     _cargandoLoginController.sink.add(false);
 
     return res;

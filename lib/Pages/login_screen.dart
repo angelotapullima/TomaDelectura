@@ -3,37 +3,29 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:toma_de_lectura/Bloc/ProviderBloc.dart';
 import 'package:toma_de_lectura/Bloc/loginBloc.dart';
+import 'package:toma_de_lectura/Bloc/sedesBloc.dart';
 import 'package:toma_de_lectura/Models/ciclosModel.dart';
 import 'package:toma_de_lectura/Models/sedesModel.dart';
-import 'package:toma_de_lectura/Pages/loginPage.dart';
 import 'package:toma_de_lectura/utils/responsive.dart';
-import 'package:toma_de_lectura/widgets/rounded_button.dart';
 import 'package:toma_de_lectura/widgets/rounded_input_field.dart';
 import 'package:toma_de_lectura/widgets/rounded_password_field.dart';
 import 'package:toma_de_lectura/utils/utils.dart' as utils;
 
-class LoginScreen extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: Login(),
-    );
-  }
-}
-
-class Login extends StatefulWidget {
-  const Login({
+class LoginScreen extends StatefulWidget {
+  const LoginScreen({
     Key key,
   }) : super(key: key);
 
   @override
-  _LoginState createState() => _LoginState();
+  _LoginScreenState createState() => _LoginScreenState();
 }
 
-class _LoginState extends State<Login> {
+class _LoginScreenState extends State<LoginScreen> {
   int cantItems = 0;
   String dropdownSedes = '';
   String dropdownCiclos = '';
+  String codSede = "";
+  String codCiclo = "";
 
   @override
   void initState() {
@@ -49,21 +41,81 @@ class _LoginState extends State<Login> {
 
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
+    // Size size = MediaQuery.of(context).size;
     final responsive = Responsive.of(context);
-    return SafeArea(
-      child: SingleChildScrollView(
-        child: Column(
-          children: [
-            SizedBox(height: responsive.hp(15)),
-            _seleccion(responsive),
-            // SizedBox(height: responsive.hp(10)),
-            LoginPage(),
-          ],
+
+    final sedesBloc = ProviderBloc.sedes(context);
+    sedesBloc.obtenerSedes();
+    final loginBloc = ProviderBloc.login(context);
+    loginBloc.changeCargando(false);
+    return Scaffold(
+      body: SafeArea(
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              SizedBox(height: responsive.hp(15)),
+              _seleccion(responsive),
+              // SizedBox(height: responsive.hp(10)),
+             
+              LoginPage(loginBloc: loginBloc, sedesBloc: sedesBloc,),
+
+              _botonLogin(context, loginBloc, sedesBloc, responsive),
+            ],
+          ),
         ),
       ),
     );
   }
+
+   Widget _seleccion(Responsive responsive) {
+    return  Column(
+      children: [
+        Container(
+          width: responsive.wp(80),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                'Sede Operativa',
+                style: TextStyle(
+                    fontSize: responsive.ip(1.9), fontWeight: FontWeight.w500),
+              ),
+              SizedBox(
+                height: responsive.hp(.5),
+              ),
+              _sedes(context, responsive),
+            ],
+          ),
+        ),
+        SizedBox(
+          height: responsive.hp(2),
+        ),
+        Container(
+          width: responsive.wp(80),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                'Ciclo',
+                style: TextStyle(
+                    fontSize: responsive.ip(1.9), fontWeight: FontWeight.w500),
+              ),
+              SizedBox(
+                height: responsive.hp(.5),
+              ),
+              _ciclos(context, responsive),
+            ],
+          ),
+        ),
+        SizedBox(
+          height: responsive.hp(5),
+        ),
+      ],
+    );
+  
+  }
+
+  
 
   var list;
   var listSedes;
@@ -85,7 +137,6 @@ class _LoginState extends State<Login> {
                 listSedes.add(nombreSedes);
               }
               dropdownSedes = "Seleccionar";
-              //dropdownNegocio = snapshot.data[1].nombre;
             }
             return _sedesItem(responsive, snapshot.data, listSedes);
           } else {
@@ -128,7 +179,8 @@ class _LoginState extends State<Login> {
           setState(() {
             dropdownSedes = data;
             cantItems++;
-            //obtenerIdNegocios(data, negocios);
+            print(data);
+            obtenerIdSede(data, sedes);
           });
         },
         items: canche.map(
@@ -149,6 +201,16 @@ class _LoginState extends State<Login> {
         ).toList(),
       ),
     );
+  }
+
+  void obtenerIdSede(String dato, List<SedesModel> list) {
+    for (int i = 0; i < list.length; i++) {
+      if (dato == list[i].nombreSede) {
+        codSede = list[i].idSede;
+      }
+    }
+
+    print(codSede);
   }
 
   Widget _ciclos(BuildContext context, Responsive responsive) {
@@ -184,7 +246,7 @@ class _LoginState extends State<Login> {
   }
 
   Widget _ciclosItem(
-      Responsive responsive, List<CiclosModel> sedes, List<String> canche) {
+      Responsive responsive, List<CiclosModel> ciclos, List<String> canche) {
     return Container(
       padding: EdgeInsets.symmetric(
         horizontal: responsive.wp(4),
@@ -211,7 +273,8 @@ class _LoginState extends State<Login> {
           setState(() {
             dropdownCiclos = data;
             cantItems++;
-            //obtenerIdNegocios(data, negocios);
+            //print(data);
+            obtenerIdCiclo(data, ciclos);
           });
         },
         items: canche.map(
@@ -234,56 +297,70 @@ class _LoginState extends State<Login> {
     );
   }
 
-  Widget _seleccion(Responsive responsive) {
-    return Column(
-      children: [
-        Container(
-          width: responsive.wp(80),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                'Sede Operativa',
-                style: TextStyle(
-                    fontSize: responsive.ip(1.9), fontWeight: FontWeight.w500),
-              ),
-              SizedBox(
-                height: responsive.hp(.5),
-              ),
-              _sedes(context, responsive),
-            ],
-          ),
-        ),
-        SizedBox(
-          height: responsive.hp(2),
-        ),
-        Container(
-          width: responsive.wp(80),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                'Ciclo',
-                style: TextStyle(
-                    fontSize: responsive.ip(1.9), fontWeight: FontWeight.w500),
-              ),
-              SizedBox(
-                height: responsive.hp(.5),
-              ),
-              _ciclos(context, responsive),
-            ],
-          ),
-        ),
-        // SizedBox(
-        //   height: responsive.hp(10),
-        // ),
-      ],
-    );
+  void obtenerIdCiclo(String dato, List<CiclosModel> list) {
+    for (int i = 0; i < list.length; i++) {
+      if (dato == list[i].cicloDescripcion) {
+        codCiclo = list[i].idCiclo;
+      }
+    }
+
+    print(codCiclo);
+  }
+
+ 
+  Widget _botonLogin(BuildContext context, LoginBloc loginbloc,
+      SedesBloc sedesbloc, Responsive responsive) {
+    return StreamBuilder(
+        stream: loginbloc.formValidStream,
+        builder: (BuildContext context, AsyncSnapshot snapshot) {
+          return Padding(
+            padding: EdgeInsets.only(
+            //  top: responsive.hp(8),
+              left: responsive.wp(6),
+              right: responsive.wp(6),
+            ),
+            child: SizedBox(
+              width: responsive.wp(80),
+              //height: responsive.hp(7),
+              child: MaterialButton(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(30.0),
+                  ),
+                 // padding: EdgeInsets.all(0.0),
+                  child: Text(
+                    'Iniciar Sesión',
+                    style: TextStyle(
+                        fontSize: responsive.ip(2), color: Colors.white),
+                  ),
+                  color: Colors.blue[800],
+                  // textColor: Colors.white,
+                  onPressed:  (snapshot.hasData)
+                      ? () => _submit(context, loginbloc, codSede)
+                      : null,
+                  ),
+            ),
+          );
+        });
+  }
+
+  _submit(BuildContext context, LoginBloc loginbloc, codSede) async {
+    final bool res = await loginbloc.login(
+        '${loginbloc.email}', '${loginbloc.password}', codSede);
+
+    if (res) {
+      print(res);
+      Navigator.pushReplacementNamed(context, 'home');
+    } else {
+      print(res);
+      utils.showToast1('Datos incorrectos', 2, ToastGravity.CENTER);
+    }
   }
 }
 
 class LoginPage extends StatefulWidget {
-  LoginPage({Key key}) : super(key: key);
+  LoginPage({Key key, @required this.loginBloc, @required this.sedesBloc}) : super(key: key);
+  final LoginBloc loginBloc;
+  final SedesBloc sedesBloc;
 
   @override
   _LoginPageState createState() => _LoginPageState();
@@ -293,15 +370,16 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     final responsive = Responsive.of(context);
-    final loginBloc = ProviderBloc.login(context);
-    loginBloc.changeCargando(false);
+    // final loginBloc = ProviderBloc.login(context);
+    // loginBloc.changeCargando(false);
     return StreamBuilder(
-        stream: loginBloc.cargandoStream,
+        stream: widget.loginBloc.cargandoStream,
         builder: (context, AsyncSnapshot<bool> snapshot) {
+         
           if (snapshot.hasData) {
             return Stack(
               children: [
-                _form(context, responsive, loginBloc),
+                _form(context, responsive, widget.loginBloc),
                 (snapshot.data)
                     ? Center(
                         child: CircularProgressIndicator(),
@@ -310,7 +388,7 @@ class _LoginPageState extends State<LoginPage> {
               ],
             );
           } else {
-            return _form(context, responsive, loginBloc);
+            return _form(context, responsive, widget.loginBloc);
           }
         });
   }
@@ -323,7 +401,7 @@ class _LoginPageState extends State<LoginPage> {
           child: SafeArea(
             child: Container(
               //color: Colors.red,
-              height: responsive.hp(90),
+              height: responsive.hp(30),
               width: double.infinity,
               padding: EdgeInsets.only(top: responsive.hp(4)),
               child: Column(
@@ -336,17 +414,12 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                   _usuario(loginBloc, responsive),
                   _pass(loginBloc, responsive),
-                  _botonLogin2(context, loginBloc, responsive),
-                  Padding(
-                    padding: EdgeInsets.all(
-                      responsive.ip(4.5),
-                    ),
-                    child: Text(
-                      "Olvidé mi Contraseña",
-                      style: TextStyle(
-                          fontSize: responsive.ip(2.2), color: Colors.white),
-                    ),
-                  ),
+                 
+                  // Text(
+                  //   "Olvidé mi Contraseña",
+                  //   style: TextStyle(
+                  //       fontSize: responsive.ip(2.2), color: Colors.red),
+                  // ),
                 ],
               ),
             ),
@@ -385,49 +458,5 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-  Widget _botonLogin2(
-      BuildContext context, LoginBloc bloc, Responsive responsive) {
-    return StreamBuilder(
-        stream: bloc.formValidStream,
-        builder: (BuildContext context, AsyncSnapshot snapshot) {
-          return Padding(
-            padding: EdgeInsets.only(
-              top: responsive.hp(8),
-              left: responsive.wp(6),
-              right: responsive.wp(6),
-            ),
-            child: SizedBox(
-              width: responsive.wp(80),
-              height: responsive.hp(7),
-              child: MaterialButton(
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(30.0),
-                ),
-                padding: EdgeInsets.all(0.0),
-                child: Text(
-                  'Iniciar Sesión',
-                  style:
-                      TextStyle(fontSize: responsive.ip(2), color: Colors.white),
-                ),
-                color: Colors.blue[800],
-               // textColor: Colors.white,
-                onPressed:
-                    (snapshot.hasData) ? () => _submit(context, bloc) : null,
-              ),
-            ),
-          );
-        });
-  }
-
-  _submit(BuildContext context, LoginBloc bloc) async {
-    final  res = await bloc.login('${bloc.email}', '${bloc.password}');
-
-    if (res) {
-      print(res);
-      Navigator.pushReplacementNamed(context, 'home');
-    } else {
-      print(res);
-      utils.showToast1('Datos incorrectos', 2, ToastGravity.CENTER);
-    }
-  }
+  
 }

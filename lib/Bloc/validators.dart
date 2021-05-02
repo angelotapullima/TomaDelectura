@@ -58,7 +58,7 @@ class Validators {
     if (campo.length >= 0) {
       sink.add(campo);
     } else {
-      sink.addError('Este campo no debe estar vacio');
+      sink.addError('Debe seleccionar una opción');
     }
   });
 
