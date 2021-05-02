@@ -344,8 +344,9 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   _submit(BuildContext context, LoginBloc loginbloc, codSede) async {
-    final bool res = await loginbloc.login(
-        '${loginbloc.email}', '${loginbloc.password}', codSede);
+
+    if (codSede!='') {
+      final bool res = await loginbloc.login( '${loginbloc.email}', '${loginbloc.password}', codSede);
 
     if (res) {
       print(res);
@@ -354,6 +355,11 @@ class _LoginScreenState extends State<LoginScreen> {
       print(res);
       utils.showToast1('Datos incorrectos', 2, ToastGravity.CENTER);
     }
+      
+    }else{
+      utils.showToast1('Seleccione una sede', 2, ToastGravity.CENTER);
+    }
+   
   }
 }
 
