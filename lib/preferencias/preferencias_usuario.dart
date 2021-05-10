@@ -23,11 +23,69 @@ class Preferences {
   }
 
   get idUser {
-    return _prefs.getString('c_u');
+    return _prefs.getString('codinspector');
   }
 
   set idUser(String value) {
-    _prefs.setString('c_u', value);
+    _prefs.setString('codinspector', value);
+  }
+
+ get usuario {
+    return _prefs.getString('login');
+  }
+
+  set usuario(String value) {
+    _prefs.setString('login', value);
+  }
+  
+  get personName {
+    return _prefs.getString('p_n');
+  }
+
+  set personName(String value) {
+    _prefs.setString('p_n', value);
+  }
+//Sede
+  get idsede {
+    return _prefs.getString('codsede');
+  }
+
+  set idsede(String value) {
+    _prefs.setString('codsede', value);
+  }
+//id empresa
+  get idEmpresa {
+    return _prefs.getString('codemp');
+  }
+
+  set idEmpresa(String value) {
+    _prefs.setString('codemp', value);
+  }
+
+ //id ciclo
+  get idCiclo {
+    return _prefs.getString('codciclo');
+  }
+
+  set idCiclo(String value) {
+    _prefs.setString('codciclo', value);
+  }
+
+
+  get idRoleUser {
+    return _prefs.getString('ru');
+  }
+
+  set idRoleUser(String value) {
+    _prefs.setString('ru', value);
+  }
+
+  get roleName {
+    return _prefs.getString('rn');
+  }
+
+  set roleName(String value) {
+    _prefs.setString('rn', value);
   }
 
   get idPerson {
@@ -62,37 +120,6 @@ class Preferences {
     _prefs.setString('u_i', value);
   }
 
-  get personName {
-    return _prefs.getString('p_n');
-  }
-
-  set personName(String value) {
-    _prefs.setString('p_n', value);
-  }
-
-  get personSurname {
-    return _prefs.getString('p_s');
-  }
-
-  set personSurname(String value) {
-    _prefs.setString('p_s', value);
-  }
-
-  get idRoleUser {
-    return _prefs.getString('ru');
-  }
-
-  set idRoleUser(String value) {
-    _prefs.setString('ru', value);
-  }
-
-  get roleName {
-    return _prefs.getString('rn');
-  }
-
-  set roleName(String value) {
-    _prefs.setString('rn', value);
-  }
 
   get token {
     return _prefs.getString('token');

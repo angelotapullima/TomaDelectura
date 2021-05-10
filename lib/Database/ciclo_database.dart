@@ -1,9 +1,4 @@
 
-
-
-
-
-
 import 'package:toma_de_lectura/Database/databaseProvider.dart';
 import 'package:toma_de_lectura/Models/ciclosModel.dart'; 
 
@@ -17,8 +12,8 @@ class CiclosDatabase{
       final db = await dbprovider.database;
 
       final res = await db.rawInsert(
-          "INSERT OR REPLACE INTO Ciclo (id_ciclo,id_empresa,ciclo_descripcion) "
-          "VALUES ('${ciclos.idCiclo}','${ciclos.idEmpresa}','${ciclos.cicloDescripcion}')");
+          "INSERT OR REPLACE INTO Ciclo (id_ciclo,id_empresa,ciclo_descripcion,anio, mes) "
+          "VALUES ('${ciclos.idCiclo}','${ciclos.idEmpresa}','${ciclos.cicloDescripcion}','${ciclos.anio}','${ciclos.mes}')");
       return res;
 
     }catch(exception){

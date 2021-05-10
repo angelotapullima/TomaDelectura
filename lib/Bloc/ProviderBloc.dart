@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:toma_de_lectura/Bloc/ciclos_bloc.dart';
+import 'package:toma_de_lectura/Bloc/lecturaBloc.dart';
 import 'package:toma_de_lectura/Bloc/loginBloc.dart';
 import 'package:toma_de_lectura/Bloc/sedesBloc.dart';
 
@@ -9,6 +10,7 @@ class ProviderBloc extends InheritedWidget {
   final loginBloc = LoginBloc();
   final sedesBloc = SedesBloc();
   final ciclosBloc = CiclosBloc();
+  final lecturaBloc = LecturaBloc();
   
 
   factory ProviderBloc({Key key, Widget child}) {
@@ -38,5 +40,10 @@ class ProviderBloc extends InheritedWidget {
   static CiclosBloc ciclo(BuildContext context) {
     return (context.dependOnInheritedWidgetOfExactType<ProviderBloc>())
         .ciclosBloc;
+  }
+
+  static LecturaBloc lectura(BuildContext context) {
+    return (context.dependOnInheritedWidgetOfExactType<ProviderBloc>())
+        .lecturaBloc;
   }
 }

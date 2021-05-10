@@ -78,6 +78,8 @@ class ConfigApi {
           ciclosModel.idCiclo = decodedData[i]['codciclo'];
           ciclosModel.idEmpresa = decodedData[i]['codemp'];
           ciclosModel.cicloDescripcion = decodedData[i]['descripcion'];
+          ciclosModel.anio = decodedData[i]['anio'];
+          ciclosModel.mes = decodedData[i]['mes'];
           await ciclosDatabase.insertarCiclos(ciclosModel);
         }
 

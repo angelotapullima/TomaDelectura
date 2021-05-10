@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:toma_de_lectura/Bloc/ProviderBloc.dart';
 import 'package:toma_de_lectura/Pages/homePage.dart';
-import 'package:toma_de_lectura/Pages/login_screen.dart';
+import 'package:toma_de_lectura/Pages/loginPage.dart';
 import 'package:toma_de_lectura/preferencias/preferencias_usuario.dart';
 import 'package:toma_de_lectura/utils/constants.dart';
 
@@ -29,6 +29,7 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+    final prefs = new Preferences();
     return ProviderBloc(
       child: MaterialApp(
           debugShowCheckedModeBanner: false,
@@ -37,8 +38,12 @@ class MyApp extends StatelessWidget {
             primaryColor: kPrimaryColor,
             scaffoldBackgroundColor: Colors.white,
           ),
-          home: LoginScreen(),
+          //home:  
+          initialRoute:(prefs.idUser=="" || prefs.idUser==null)?'login':'home',
+          //HomePage(),
+          //LoginScreen(),
           routes: {
+            "login": (BuildContext context) => LoginScreen(),
             "home": (BuildContext context) => HomePage(),
           }),
     );

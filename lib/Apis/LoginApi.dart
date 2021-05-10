@@ -1,11 +1,7 @@
 import 'dart:convert';
-import 'dart:io';
 import 'package:http/http.dart' as http;
-import 'package:http/http.dart';
-import 'package:http/io_client.dart';
 import 'package:toma_de_lectura/Database/inspectorDatabase.dart';
 import 'package:toma_de_lectura/Models/inspectoresModel.dart';
-import 'package:toma_de_lectura/main.dart';
 import 'package:toma_de_lectura/preferencias/preferencias_usuario.dart';
 import 'package:toma_de_lectura/utils/constants.dart';
 
@@ -31,12 +27,16 @@ class LoginApi {
       if (decodedData.length > 0) {
         
           for (var i = 0; i < decodedData.length; i++) {
+           
             final inspectorModel = InspectorModel();
 
             //agrego los datos de usuario al sharePreferences
-            prefs.idUser = decodedData[i]['login'];
+            prefs.idUser = decodedData[i]['codinspector'];
+             prefs.usuario = decodedData[i]['login'];
             prefs.personName = decodedData[i]['nombres'];
-
+            prefs.idEmpresa = decodedData[i]['codemp'];
+            prefs.idsede = decodedData[i]['codsede1'];
+                    
             //Agregamos al modelo de inspectores
             inspectorModel.idsede = decodedData[i]["codsede"];
             inspectorModel.idinspector = decodedData[i]["codinspector"];
@@ -63,8 +63,8 @@ class LoginApi {
 
             await inspectorDb.insertarInspector(inspectorModel);
           }
-        
         return true;
+      
       } else {
         return false;
       }
