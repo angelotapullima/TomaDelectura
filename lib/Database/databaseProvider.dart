@@ -67,7 +67,7 @@ class DatabaseProvider {
           ')');
       
       await db.execute('CREATE TABLE Lectura ('
-          'idLectura INTEGER PRIMARY KEY AUTOINCREMENT,'
+          'idLectura  VARCHAR  PRIMARY KEY,'
           'idEmpresa VARCHAR,'
           'idSede VARCHAR,'
           'idSucursal VARCHAR,'

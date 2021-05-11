@@ -10,13 +10,14 @@ class LecturaApi {
   final lecturaDb = LecturaDatabase();
 
   Future<int> lectura() async {
-    final String  idInspector=prefs.idUser;
-    final String  empresa=prefs.idEmpresa;
-    final String  sede=prefs.idsede;
-    final String ciclo=prefs.idCiclo;
-            
+    final String idInspector = prefs.idUser;
+    final String empresa = prefs.idEmpresa;
+    final String sede = prefs.idsede;
+    final String ciclo = prefs.idCiclo;
+
     try {
-      final url = '$apiBaseURL/emp/$empresa/sede/$sede/inspec/$idInspector/ciclo/$ciclo';
+      final url =
+          '$apiBaseURL/emp/$empresa/sede/$sede/inspec/$idInspector/ciclo/$ciclo';
 
       final resp = await http.get(url);
 
@@ -28,6 +29,7 @@ class LecturaApi {
         for (var i = 0; i < decodedData.length; i++) {
           final lecturaModel = LecturaModel();
 
+          lecturaModel.idLectura = decodedData[i]["codcliente"];
           lecturaModel.idEmpresa = decodedData[i]["codemp"];
           lecturaModel.idSede = decodedData[i]["codsede"];
           lecturaModel.idSucursal = decodedData[i]["codsuc"];

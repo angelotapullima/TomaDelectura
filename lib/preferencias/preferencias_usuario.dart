@@ -70,6 +70,24 @@ class Preferences {
   set idCiclo(String value) {
     _prefs.setString('codciclo', value);
   }
+  
+  //año 
+  get anio {
+    return _prefs.getString('anio');
+  }
+
+  set anio(String value) {
+    _prefs.setString('anio', value);
+  }
+
+  //mes
+  get mes {
+    return _prefs.getString('mes');
+  }
+
+  set mes(String value) {
+    _prefs.setString('mes', value);
+  }
 
 
   get idRoleUser {

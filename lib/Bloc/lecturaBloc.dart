@@ -37,7 +37,7 @@ class LecturaBloc {
   
    void obtenerDatosSecuencia() async {
     _cargandoLoginController.sink.add(true);
-    _secuenciaController.sink.add(await lecturaDb.obtenerSecuencia());
+    _secuenciaController.sink.add(await lecturaDb.obtenerRegistrosFaltantes());
   //   await lecturaApi.lectura();
   //  _secuenciaController.sink.add(await lecturaDb.obtenerSecuencia());
         _cargandoLoginController.sink.add(false);

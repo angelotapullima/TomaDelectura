@@ -1,5 +1,6 @@
 class LecturaModel {
   LecturaModel({
+    this.idLectura,
     this.idEmpresa,
     this.idSede,
     this.idSucursal,
@@ -56,6 +57,7 @@ class LecturaModel {
     this.vivhabitada,
   });
 
+String idLectura;
   String idEmpresa;
   String idSede;
   String idSucursal;
@@ -112,6 +114,7 @@ class LecturaModel {
   String vivhabitada;
 
   factory LecturaModel.fromJson(Map<String, dynamic> json) => LecturaModel(
+        idLectura: json["idLectura"],
         idEmpresa: json["idEmpresa"],
         idSede: json["idSede"],
         idSucursal: json["idSucursal"],

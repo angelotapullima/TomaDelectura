@@ -119,7 +119,13 @@ class _HomePageState extends State<HomePage> {
                           shrinkWrap: true,
                           itemCount: secuencia.length,
                           itemBuilder: (BuildContext context, int index) {
-                            return Text(secuencia[index].direccion.toString());
+                            return Column(
+                              children: [
+                                Text(secuencia[index].nombreSector),
+                                 Text(secuencia[index].idCliente),
+                                Text(index.toString()),
+                              ],
+                            );
                           },
                         );
                       } else {

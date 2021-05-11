@@ -12,7 +12,7 @@ class LecturaDatabase {
       final db = await dbprovider.database;
 
       final res = await db.rawInsert(
-          "INSERT OR REPLACE INTO Lectura (idEmpresa,idSede,idSucursal,idSector,idCliente,idInspectormovil,propietario,"
+          "INSERT OR REPLACE INTO Lectura (idLectura,idEmpresa,idSede,idSucursal,idSector,idCliente,idInspectormovil,propietario,"
           "estadoservicio,catetar,direccion,codrutalectura,nroordenrutalect,codrutadistribucion,"
           "nroordenrutadist,codmza,nrolote,nrosublote,catastro,nromedidor,estadolectura,lecturaanterior,"
           "fechalecturaultima,lecturaultima,lecturapromedio,consumo,tipopromedio,"
@@ -20,7 +20,7 @@ class LecturaDatabase {
           "idciclo,altoconsumo,situacionmed,variasunidadesuso,unid_tarifa,mostrarlectant,"
           "registrado,latitud,longitud,img_base64,tiposervicio,estadomed,anio,mes,"
           "padroncritica,c_permitemodif,nombre_sector,vivhabitada) "
-          "VALUES('${lecturaModel.idEmpresa}', '${lecturaModel.idSede}','${lecturaModel.idSucursal}',"
+          "VALUES('${lecturaModel.idLectura}','${lecturaModel.idEmpresa}', '${lecturaModel.idSede}','${lecturaModel.idSucursal}',"
           "'${lecturaModel.idSector}','${lecturaModel.idCliente}','${lecturaModel.idInspectorMovil}','${lecturaModel.propietario}',"
           "'${lecturaModel.estadoservicio}', '${lecturaModel.catetar}','${lecturaModel.direccion}',"
           "'${lecturaModel.codrutalectura}', '${lecturaModel.nroordenrutalect}','${lecturaModel.codrutadistribucion}',"
@@ -62,7 +62,7 @@ class LecturaDatabase {
 
     List<LecturaModel> list =
         res.isNotEmpty ? res.map((c) => LecturaModel.fromJson(c)).toList() : [];
- print(list);
+    print(list);
     return list;
   }
 
@@ -80,24 +80,72 @@ class LecturaDatabase {
     return list;
   }
 
-  Future<List<LecturaModel>> obtenerResumen()
-  // String idEmpresa,
-  // String idciclo,
-  // String anio,
-  // String mes,
-  // String idsucursal,
-  // String idinspectormovil)
-  async {
+  Future<List<LecturaModel>> obtenerResumen() async {
     final db = await dbprovider.database;
 
-    // final String idInspector = prefs.idUser;
-    // final String idempresa = prefs.idEmpresa;
-    // final String idciclo = prefs.idCiclo;
-    final res = await db.rawQuery(
-        "SELECT nombre_sector sum '(case when web=1 then 1 else 0 end)', sum '(case when web=0 then 1 else 0 end)', count(idCliente) FROM Lectura where idEmpresa='001' and idciclo='001' and anio='2021' and mes= '05' and idCliente>0 and idInspectormovil= '049' GROUP BY idSucursal,idSector ORDER BY idSucursal,idSector");
-    print(res);
-    List<LecturaModel> list = res.isNotEmpty ? res.map((c) => LecturaModel.fromJson(c)).toList() : [];
+    final String idInspector = prefs.idUser;
+    final String idempresa = prefs.idEmpresa;
+    final String idciclo = prefs.idCiclo;
+    // final String anio = prefs.anio;
+    // final String mes = prefs.mes;
+    final res = await db.rawQuery("SELECT *, "
+        "SUM((case when web = '1' then '1' else '0' end)), "
+        "SUM((case when web = '0' then '1' else '0' end)),COUNT(idCliente)"
+        "FROM Lectura WHERE idEmpresa='$idempresa' "
+        "AND idciclo LIKE '%$idciclo%' AND anio='2021' AND mes='05'"
+        " AND idSucursal LIKE '%'AND idCliente>='0' AND idInspectormovil='$idInspector'"
+        " GROUP BY idSucursal,idSector,nombre_sector "
+        " ORDER BY idSucursal,idSector,nombre_sector");
+    //print(res);
+    List<LecturaModel> list =
+        res.isNotEmpty ? res.map((c) => LecturaModel.fromJson(c)).toList() : [];
+    print(list);
+    return list;
+  }
 
+  Future<List<LecturaModel>> obtenerRegistrosFaltantes() async {
+    final db = await dbprovider.database;
+
+    final String idInspector = prefs.idUser;
+    final String idempresa = prefs.idEmpresa;
+    final String idCiclo = prefs.idCiclo;
+    //final String total;
+    // final String anio = prefs.anio;
+    // final String mes = prefs.mes;
+    final res = await db.rawQuery("SELECT *, "
+        "SUM((case when web = '1' then '1' else '0' end)) "
+        "FROM Lectura WHERE idEmpresa='$idempresa' "
+        "AND idciclo LIKE '%$idCiclo%' AND anio='2021' AND mes='05'"
+        " AND idSucursal LIKE '%'AND idCliente>='0' AND idInspectormovil='$idInspector'"
+        " GROUP BY idSucursal,idSector,nombre_sector "
+        " ORDER BY idSucursal,idSector,nombre_sector");
+    //print(res);
+    List<LecturaModel> list =
+        res.isNotEmpty ? res.map((c) => LecturaModel.fromJson(c)).toList() : [];
+    print(list);
+    return list;
+  }
+
+  Future<List<LecturaModel>> obtenerRegistrosTrabajados() async {
+    final db = await dbprovider.database;
+
+    final String idInspector = prefs.idUser;
+    final String idempresa = prefs.idEmpresa;
+    final String idciclo = prefs.idCiclo;
+    // final String anio = prefs.anio;
+    // final String mes = prefs.mes;
+    final res = await db.rawQuery("SELECT *, "
+        "SUM((case when web = '0' then '1' else '0' end)), "
+        "COUNT(idCliente)"
+        " FROM Lectura WHERE idEmpresa='$idempresa' "
+        "AND idciclo LIKE '%$idciclo%' AND anio='2021' AND mes='05'"
+        " AND idSucursal LIKE '%'AND idCliente>='0' AND idInspectormovil='$idInspector'"
+        " GROUP BY idSucursal,idSector,nombre_sector "
+        " ORDER BY idSucursal,idSector,nombre_sector");
+    //print(res);
+    List<LecturaModel> list =
+        res.isNotEmpty ? res.map((c) => LecturaModel.fromJson(c)).toList() : [];
+    print(list);
     return list;
   }
 }
