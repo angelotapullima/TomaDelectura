@@ -19,7 +19,8 @@ class LecturaDatabase {
           "fechahoraregistro,nrodias,ordenenvio,valorconsumoexc,codurbaso,web,fechamovil,obslectura,"
           "idciclo,altoconsumo,situacionmed,variasunidadesuso,unid_tarifa,mostrarlectant,"
           "registrado,latitud,longitud,img_base64,tiposervicio,estadomed,anio,mes,"
-          "padroncritica,c_permitemodif,nombre_sector,vivhabitada) "
+          "padroncritica,c_permitemodif,nombre_sector,vivhabitada, estado_lectura,"
+          "estado_enviado,fecha_lectura) "
           "VALUES('${lecturaModel.idLectura}','${lecturaModel.idEmpresa}', '${lecturaModel.idSede}','${lecturaModel.idSucursal}',"
           "'${lecturaModel.idSector}','${lecturaModel.idCliente}','${lecturaModel.idInspectorMovil}','${lecturaModel.propietario}',"
           "'${lecturaModel.estadoservicio}', '${lecturaModel.catetar}','${lecturaModel.direccion}',"
@@ -37,7 +38,7 @@ class LecturaDatabase {
           "'${lecturaModel.imgBase64}', '${lecturaModel.tiposervicio}','${lecturaModel.estadomed}',"
           "'${lecturaModel.anio}', '${lecturaModel.mes}','${lecturaModel.padroncritica}',"
           "'${lecturaModel.cPermitemodif}','${lecturaModel.nombreSector}',"
-          " '${lecturaModel.vivhabitada}')");
+          " '${lecturaModel.vivhabitada}', '${lecturaModel.estadoLectura}', '${lecturaModel.estadoEnviado}', '${lecturaModel.fechaLectura}')");
       return res;
     } catch (exception) {
       print(exception);
@@ -54,11 +55,23 @@ class LecturaDatabase {
     return list;
   }
 
-  Future<List<LecturaModel>> obtenerLecturaXIdInspector() async {
-    final String idInspector = prefs.idUser;
+  Future<List<LecturaModel>> obtenerLecturaPorIdLectura(
+      String idLectura) async {
     final db = await dbprovider.database;
-    final res = await db.rawQuery(
-        "SELECT * FROM Lectura where idInspectormovil= '$idInspector'");
+    final res = await db
+        .rawQuery("SELECT * FROM Lectura where idLectura='$idLectura' ");
+
+    List<LecturaModel> list =
+        res.isNotEmpty ? res.map((c) => LecturaModel.fromJson(c)).toList() : [];
+
+    return list;
+  }
+
+  Future<List<LecturaModel>> obtenerSector() async {
+    final db = await dbprovider.database;
+    final res = await db
+        .rawQuery("SELECT * FROM Lectura GROUP BY idSucursal,idSector,nombre_sector "
+    "ORDER BY idSucursal,idSector,nombre_sector");
 
     List<LecturaModel> list =
         res.isNotEmpty ? res.map((c) => LecturaModel.fromJson(c)).toList() : [];
@@ -66,17 +79,15 @@ class LecturaDatabase {
     return list;
   }
 
-  Future<List<LecturaModel>> obtenerSecuencia() async {
-    // final String idInspector = prefs.idUser;
-    // final String idempresa = prefs.idEmpresa;
-    // final String idciclo = prefs.idCiclo;
+   Future<List<LecturaModel>> obtenerSecuencia() async {
     final db = await dbprovider.database;
-    final res = await db.rawQuery(
-        "SELECT min(ordenenvio) FROM Lectura WHERE idEmpresa='001' and idciclo LIKE '%001%' and anio='2021' and mes='05' and idCliente>0 and idInspectormovil='049' and estadolectura<>'000' and web='0' ");
 
+    final res =  await db.rawQuery("SELECT * FROM Lectura WHERE estado_lectura = '0'"
+    "ORDER BY estado_lectura");
+    //print(res);
     List<LecturaModel> list =
         res.isNotEmpty ? res.map((c) => LecturaModel.fromJson(c)).toList() : [];
-    print(list);
+
     return list;
   }
 
@@ -106,46 +117,59 @@ class LecturaDatabase {
   Future<List<LecturaModel>> obtenerRegistrosFaltantes() async {
     final db = await dbprovider.database;
 
-    final String idInspector = prefs.idUser;
-    final String idempresa = prefs.idEmpresa;
-    final String idCiclo = prefs.idCiclo;
-    //final String total;
-    // final String anio = prefs.anio;
-    // final String mes = prefs.mes;
-    final res = await db.rawQuery("SELECT *, "
-        "SUM((case when web = '1' then '1' else '0' end)) "
-        "FROM Lectura WHERE idEmpresa='$idempresa' "
-        "AND idciclo LIKE '%$idCiclo%' AND anio='2021' AND mes='05'"
-        " AND idSucursal LIKE '%'AND idCliente>='0' AND idInspectormovil='$idInspector'"
-        " GROUP BY idSucursal,idSector,nombre_sector "
-        " ORDER BY idSucursal,idSector,nombre_sector");
+    final res =
+        await db.rawQuery("SELECT * FROM Lectura WHERE estado_lectura = '0'");
     //print(res);
     List<LecturaModel> list =
         res.isNotEmpty ? res.map((c) => LecturaModel.fromJson(c)).toList() : [];
-    print(list);
+
     return list;
   }
 
-  Future<List<LecturaModel>> obtenerRegistrosTrabajados() async {
+  Future<List<LecturaModel>> obtenerRegistrosTerminados() async {
     final db = await dbprovider.database;
 
-    final String idInspector = prefs.idUser;
-    final String idempresa = prefs.idEmpresa;
-    final String idciclo = prefs.idCiclo;
-    // final String anio = prefs.anio;
-    // final String mes = prefs.mes;
-    final res = await db.rawQuery("SELECT *, "
-        "SUM((case when web = '0' then '1' else '0' end)), "
-        "COUNT(idCliente)"
-        " FROM Lectura WHERE idEmpresa='$idempresa' "
-        "AND idciclo LIKE '%$idciclo%' AND anio='2021' AND mes='05'"
-        " AND idSucursal LIKE '%'AND idCliente>='0' AND idInspectormovil='$idInspector'"
-        " GROUP BY idSucursal,idSector,nombre_sector "
-        " ORDER BY idSucursal,idSector,nombre_sector");
+    final res =
+        await db.rawQuery("SELECT * FROM Lectura WHERE estado_lectura = '1'");
     //print(res);
     List<LecturaModel> list =
         res.isNotEmpty ? res.map((c) => LecturaModel.fromJson(c)).toList() : [];
-    print(list);
+
     return list;
   }
+
+//Se utiliza para la busqueda por número de medidor
+  Future<List<LecturaModel>> consultarRegistroPorMedidor(String query) async {
+    try {
+      final db = await dbprovider.database;
+      final res = await db.rawQuery(
+          "SELECT * FROM Lectura WHERE nromedidor LIKE '%$query%'");
+
+      List<LecturaModel> list = res.isNotEmpty ? res.map((c) => LecturaModel.fromJson(c)).toList() : [];
+
+      return list;
+    } catch (e) {
+      print(" $e Error en la base de datossss");
+      print(e);
+      return [];
+    }
+  }
+  
+  //busqueda por id del cliente
+  Future<List<LecturaModel>> consultarRegistroPorCliente(String query) async {
+    try {
+      final db = await dbprovider.database;
+      final res = await db.rawQuery(
+          "SELECT * FROM Lectura WHERE idCliente LIKE '%$query%'");
+
+      List<LecturaModel> list = res.isNotEmpty ? res.map((c) => LecturaModel.fromJson(c)).toList() : [];
+
+      return list;
+    } catch (e) {
+      print(" $e Error en la base de datossss");
+      print(e);
+      return [];
+    }
+  }
+  
 }

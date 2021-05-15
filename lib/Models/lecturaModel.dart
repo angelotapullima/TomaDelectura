@@ -55,9 +55,12 @@ class LecturaModel {
     this.nombreSector,
     this.cPermitemodif,
     this.vivhabitada,
+    this.estadoLectura,
+    this.estadoEnviado,
+    this.fechaLectura,
   });
 
-String idLectura;
+  String idLectura;
   String idEmpresa;
   String idSede;
   String idSucursal;
@@ -112,6 +115,9 @@ String idLectura;
   String nombreSector;
   String cPermitemodif;
   String vivhabitada;
+  String estadoLectura;
+  String estadoEnviado;
+  String fechaLectura;
 
   factory LecturaModel.fromJson(Map<String, dynamic> json) => LecturaModel(
         idLectura: json["idLectura"],
@@ -120,7 +126,7 @@ String idLectura;
         idSucursal: json["idSucursal"],
         idSector: json["idSector"],
         idCliente: json["idCliente"],
-        idInspectorMovil:json["codinspectormovil"],
+        idInspectorMovil: json["codinspectormovil"],
         propietario: json["propietario"],
         estadoservicio: json["estadoservicio"],
         catetar: json["catetar"],
@@ -168,5 +174,8 @@ String idLectura;
         nombreSector: json["nombre_sector"],
         cPermitemodif: json["c_permitemodif"],
         vivhabitada: json["vivhabitada"],
+        estadoLectura: json["estado_lectura"],
+        estadoEnviado: json["estado_enviado"],
+        fechaLectura: json["fecha_lectura"],
       );
 }

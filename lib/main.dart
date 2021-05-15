@@ -2,6 +2,9 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:toma_de_lectura/Bloc/ProviderBloc.dart';
+import 'package:toma_de_lectura/Pages/busquedas/detalleBusqClientePage.dart';
+import 'package:toma_de_lectura/Pages/busquedas/detalleBusqMedidorPage.dart';
+import 'package:toma_de_lectura/Pages/busquedas/detalleBusqSecuenciaPage.dart';
 import 'package:toma_de_lectura/Pages/homePage.dart';
 import 'package:toma_de_lectura/Pages/loginPage.dart';
 import 'package:toma_de_lectura/preferencias/preferencias_usuario.dart';
@@ -45,6 +48,9 @@ class MyApp extends StatelessWidget {
           routes: {
             "login": (BuildContext context) => LoginScreen(),
             "home": (BuildContext context) => HomePage(),
+             "detalleBusquedaSecuencia": (BuildContext context) => DetalleBusquedaSecuenciaPage(),
+            "detalleBusquedaMedidor": (BuildContext context) => DetalleBusquedaMedidorPage(),
+             "detalleBusquedaCliente": (BuildContext context) => DetalleBusquedaclientePage(),
           }),
     );
   }

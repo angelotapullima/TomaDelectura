@@ -65,7 +65,7 @@ class DatabaseProvider {
           'anio VARCHAR,'
           'mes VARCHAR'
           ')');
-      
+
       await db.execute('CREATE TABLE Lectura ('
           'idLectura  VARCHAR  PRIMARY KEY,'
           'idEmpresa VARCHAR,'
@@ -102,7 +102,7 @@ class DatabaseProvider {
           'web VARCHAR,'
           'fechamovil VARCHAR,'
           'obslectura VARCHAR,'
-           'idciclo VARCHAR,'
+          'idciclo VARCHAR,'
           'altoconsumo VARCHAR,'
           'situacionmed VARCHAR,'
           'variasunidadesuso VARCHAR,'
@@ -121,7 +121,10 @@ class DatabaseProvider {
           //'codinspectormovil VARCHAR,'
           'c_permitemodif VARCHAR,'
           'nombre_sector VARCHAR,'
-          'vivhabitada VARCHAR'
+          'vivhabitada VARCHAR,'
+          'estado_lectura VARCHAR,'
+          'estado_enviado VARCHAR,'
+          'fecha_lectura VARCHAR'
           ')');
 
 //http://gis.sedaayacucho.pe/api_appSysco/index.php/tipoestmedidor

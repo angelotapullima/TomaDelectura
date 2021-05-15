@@ -85,6 +85,14 @@ class LecturaApi {
           lecturaModel.nombreSector = decodedData[i]["nomre_sector"];
           lecturaModel.vivhabitada = decodedData[i]["vivhabitada"];
 
+          final list = await lecturaDb.obtenerLecturaPorIdLectura(decodedData[i]["codcliente"]);
+
+          if (list.length > 0) {
+          lecturaModel.estadoLectura = list[0].estadoLectura;
+        } else {
+          lecturaModel.estadoLectura = "0";
+        }
+
           await lecturaDb.insertarLectura(lecturaModel);
         }
 

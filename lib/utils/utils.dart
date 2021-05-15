@@ -10,8 +10,8 @@ void showToast1(String msg, int duration, ToastGravity gravity) {
       toastLength: Toast.LENGTH_SHORT,
       gravity: gravity,
       timeInSecForIosWeb: duration,
-      backgroundColor: Colors.black,
-      textColor: Colors.white,
+      backgroundColor: Colors.grey[300],
+      textColor: Colors.black,
       fontSize: 16.0);
 }
 /* 
