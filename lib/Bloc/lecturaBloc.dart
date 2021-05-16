@@ -17,15 +17,11 @@ class LecturaBloc {
   final busquedaMedidorController = BehaviorSubject<List<LecturaModel>>();
   final busquedaXIdClienteController = BehaviorSubject<List<LecturaModel>>();
 
-  Stream<List<LecturaModel>> get busquedaXMedidorStream =>
-      busquedaMedidorController.stream;
-  Stream<List<LecturaModel>> get busquedaXIdClienteStream =>
-      busquedaXIdClienteController.stream;
+  Stream<List<LecturaModel>> get busquedaXMedidorStream => busquedaMedidorController.stream; 
+  Stream<List<LecturaModel>> get busquedaXIdClienteStream =>busquedaXIdClienteController.stream; 
   Stream<List<LecturaModel>> get lecturaStream => _lecturaController.stream;
-  Stream<List<LecturaModel>> get lecturaPendienteStream =>
-      _lecturaPendienteController.stream;
-  Stream<List<LecturaModel>> get lecturaTerminadaStream =>
-      _lecturaTerminadaController.stream;
+  Stream<List<LecturaModel>> get lecturaPendienteStream => _lecturaPendienteController.stream;
+  Stream<List<LecturaModel>> get lecturaTerminadaStream => _lecturaTerminadaController.stream;
   Stream<List<LecturaModel>> get sectorStream => _sectorController.stream;
 
   Stream<List<LecturaModel>> get secuenciaStream => _secuenciaController.stream;
@@ -49,8 +45,8 @@ class LecturaBloc {
   void datosLectura() async {
     _cargandoLoginController.sink.add(true);
     _lecturaController.sink.add(await lecturaDb.obtenerLectura());
-    // await lecturaApi.lectura();
-    //  _lecturaController.sink.add(await lecturaDb.obtenerLectura());
+    await lecturaApi.lectura();
+      _lecturaController.sink.add(await lecturaDb.obtenerLectura());
     _cargandoLoginController.sink.add(false);
   }
 

@@ -50,6 +50,8 @@ class DatabaseProvider {
           'empresa_ruc VARCHAR,'
           'empresa_direccion VARCHAR'
           ')');
+
+    
 //http://gis.sedaayacucho.pe/api_appSysco/index.php/sedeoperacional
       await db.execute('CREATE TABLE Sedes ('
           'idSede VARCHAR  PRIMARY KEY,'
@@ -129,12 +131,12 @@ class DatabaseProvider {
 
 //http://gis.sedaayacucho.pe/api_appSysco/index.php/tipoestmedidor
       await db.execute('CREATE TABLE EstadoMedidor ('
-          'estado_medidor VARCHAR  PRIMARY KEY,'
+          'estadoMedidor VARCHAR  PRIMARY KEY,'
           'descripcion VARCHAR,'
           'impedimento VARCHAR,'
-          'promedio_auto VARCHAR,'
-          'permite_lectura VARCHAR,'
-          'estado_registro_mov VARCHAR'
+          'promedioAuto VARCHAR,'
+          'permiteLectura VARCHAR,'
+          'estadoRegistroMov VARCHAR'
           ')');
     });
   }

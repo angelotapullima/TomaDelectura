@@ -6,11 +6,11 @@ class DetalleBusquedaclientePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-          body: Center(
-            child: Container(
-        child: Text("Detalle del registro"),
+      body: Center(
+        child: Container(
+          child: Text("Detalle del registro"),
+        ),
       ),
-          ),
     );
   }
 }

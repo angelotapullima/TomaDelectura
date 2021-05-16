@@ -1,10 +1,8 @@
-
-
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:toma_de_lectura/Apis/configAPi.dart';
+import 'package:toma_de_lectura/Apis/estadoMedidorApi.dart';
 import 'package:toma_de_lectura/preferencias/preferencias_usuario.dart';
 
 class Splash extends StatefulWidget {
@@ -12,20 +10,25 @@ class Splash extends StatefulWidget {
   _SplashState createState() => _SplashState();
 }
 
-class _SplashState extends State<Splash>  {
-
-  
-  
+class _SplashState extends State<Splash> {
   @override
-  void initState() { 
+  void initState() {
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      final preferences = Preferences();
 
-   WidgetsBinding.instance.addPostFrameCallback((_)async{
+      final configApi = ConfigApi();
+      configApi.obtenerCiclos();
+      configApi.obtenerSedes();
 
-    final configApi = ConfigApi();
+      final estadoMedidorApi = TipoEstadoMedidorApi();
+      estadoMedidorApi.obtenerEstadoMedidor();
 
-    final preferences = Preferences();
-
-    /* if (preferences.estadoCargaInicial == null ||
+      if (preferences.idUser.toString().isEmpty || preferences.idUser == null) {
+        Navigator.pushReplacementNamed(context, 'login');
+      } else {
+        Navigator.pushReplacementNamed(context, 'home');
+      }
+      /*if (preferences.estadoCargaInicial == null ||
         preferences.estadoCargaInicial == '0') {
       //await configApi.obtenerConfig();
 
@@ -43,15 +46,9 @@ class _SplashState extends State<Splash>  {
         Navigator.pushReplacementNamed(context, 'home');
       }
     } */
-
-
-        });
+    });
     super.initState();
-    
   }
-
-
-
 
   @override
   Widget build(BuildContext context) {

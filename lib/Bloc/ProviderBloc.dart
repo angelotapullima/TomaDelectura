@@ -3,6 +3,7 @@ import 'package:toma_de_lectura/Bloc/ciclos_bloc.dart';
 import 'package:toma_de_lectura/Bloc/lecturaBloc.dart';
 import 'package:toma_de_lectura/Bloc/loginBloc.dart';
 import 'package:toma_de_lectura/Bloc/sedesBloc.dart';
+import 'package:toma_de_lectura/Bloc/tiposEstadoMedidor.dart';
 
 class ProviderBloc extends InheritedWidget {
   static ProviderBloc _instancia;
@@ -11,6 +12,7 @@ class ProviderBloc extends InheritedWidget {
   final sedesBloc = SedesBloc();
   final ciclosBloc = CiclosBloc();
   final lecturaBloc = LecturaBloc();
+  final tipoEstadoMedidorBloc = TipoEstadoMedidorBloc();
   
 
   factory ProviderBloc({Key key, Widget child}) {
@@ -45,5 +47,10 @@ class ProviderBloc extends InheritedWidget {
   static LecturaBloc lectura(BuildContext context) {
     return (context.dependOnInheritedWidgetOfExactType<ProviderBloc>())
         .lecturaBloc;
+  }
+
+  static TipoEstadoMedidorBloc tipoMedidor(BuildContext context) {
+    return (context.dependOnInheritedWidgetOfExactType<ProviderBloc>())
+        .tipoEstadoMedidorBloc;
   }
 }

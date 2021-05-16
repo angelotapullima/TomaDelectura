@@ -5,8 +5,10 @@ import 'package:toma_de_lectura/Bloc/ProviderBloc.dart';
 import 'package:toma_de_lectura/Pages/busquedas/detalleBusqClientePage.dart';
 import 'package:toma_de_lectura/Pages/busquedas/detalleBusqMedidorPage.dart';
 import 'package:toma_de_lectura/Pages/busquedas/detalleBusqSecuenciaPage.dart';
+import 'package:toma_de_lectura/Pages/detalle_cliente.dart';
 import 'package:toma_de_lectura/Pages/homePage.dart';
 import 'package:toma_de_lectura/Pages/loginPage.dart';
+import 'package:toma_de_lectura/Pages/splash.dart';
 import 'package:toma_de_lectura/preferencias/preferencias_usuario.dart';
 import 'package:toma_de_lectura/utils/constants.dart';
 
@@ -42,15 +44,17 @@ class MyApp extends StatelessWidget {
             scaffoldBackgroundColor: Colors.white,
           ),
           //home:  
-          initialRoute:(prefs.idUser=="" || prefs.idUser==null)?'login':'home',
+          initialRoute:'splash',
           //HomePage(),
           //LoginScreen(),
           routes: {
             "login": (BuildContext context) => LoginScreen(),
             "home": (BuildContext context) => HomePage(),
+            "splash": (BuildContext context) => Splash(),
              "detalleBusquedaSecuencia": (BuildContext context) => DetalleBusquedaSecuenciaPage(),
             "detalleBusquedaMedidor": (BuildContext context) => DetalleBusquedaMedidorPage(),
              "detalleBusquedaCliente": (BuildContext context) => DetalleBusquedaclientePage(),
+             "DetalleCliente": (BuildContext context) => DetalleCliente(),
           }),
     );
   }

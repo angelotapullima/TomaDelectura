@@ -94,8 +94,13 @@ class _HomePageState extends State<HomePage> {
                 ),
                 Column(
                   children: [
-                    Text("Secuencia", style: TextStyle(fontSize: 18)),
-                    SizedBox(height: responsive.hp(1)),
+                    Text(
+                      "Secuencia",
+                      style: TextStyle(fontSize: 18),
+                    ),
+                    SizedBox(
+                      height: responsive.hp(1),
+                    ),
                     Container(
                       width: responsive.wp(70),
                       height: responsive.hp(18),
@@ -118,18 +123,19 @@ class _HomePageState extends State<HomePage> {
                                     controller: TextEditingController(
                                         text: secuencia[i].ordenenvio),
                                     decoration: InputDecoration(
-                                        border: OutlineInputBorder(),
-                                        hintText: "N° de Correlativo",
-                                        suffixIcon: Container(
-                                          width: responsive.wp(7),
-                                          height: responsive.hp(4),
-                                          child: Column(
-                                            children: [
-                                              Expanded(
-                                                flex: 1,
-                                                child: GestureDetector(
-                                                  onTap: () {
-                                                    setState(() {
+                                      border: OutlineInputBorder(),
+                                      hintText: "N° de Correlativo",
+                                      suffixIcon: Container(
+                                        width: responsive.wp(7),
+                                        height: responsive.hp(4),
+                                        child: Column(
+                                          children: [
+                                            Expanded(
+                                              flex: 1,
+                                              child: GestureDetector(
+                                                onTap: () {
+                                                  setState(
+                                                    () {
                                                       if (i <
                                                           secuencia.length -
                                                               1) {
@@ -141,22 +147,25 @@ class _HomePageState extends State<HomePage> {
                                                             ToastGravity
                                                                 .CENTER);
                                                       }
-                                                    });
-                                                  },
-                                                  child: Container(
-                                                      color: Colors.grey[300],
-                                                      child: Icon(
-                                                          Icons.arrow_drop_up,
-                                                          color: Colors.black)),
-                                                ),
-                                              ),
-                                              Expanded(
-                                                flex: 1,
+                                                    },
+                                                  );
+                                                },
                                                 child: Container(
                                                   color: Colors.grey[300],
-                                                  child: GestureDetector(
-                                                    onTap: () {
-                                                      setState(() {
+                                                  child: Icon(
+                                                      Icons.arrow_drop_up,
+                                                      color: Colors.black),
+                                                ),
+                                              ),
+                                            ),
+                                            Expanded(
+                                              flex: 1,
+                                              child: Container(
+                                                color: Colors.grey[300],
+                                                child: GestureDetector(
+                                                  onTap: () {
+                                                    setState(
+                                                      () {
                                                         if (i > 0) {
                                                           i--;
                                                         } else {
@@ -166,27 +175,26 @@ class _HomePageState extends State<HomePage> {
                                                               ToastGravity
                                                                   .CENTER);
                                                         }
-                                                      });
-                                                    },
-                                                    child: Icon(
-                                                        Icons.arrow_drop_down,
-                                                        color: Colors.black),
-                                                  ),
+                                                      },
+                                                    );
+                                                  },
+                                                  child: Icon(
+                                                      Icons.arrow_drop_down,
+                                                      color: Colors.black),
                                                 ),
                                               ),
-                                            ],
-                                          ),
-                                        )),
-                                  
-                                  
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
                                   ),
                                   SizedBox(height: responsive.hp(1)),
                                   ElevatedButton(
                                       onPressed: () {
                                         Navigator.pushNamed(
-                                            context, 'detalleBusquedaSecuencia',
-                                            arguments:
-                                                secuencia[i].ordenenvio);
+                                            context, 'DetalleCliente',
+                                            arguments: secuencia[i].ordenenvio);
                                       },
                                       child: Text("Ingresar"))
                                 ],
