@@ -285,7 +285,7 @@ class _DetalleLecturaState extends State<DetalleLectura> {
                   ),
                 );
               } else {
-                return CupertinoActivityIndicator();
+                return Text("No hay resultados para esta búsqueda");
               }
             } else {
               return CupertinoActivityIndicator();

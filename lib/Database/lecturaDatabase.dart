@@ -145,6 +145,24 @@ class LecturaDatabase {
       final db = await dbprovider.database;
       final res = await db.rawQuery(
           "SELECT * FROM Lectura WHERE nromedidor ='$nmedidor' or idCliente='$codCliente' or ordenenvio='$numeroSecuencia'");
+         
+
+      List<LecturaModel> list = res.isNotEmpty ? res.map((c) => LecturaModel.fromJson(c)).toList() : [];
+
+      return list;
+    } catch (e) {
+      print(" $e Error en la base de datossss");
+      print(e);
+      return [];
+    }
+  }
+
+  // para la busqueda por número de secuencia
+  Future<List<LecturaModel>> consultarRegistroPorSecuencia(String query) async {
+    try {
+      final db = await dbprovider.database;
+      final res = await db.rawQuery(
+          "SELECT * FROM Lectura WHERE ordenenvio LIKE '%$query%'");
 
       List<LecturaModel> list = res.isNotEmpty ? res.map((c) => LecturaModel.fromJson(c)).toList() : [];
 
@@ -162,6 +180,23 @@ class LecturaDatabase {
       final db = await dbprovider.database;
       final res = await db.rawQuery(
           "SELECT * FROM Lectura WHERE idCliente LIKE '%$query%'");
+
+      List<LecturaModel> list = res.isNotEmpty ? res.map((c) => LecturaModel.fromJson(c)).toList() : [];
+
+      return list;
+    } catch (e) {
+      print(" $e Error en la base de datossss");
+      print(e);
+      return [];
+    }
+  }
+
+  //Se utiliza para la busqueda por número de medidor
+  Future<List<LecturaModel>> consultarRegistroPorMedidor(String query) async {
+    try {
+      final db = await dbprovider.database;
+      final res = await db.rawQuery(
+          "SELECT * FROM Lectura WHERE nromedidor LIKE '%$query%'");
 
       List<LecturaModel> list = res.isNotEmpty ? res.map((c) => LecturaModel.fromJson(c)).toList() : [];
 

@@ -5,6 +5,8 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:toma_de_lectura/Bloc/ProviderBloc.dart';
 import 'package:toma_de_lectura/Bloc/lecturaBloc.dart';
 import 'package:toma_de_lectura/Models/lecturaModel.dart';
+import 'package:toma_de_lectura/Pages/busqueda/busquedaClientePage.dart';
+import 'package:toma_de_lectura/Pages/busqueda/busquedaMedidorPage.dart';
 import 'package:toma_de_lectura/Pages/detalle_lectura.dart';
 import 'package:toma_de_lectura/preferencias/preferencias_usuario.dart';
 import 'package:toma_de_lectura/utils/responsive.dart';
@@ -35,6 +37,7 @@ class _HomePageState extends State<HomePage> {
       lecturaBloc.lecturasRegistradas();
       lecturaBloc.obtenerSector();
       lecturaBloc.obtenerDatosSecuencia();
+
       cant++;
     }
 
@@ -56,118 +59,91 @@ class _HomePageState extends State<HomePage> {
                 List<LecturaModel> lectura = snapshot.data;
 
                 return SafeArea(
-                  child: SingleChildScrollView(
-                    child: Container(
-                      //color: Colors.red,
-                      height: responsive.hp(90),
-                      child: Column(
-                        children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text("Cerrar Sesión"),
-                              GestureDetector(
-                                  onTap: () async {
-                                    prefs.clearPreferences();
+                  child: ListView(
+                    keyboardDismissBehavior:
+                        ScrollViewKeyboardDismissBehavior.onDrag,
+                    children: [
+                      Container(
+                        //color: Colors.red,
+                        height: responsive.hp(90),
+                        child: Column(
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text("Cerrar Sesión"),
+                                GestureDetector(
+                                    onTap: () async {
+                                      prefs.clearPreferences();
 
-                                    Navigator.pushNamedAndRemoveUntil(
-                                        context, 'login', (route) => false);
-                                  },
-                                  child: Icon(Icons.exit_to_app))
-                            ],
-                          ),
-                          Text("Inspector:"),
-                          Text(prefs.personName),
-                          SizedBox(
-                            height: responsive.hp(3),
-                          ),
+                                      Navigator.pushNamedAndRemoveUntil(
+                                          context, 'login', (route) => false);
+                                    },
+                                    child: Icon(Icons.exit_to_app))
+                              ],
+                            ),
+                            Text("Inspector:"),
+                            Text(prefs.personName),
+                            SizedBox(
+                              height: responsive.hp(3),
+                            ),
 
-                          //Para llamar al total de los registros
-                          _tablaResumen(responsive, lecturaBloc, lectura),
-                          Column(
-                            children: [
-                              Text(
-                                "Secuencia",
-                                style: TextStyle(fontSize: 18),
-                              ),
-                              SizedBox(
-                                height: responsive.hp(1),
-                              ),
-                              Container(
-                                width: responsive.wp(70),
-                                height: responsive.hp(18),
-                                child: StreamBuilder(
-                                  stream: lecturaBloc.secuenciaStream,
-                                  builder: (BuildContext context,
-                                      AsyncSnapshot<List<LecturaModel>>
-                                          snapshot) {
-                                    List<LecturaModel> secuencia =
-                                        snapshot.data;
+                            //Para llamar al total de los registros
+                            _tablaResumen(responsive, lecturaBloc, lectura),
+                            Column(
+                              children: [
+                                Text(
+                                  "Secuencia",
+                                  style: TextStyle(fontSize: 18),
+                                ),
+                                SizedBox(
+                                  height: responsive.hp(1),
+                                ),
+                                Container(
+                                  width: responsive.wp(70),
+                                  height: responsive.hp(18),
+                                  child: StreamBuilder(
+                                    stream: lecturaBloc.secuenciaStream,
+                                    builder: (BuildContext context,
+                                        AsyncSnapshot<List<LecturaModel>>
+                                            snapshot) {
+                                      List<LecturaModel> secuencia =
+                                          snapshot.data;
 
-                                    if (snapshot.hasData) {
-                                      if (snapshot.data.length > 0) {
-                                        return Column(
-                                          children: [
-                                            TextField(
-                                              //controller: _secuenciacontroller,
-                                              controller: TextEditingController(
-                                                  text:
-                                                      secuencia[indexLectura].ordenenvio),
-                                              decoration: InputDecoration(
-                                                border: OutlineInputBorder(),
-                                                hintText: "N° de Correlativo",
-                                                suffixIcon: Container(
-                                                  width: responsive.wp(7),
-                                                  height: responsive.hp(4),
-                                                  child: Column(
-                                                    children: [
-                                                      Expanded(
-                                                        flex: 1,
-                                                        child: GestureDetector(
-                                                          onTap: () {
-                                                            setState(
-                                                              () {
-                                                                if (indexLectura <
-                                                                    secuencia
-                                                                            .length -
-                                                                        1) {
-                                                                  indexLectura++;
-                                                                } else {
-                                                                  utils.showToast1(
-                                                                      'Último registro',
-                                                                      2,
-                                                                      ToastGravity
-                                                                          .CENTER);
-                                                                }
-                                                              },
-                                                            );
-                                                          },
-                                                          child: Container(
-                                                            color: Colors
-                                                                .grey[300],
-                                                            child: Icon(
-                                                                Icons
-                                                                    .arrow_drop_up,
-                                                                color: Colors
-                                                                    .black),
-                                                          ),
-                                                        ),
-                                                      ),
-                                                      Expanded(
-                                                        flex: 1,
-                                                        child: Container(
-                                                          color:
-                                                              Colors.grey[300],
+                                      if (snapshot.hasData) {
+                                        if (snapshot.data.length > 0) {
+                                          return Column(
+                                            children: [
+                                              TextField(
+                                                //controller: _secuenciacontroller,
+                                                controller:
+                                                    TextEditingController(
+                                                        text: secuencia[
+                                                                indexLectura]
+                                                            .ordenenvio),
+                                                decoration: InputDecoration(
+                                                  border: OutlineInputBorder(),
+                                                  hintText: "N° de Correlativo",
+                                                  suffixIcon: Container(
+                                                    width: responsive.wp(7),
+                                                    height: responsive.hp(4),
+                                                    child: Column(
+                                                      children: [
+                                                        Expanded(
+                                                          flex: 1,
                                                           child:
                                                               GestureDetector(
                                                             onTap: () {
                                                               setState(
                                                                 () {
-                                                                  if (indexLectura > 0) {
-                                                                    indexLectura--;
+                                                                  if (indexLectura <
+                                                                      secuencia
+                                                                              .length -
+                                                                          1) {
+                                                                    indexLectura++;
                                                                   } else {
                                                                     utils.showToast1(
-                                                                        'Primer registro',
+                                                                        'Último registro',
                                                                         2,
                                                                         ToastGravity
                                                                             .CENTER);
@@ -175,77 +151,117 @@ class _HomePageState extends State<HomePage> {
                                                                 },
                                                               );
                                                             },
-                                                            child: Icon(
-                                                                Icons
-                                                                    .arrow_drop_down,
-                                                                color: Colors
-                                                                    .black),
+                                                            child: Container(
+                                                              color: Colors
+                                                                  .grey[300],
+                                                              child: Icon(
+                                                                  Icons
+                                                                      .arrow_drop_up,
+                                                                  color: Colors
+                                                                      .black),
+                                                            ),
                                                           ),
                                                         ),
-                                                      ),
-                                                    ],
+                                                        Expanded(
+                                                          flex: 1,
+                                                          child: Container(
+                                                            color: Colors
+                                                                .grey[300],
+                                                            child:
+                                                                GestureDetector(
+                                                              onTap: () {
+                                                                setState(
+                                                                  () {
+                                                                    if (indexLectura >
+                                                                        0) {
+                                                                      indexLectura--;
+                                                                    } else {
+                                                                      utils.showToast1(
+                                                                          'Primer registro',
+                                                                          2,
+                                                                          ToastGravity
+                                                                              .CENTER);
+                                                                    }
+                                                                  },
+                                                                );
+                                                              },
+                                                              child: Icon(
+                                                                  Icons
+                                                                      .arrow_drop_down,
+                                                                  color: Colors
+                                                                      .black),
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    ),
                                                   ),
                                                 ),
                                               ),
-                                            ),
-                                            SizedBox(height: responsive.hp(1)),
-                                            ElevatedButton(
-                                                onPressed: () {
-                                                  Navigator.push(
-                                                    context,
-                                                    PageRouteBuilder(
-                                                      transitionDuration:
-                                                          const Duration(
-                                                              milliseconds:
-                                                                  700),
-                                                      pageBuilder: (context,
-                                                          animation,
-                                                          secondaryAnimation) {
-                                                        return DetalleLectura(
-                                                          lecturas: secuencia,
-                                                          numeroSecuencia:  secuencia[indexLectura].ordenenvio,
-                                                          indexLectura: indexLectura,
-                                                          codCliente: '',
-                                                          nMedidor: '',
-                                                        );
-                                                      },
-                                                      transitionsBuilder:
-                                                          (context,
-                                                              animation,
-                                                              secondaryAnimation,
-                                                              child) {
-                                                        return FadeTransition(
-                                                          opacity: animation,
-                                                          child: child,
-                                                        );
-                                                      },
-                                                    ),
-                                                  );
-                                                },
-                                                child: Text("Ingresar"))
-                                          ],
-                                        );
+                                              SizedBox(
+                                                  height: responsive.hp(1)),
+                                              ElevatedButton(
+                                                  onPressed: () {
+                                                    Navigator.push(
+                                                      context,
+                                                      PageRouteBuilder(
+                                                        transitionDuration:
+                                                            const Duration(
+                                                                milliseconds:
+                                                                    700),
+                                                        pageBuilder: (context,
+                                                            animation,
+                                                            secondaryAnimation) {
+                                                          return DetalleLectura(
+                                                            lecturas: secuencia,
+                                                            numeroSecuencia:
+                                                                secuencia[
+                                                                        indexLectura]
+                                                                    .ordenenvio,
+                                                            indexLectura:
+                                                                indexLectura,
+                                                            codCliente: '',
+                                                            nMedidor: '',
+                                                          );
+                                                        },
+                                                        transitionsBuilder:
+                                                            (context,
+                                                                animation,
+                                                                secondaryAnimation,
+                                                                child) {
+                                                          return FadeTransition(
+                                                            opacity: animation,
+                                                            child: child,
+                                                          );
+                                                        },
+                                                      ),
+                                                    );
+                                                  },
+                                                  child: Text("Ingresar"))
+                                            ],
+                                          );
+                                        } else {
+                                          return Text("vacioooo");
+                                        }
                                       } else {
-                                        return Text("vacioooo");
+                                        return CircularProgressIndicator();
                                       }
-                                    } else {
-                                      return CircularProgressIndicator();
-                                    }
-                                  },
+                                    },
+                                  ),
                                 ),
-                              ),
-                            ],
-                          ),
-                          SizedBox(
-                            height: responsive.hp(3),
-                          ),
-                          BusquedaWidgetPage(
-                            lecturas: lectura,
-                            indexLectura: indexLectura,
-                          )
-                        ],
+                              ],
+                            ),
+                            SizedBox(
+                              height: responsive.hp(3),
+                            ),
+                            BusquedaWidgetPage(
+                              lecturas: lectura,
+                              indexLectura: indexLectura,
+                            )
+                          ],
+                        ),
                       ),
-                    ),
+                    ],
                   ),
                 );
               } else {
@@ -391,24 +407,30 @@ class _BusquedaWidgetPageState extends State<BusquedaWidgetPage> {
   @override
   Widget build(BuildContext context) {
     final responsive = Responsive.of(context);
-
+    final lecturaBloc = ProviderBloc.lectura(context);
     //lecturaBloc.busquedaPorMedidor();
+    //lecturaBloc.busquedaPorCliente();
     return Container(
       child: Column(
         children: [
           Text("Buscar:", style: TextStyle(fontSize: 18)),
           Divider(),
           //Busqueda por nro de medidor
-          _busquedaXMedidor(responsive, widget.lecturas,widget.indexLectura),
+          _busquedaXMedidor(responsive, widget.lecturas, widget.indexLectura),
           SizedBox(height: responsive.hp(3)),
           //Busqueda por id del cliente
-          _busquedaIdCliente(responsive, widget.lecturas,widget.indexLectura)
+          _busquedaIdCliente(
+              responsive, widget.lecturas, lecturaBloc, widget.indexLectura)
         ],
       ),
     );
   }
 
-  Widget _busquedaXMedidor(Responsive responsive, List<LecturaModel> lecturas,int indexLectura,) {
+  Widget _busquedaXMedidor(
+    Responsive responsive,
+    List<LecturaModel> lecturas,
+    int indexLectura,
+  ) {
     return Container(
       width: responsive.wp(80),
       //height: responsive.hp(5),
@@ -428,35 +450,15 @@ class _BusquedaWidgetPageState extends State<BusquedaWidgetPage> {
                     _medidorcontroller.clear();
                   },
                 )),
+            onSubmitted: (value) {
+              _submitBusquedaMedidor(lecturas, indexLectura);
+             // _medidorcontroller.clear();
+            },
           ),
           ElevatedButton(
-            onPressed: () async {
-              if (_clientecontroller.text.length > 0) {
-                Navigator.push(
-                  context,
-                  PageRouteBuilder(
-                    transitionDuration: const Duration(milliseconds: 700),
-                    pageBuilder: (context, animation, secondaryAnimation) {
-                      return DetalleLectura(
-                        lecturas: lecturas,
-                        numeroSecuencia: '',indexLectura: indexLectura,
-                        nMedidor: _medidorcontroller.text,
-                        codCliente: '',
-                      );
-                    },
-                    transitionsBuilder:
-                        (context, animation, secondaryAnimation, child) {
-                      return FadeTransition(
-                        opacity: animation,
-                        child: child,
-                      );
-                    },
-                  ),
-                );
-              } else {
-                utils.showToast1(
-                    'Ingrese un código para buscar', 2, ToastGravity.CENTER);
-              }
+            onPressed: ()  {
+              _submitBusquedaMedidor(lecturas, indexLectura);
+             // _medidorcontroller.clear();
             },
             child: Text("BUSCAR"),
           )
@@ -465,8 +467,27 @@ class _BusquedaWidgetPageState extends State<BusquedaWidgetPage> {
     );
   }
 
+  void _submitBusquedaMedidor(List<LecturaModel> lecturas, int indexLectura) {
+    if (_medidorcontroller.text.length > 0) {
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => BusquedaXMedidorPage(
+                    nroMedidor: _medidorcontroller.text,
+                    lecturas: lecturas,
+                    indexLectura: indexLectura,
+                  )));
+    } else {
+      utils.showToast1('Ingrese un código para buscar', 2, ToastGravity.CENTER);
+    }
+  }
+
   Widget _busquedaIdCliente(
-      Responsive responsive, List<LecturaModel> lecturas,int indexLectura,) {
+    Responsive responsive,
+    List<LecturaModel> lecturas,
+    LecturaBloc lecturaBloc,
+    int indexLectura,
+  ) {
     return Column(
       children: [
         Container(
@@ -483,40 +504,36 @@ class _BusquedaWidgetPageState extends State<BusquedaWidgetPage> {
                 },
               ),
             ),
+            onSubmitted: (value){
+              _submitCliente(lecturas, indexLectura);
+             _clientecontroller.clear();
+            },
           ),
         ),
         ElevatedButton(
-          onPressed: () {
-            if (_clientecontroller.text.length > 0) {
-              Navigator.push(
-                context,
-                PageRouteBuilder(
-                  transitionDuration: const Duration(milliseconds: 700),
-                  pageBuilder: (context, animation, secondaryAnimation) {
-                    return DetalleLectura(
-                      lecturas: lecturas,indexLectura: indexLectura,
-                      numeroSecuencia: '',
-                      nMedidor: '',
-                      codCliente: _clientecontroller.text,
-                    );
-                  },
-                  transitionsBuilder:
-                      (context, animation, secondaryAnimation, child) {
-                    return FadeTransition(
-                      opacity: animation,
-                      child: child,
-                    );
-                  },
-                ),
-              );
-            } else {
-              utils.showToast1(
-                  'Ingrese el número de medidor', 2, ToastGravity.CENTER);
-            }
+          onPressed: ()  {
+            _submitCliente(lecturas, indexLectura);
+             _clientecontroller.clear();
           },
           child: Text("BUSCAR"),
         )
       ],
     );
+  }
+
+  void _submitCliente(List<LecturaModel> lecturas, int indexLectura) {
+    if (_clientecontroller.text.length > 0) {
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => BusquedaXIdClientePage(
+                    idCliente: _clientecontroller.text,
+                    lecturas: lecturas,
+                    indexLectura: indexLectura,
+                  )));
+    } else {
+      utils.showToast1(
+          'Ingrese el código del cliente', 2, ToastGravity.CENTER);
+    }
   }
 }
