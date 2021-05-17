@@ -24,58 +24,60 @@ class _BusquedaXMedidorPageState extends State<BusquedaXMedidorPage> {
     final lecturaBloc = ProviderBloc.lectura(context);
     lecturaBloc.busquedaPorMedidor(widget.nroMedidor);
     return Scaffold(
-      body: Container(
-          child: StreamBuilder(
-              stream: lecturaBloc.busquedaXMedidorStream,
-              builder: (BuildContext context,
-                  AsyncSnapshot<List<LecturaModel>> snapshot) {
-                List<LecturaModel> resultados = snapshot.data;
-                if (snapshot.hasData) {
-                  if (snapshot.data.length > 0) {
-                    return ListView.builder(
-                      itemCount: resultados.length,
-                      itemBuilder: (BuildContext context, int index) {
-                        return ListTile(
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              PageRouteBuilder(
-                                transitionDuration:
-                                    const Duration(milliseconds: 700),
-                                pageBuilder:
-                                    (context, animation, secondaryAnimation) {
-                                  return DetalleLectura(
-                                    lecturas: widget.lecturas,
-                                    numeroSecuencia: '',
-                                    indexLectura: widget.indexLectura,
-                                    nMedidor: resultados[index].nromedidor,
-                                    codCliente: '',
-                                  );
-                                },
-                                transitionsBuilder: (context, animation,
-                                    secondaryAnimation, child) {
-                                  return FadeTransition(
-                                    opacity: animation,
-                                    child: child,
-                                  );
-                                },
-                              ),
-                            );
-                          },
-                          title: Text(resultados[index].nromedidor),
-                          subtitle: Text(resultados[index].propietario),
-                        );
+      body: SafeArea(
+              child: Container(
+            child: StreamBuilder(
+                stream: lecturaBloc.busquedaXMedidorStream,
+                builder: (BuildContext context,
+                    AsyncSnapshot<List<LecturaModel>> snapshot) {
+                  List<LecturaModel> resultados = snapshot.data;
+                  if (snapshot.hasData) {
+                    if (snapshot.data.length > 0) {
+                      return ListView.builder(
+                        itemCount: resultados.length,
+                        itemBuilder: (BuildContext context, int index) {
+                          return ListTile(
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                PageRouteBuilder(
+                                  transitionDuration:
+                                      const Duration(milliseconds: 700),
+                                  pageBuilder:
+                                      (context, animation, secondaryAnimation) {
+                                    return DetalleLectura(
+                                      lecturas: widget.lecturas,
+                                      numeroSecuencia: '',
+                                      indexLectura: widget.indexLectura,
+                                      nMedidor: resultados[index].nromedidor,
+                                      codCliente: '',
+                                    );
+                                  },
+                                  transitionsBuilder: (context, animation,
+                                      secondaryAnimation, child) {
+                                    return FadeTransition(
+                                      opacity: animation,
+                                      child: child,
+                                    );
+                                  },
+                                ),
+                              );
+                            },
+                            title: Text(resultados[index].nromedidor),
+                            subtitle: Text(resultados[index].propietario),
+                          );
 
-                        //Container(child: Text(resultados[index].nromedidor));
-                      },
-                    );
+                          //Container(child: Text(resultados[index].nromedidor));
+                        },
+                      );
+                    } else {
+                      return Center(child: Text("No hay resultados para la búsqueda"));
+                    }
                   } else {
-                    return Text("No hay resultados para la búsqueda");
+                    return CircularProgressIndicator();
                   }
-                } else {
-                  return CircularProgressIndicator();
-                }
-              })),
+                })),
+      ),
     );
   }
 }

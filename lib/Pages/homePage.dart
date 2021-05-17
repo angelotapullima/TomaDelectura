@@ -451,14 +451,15 @@ class _BusquedaWidgetPageState extends State<BusquedaWidgetPage> {
                   },
                 )),
             onSubmitted: (value) {
-              _submitBusquedaMedidor(lecturas, indexLectura);
-             // _medidorcontroller.clear();
+              value = _medidorcontroller.text;
+              _submitBusquedaMedidor(value,lecturas, indexLectura);
+              // _medidorcontroller.clear();
             },
           ),
           ElevatedButton(
-            onPressed: ()  {
-              _submitBusquedaMedidor(lecturas, indexLectura);
-             // _medidorcontroller.clear();
+            onPressed: () {
+              _submitBusquedaMedidor(_medidorcontroller.text,lecturas, indexLectura);
+              // _medidorcontroller.clear();
             },
             child: Text("BUSCAR"),
           )
@@ -467,8 +468,8 @@ class _BusquedaWidgetPageState extends State<BusquedaWidgetPage> {
     );
   }
 
-  void _submitBusquedaMedidor(List<LecturaModel> lecturas, int indexLectura) {
-    if (_medidorcontroller.text.length > 0) {
+  void _submitBusquedaMedidor(String valor,List<LecturaModel> lecturas, int indexLectura) {
+    if (valor.length > 0) {
       Navigator.push(
           context,
           MaterialPageRoute(
@@ -494,6 +495,8 @@ class _BusquedaWidgetPageState extends State<BusquedaWidgetPage> {
           width: responsive.wp(80),
           child: TextField(
             controller: _clientecontroller,
+            keyboardType: TextInputType.number,
+            autocorrect: true,
             decoration: InputDecoration(
               border: OutlineInputBorder(),
               labelText: 'CÓDIGO DEL CLIENTE',
@@ -504,16 +507,17 @@ class _BusquedaWidgetPageState extends State<BusquedaWidgetPage> {
                 },
               ),
             ),
-            onSubmitted: (value){
-              _submitCliente(lecturas, indexLectura);
-             _clientecontroller.clear();
+            onSubmitted: (value) {
+              value = _clientecontroller.text;
+              _submitCliente(value, lecturas, indexLectura);
+              _clientecontroller.clear();
             },
           ),
         ),
         ElevatedButton(
-          onPressed: ()  {
-            _submitCliente(lecturas, indexLectura);
-             _clientecontroller.clear();
+          onPressed: () {
+            _submitCliente(_clientecontroller.text,lecturas, indexLectura);
+            _clientecontroller.clear();
           },
           child: Text("BUSCAR"),
         )
@@ -521,19 +525,18 @@ class _BusquedaWidgetPageState extends State<BusquedaWidgetPage> {
     );
   }
 
-  void _submitCliente(List<LecturaModel> lecturas, int indexLectura) {
-    if (_clientecontroller.text.length > 0) {
+  void _submitCliente(String valor,List<LecturaModel> lecturas, int indexLectura) {
+    if (valor.isNotEmpty) {
       Navigator.push(
           context,
           MaterialPageRoute(
               builder: (context) => BusquedaXIdClientePage(
-                    idCliente: _clientecontroller.text,
+                    idcliente: valor,
                     lecturas: lecturas,
                     indexLectura: indexLectura,
                   )));
     } else {
-      utils.showToast1(
-          'Ingrese el código del cliente', 2, ToastGravity.CENTER);
+      utils.showToast1('Ingrese el código del cliente', 2, ToastGravity.CENTER);
     }
   }
 }
