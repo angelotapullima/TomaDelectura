@@ -2,10 +2,6 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:toma_de_lectura/Bloc/ProviderBloc.dart';
-import 'package:toma_de_lectura/Pages/busquedas/detalleBusqClientePage.dart';
-import 'package:toma_de_lectura/Pages/busquedas/detalleBusqMedidorPage.dart';
-import 'package:toma_de_lectura/Pages/busquedas/detalleBusqSecuenciaPage.dart';
-import 'package:toma_de_lectura/Pages/detalle_cliente.dart';
 import 'package:toma_de_lectura/Pages/homePage.dart';
 import 'package:toma_de_lectura/Pages/loginPage.dart';
 import 'package:toma_de_lectura/Pages/splash.dart';
@@ -34,7 +30,7 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    final prefs = new Preferences();
+    final prefs = new Preferences(); 
     return ProviderBloc(
       child: MaterialApp(
           debugShowCheckedModeBanner: false,
@@ -51,10 +47,6 @@ class MyApp extends StatelessWidget {
             "login": (BuildContext context) => LoginScreen(),
             "home": (BuildContext context) => HomePage(),
             "splash": (BuildContext context) => Splash(),
-             "detalleBusquedaSecuencia": (BuildContext context) => DetalleBusquedaSecuenciaPage(),
-            "detalleBusquedaMedidor": (BuildContext context) => DetalleBusquedaMedidorPage(),
-             "detalleBusquedaCliente": (BuildContext context) => DetalleBusquedaclientePage(),
-             "DetalleCliente": (BuildContext context) => DetalleCliente(),
           }),
     );
   }

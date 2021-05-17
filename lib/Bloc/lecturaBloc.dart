@@ -9,32 +9,31 @@ class LecturaBloc {
   final lecturaDb = LecturaDatabase();
 
   final _lecturaController = BehaviorSubject<List<LecturaModel>>();
+  final _detalleLecturaController = BehaviorSubject<List<LecturaModel>>();
   final _lecturaPendienteController = BehaviorSubject<List<LecturaModel>>();
   final _lecturaTerminadaController = BehaviorSubject<List<LecturaModel>>();
   final _secuenciaController = BehaviorSubject<List<LecturaModel>>();
   final _sectorController = BehaviorSubject<List<LecturaModel>>();
   final _cargandoLoginController = new BehaviorSubject<bool>();
-  final busquedaMedidorController = BehaviorSubject<List<LecturaModel>>();
-  final busquedaXIdClienteController = BehaviorSubject<List<LecturaModel>>();
+  
 
-  Stream<List<LecturaModel>> get busquedaXMedidorStream => busquedaMedidorController.stream; 
-  Stream<List<LecturaModel>> get busquedaXIdClienteStream =>busquedaXIdClienteController.stream; 
   Stream<List<LecturaModel>> get lecturaStream => _lecturaController.stream;
+  Stream<List<LecturaModel>> get detalleLecturaStream => _detalleLecturaController.stream;
   Stream<List<LecturaModel>> get lecturaPendienteStream => _lecturaPendienteController.stream;
   Stream<List<LecturaModel>> get lecturaTerminadaStream => _lecturaTerminadaController.stream;
   Stream<List<LecturaModel>> get sectorStream => _sectorController.stream;
 
   Stream<List<LecturaModel>> get secuenciaStream => _secuenciaController.stream;
-  // Stream<bool> get cargandoStream => _cargandoLoginController.stream;
+  
+
 
   dispose() {
     _lecturaController?.close();
+    _detalleLecturaController?.close();
     _lecturaPendienteController?.close();
     _lecturaTerminadaController?.close();
     _secuenciaController?.close();
     _sectorController?.close();
-    busquedaMedidorController?.close();
-    busquedaXIdClienteController?.close();
     _cargandoLoginController?.close();
   }
 
@@ -65,31 +64,22 @@ class LecturaBloc {
        _cargandoLoginController.sink.add(false);
   }
 
-  void obtenerSector() async {
+   void obtenerSector() async {
     _sectorController.sink.add(await lecturaDb.obtenerSector());
   }
-
+ 
 //Datos de la secuencia de registros a tomar lectura
   void obtenerDatosSecuencia() async {
     _cargandoLoginController.sink.add(true);
     _secuenciaController.sink.add(await lecturaDb.obtenerSecuencia());
     _cargandoLoginController.sink.add(false);
   }
+ 
 
-//Búsqueda por numero de medidor
-  Future busquedaPorMedidor(String query) async {
-    _cargandoLoginController.sink.add(true);
-    busquedaMedidorController.sink
-        .add(await lecturaDb.consultarRegistroPorMedidor(query));
-    _cargandoLoginController.sink.add(false);
-  }
 
-//Busqueda por el id del cliente
-  Future busquedaPorCliente(String query) async {
-    _cargandoLoginController.sink.add(true);
-     busquedaXIdClienteController.sink
-        .add(await lecturaDb.consultarRegistroPorCliente(query));
-    // _cargandoLoginController.sink.add(false);
+ void obtenerDetalleLectura(String numeroSecuencia,String codCliente,String nmedidor)async{
 
-  }
+
+   _detalleLecturaController.sink.add(await lecturaDb.consultarDetalleLectura(numeroSecuencia,codCliente,nmedidor));
+ }
 }
