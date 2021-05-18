@@ -55,6 +55,18 @@ class LecturaDatabase {
     return list;
   }
 
+  Future<List<LecturaModel>> obtenerLecturaPorIdIsnpector() async {
+    final idInspector = prefs.idUser;
+    final db = await dbprovider.database;
+    final res = await db
+        .rawQuery("SELECT * FROM Lectura where idInspectormovil='$idInspector' ");
+
+    List<LecturaModel> list =
+        res.isNotEmpty ? res.map((c) => LecturaModel.fromJson(c)).toList() : [];
+
+    return list;
+  }
+
   Future<List<LecturaModel>> obtenerLecturaPorIdLectura(
       String idLectura) async {
     final db = await dbprovider.database;
@@ -67,30 +79,31 @@ class LecturaDatabase {
     return list;
   }
 
-
   Future<List<LecturaModel>> obtenerSector() async {
     final db = await dbprovider.database;
-    final res = await db
-        .rawQuery("SELECT * FROM Lectura GROUP BY idSucursal,idSector,nombre_sector "
-    "ORDER BY idSucursal,idSector,nombre_sector");
+    final res = await db.rawQuery(
+        "SELECT * FROM Lectura GROUP BY idSucursal,idSector,nombre_sector "
+        "ORDER BY idSucursal,idSector,nombre_sector");
 
     List<LecturaModel> list =
         res.isNotEmpty ? res.map((c) => LecturaModel.fromJson(c)).toList() : [];
     print(list);
     return list;
-  } 
+  }
 
-   Future<List<LecturaModel>> obtenerSecuencia() async {
+  Future<List<LecturaModel>> obtenerSecuencia() async {
     final db = await dbprovider.database;
 
-    final res =  await db.rawQuery("SELECT * FROM Lectura WHERE estado_lectura = '0'"
-    "ORDER BY estado_lectura");
+    final res =
+        await db.rawQuery("SELECT * FROM Lectura WHERE estado_lectura = '0'"
+            "ORDER BY estado_lectura");
     //print(res);
     List<LecturaModel> list =
         res.isNotEmpty ? res.map((c) => LecturaModel.fromJson(c)).toList() : [];
 
     return list;
   }
+
 /* 
   Future<List<LecturaModel>> obtenerResumen() async {
     final db = await dbprovider.database;
@@ -115,7 +128,8 @@ class LecturaDatabase {
     return list;
   }
 
-   */Future<List<LecturaModel>> obtenerRegistrosFaltantes() async {
+   */
+  Future<List<LecturaModel>> obtenerRegistrosFaltantes() async {
     final db = await dbprovider.database;
 
     final res =
@@ -140,14 +154,16 @@ class LecturaDatabase {
   }
 
 //obtener detalle de la lectura por numero se secuencia, idcliente,medidor
-  Future<List<LecturaModel>> consultarDetalleLectura(String numeroSecuencia,String codCliente,String nmedidor) async {
+  Future<List<LecturaModel>> consultarDetalleLectura(
+      String numeroSecuencia, String codCliente, String nmedidor) async {
     try {
       final db = await dbprovider.database;
       final res = await db.rawQuery(
           "SELECT * FROM Lectura WHERE nromedidor ='$nmedidor' or idCliente='$codCliente' or ordenenvio='$numeroSecuencia'");
-         
 
-      List<LecturaModel> list = res.isNotEmpty ? res.map((c) => LecturaModel.fromJson(c)).toList() : [];
+      List<LecturaModel> list = res.isNotEmpty
+          ? res.map((c) => LecturaModel.fromJson(c)).toList()
+          : [];
 
       return list;
     } catch (e) {
@@ -161,10 +177,12 @@ class LecturaDatabase {
   Future<List<LecturaModel>> consultarRegistroPorSecuencia(String query) async {
     try {
       final db = await dbprovider.database;
-      final res = await db.rawQuery(
-          "SELECT * FROM Lectura WHERE ordenenvio LIKE '%$query%'");
+      final res = await db
+          .rawQuery("SELECT * FROM Lectura WHERE ordenenvio LIKE '%$query%'");
 
-      List<LecturaModel> list = res.isNotEmpty ? res.map((c) => LecturaModel.fromJson(c)).toList() : [];
+      List<LecturaModel> list = res.isNotEmpty
+          ? res.map((c) => LecturaModel.fromJson(c)).toList()
+          : [];
 
       return list;
     } catch (e) {
@@ -173,15 +191,17 @@ class LecturaDatabase {
       return [];
     }
   }
-  
+
   //busqueda por id del cliente
   Future<List<LecturaModel>> consultarRegistroPorCliente(String query) async {
     try {
       final db = await dbprovider.database;
-      final res = await db.rawQuery(
-          "SELECT * FROM Lectura WHERE idCliente LIKE '%$query%'");
+      final res = await db
+          .rawQuery("SELECT * FROM Lectura WHERE idCliente LIKE '%$query%'");
 
-      List<LecturaModel> list = res.isNotEmpty ? res.map((c) => LecturaModel.fromJson(c)).toList() : [];
+      List<LecturaModel> list = res.isNotEmpty
+          ? res.map((c) => LecturaModel.fromJson(c)).toList()
+          : [];
 
       return list;
     } catch (e) {
@@ -195,10 +215,12 @@ class LecturaDatabase {
   Future<List<LecturaModel>> consultarRegistroPorMedidor(String query) async {
     try {
       final db = await dbprovider.database;
-      final res = await db.rawQuery(
-          "SELECT * FROM Lectura WHERE nromedidor LIKE '%$query%'");
+      final res = await db
+          .rawQuery("SELECT * FROM Lectura WHERE nromedidor LIKE '%$query%'");
 
-      List<LecturaModel> list = res.isNotEmpty ? res.map((c) => LecturaModel.fromJson(c)).toList() : [];
+      List<LecturaModel> list = res.isNotEmpty
+          ? res.map((c) => LecturaModel.fromJson(c)).toList()
+          : [];
 
       return list;
     } catch (e) {
@@ -207,5 +229,4 @@ class LecturaDatabase {
       return [];
     }
   }
-  
 }

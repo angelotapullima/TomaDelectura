@@ -19,6 +19,7 @@ class TextFieldRedondo extends StatelessWidget {
     return TextFieldContainer(
       child: TextField(
         controller: controlador,
+        textCapitalization: TextCapitalization.words,
         onChanged: onChanged,
         cursorColor: kPrimaryColor,
         decoration: InputDecoration(

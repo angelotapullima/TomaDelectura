@@ -56,11 +56,19 @@ class LecturaBloc {
   }
 
 //Obtner todos los datos de todos los registros
-  void datosLectura() async {
+  // void datosLectura() async {
+  //   _cargandoLoginController.sink.add(true);
+  //   _lecturaController.sink.add(await lecturaDb.obtenerLectura());
+  //   await lecturaApi.lectura();
+  //   _lecturaController.sink.add(await lecturaDb.obtenerLectura());
+  //   _cargandoLoginController.sink.add(false);
+  // }
+
+   void datosLectura() async {
     _cargandoLoginController.sink.add(true);
-    _lecturaController.sink.add(await lecturaDb.obtenerLectura());
+    _lecturaController.sink.add(await lecturaDb.obtenerLecturaPorIdIsnpector());
     await lecturaApi.lectura();
-    _lecturaController.sink.add(await lecturaDb.obtenerLectura());
+    _lecturaController.sink.add(await lecturaDb.obtenerLecturaPorIdIsnpector());
     _cargandoLoginController.sink.add(false);
   }
 

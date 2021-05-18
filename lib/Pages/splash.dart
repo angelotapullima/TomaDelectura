@@ -68,11 +68,16 @@ class _SplashState extends State<Splash> {
             color: Colors.black.withOpacity(.5),
           ),
           Center(
-            child: Container(
-              child: SvgPicture.asset(
-                'assets/images/logo_sedaayacucho.png',
-              ),
-            ),
+            child: Image(
+                image: AssetImage('assets/images/logo_sedaayacucho.png'),
+                fit: BoxFit.cover,
+              )
+            
+            // Container(
+            //   child: SvgPicture.asset(
+            //     'assets/images/logo_sedaayacucho.png',
+            //   ),
+            // ),
           ),
           Center(
             child: CupertinoActivityIndicator(),

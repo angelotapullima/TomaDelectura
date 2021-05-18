@@ -50,100 +50,127 @@ class _HomePageState extends State<HomePage> {
             style: TextStyle(color: Colors.white),
           ),
           backgroundColor: Colors.blueGrey),
-      body: StreamBuilder(
-          stream: lecturaBloc.lecturaStream,
-          builder: (BuildContext context,
-              AsyncSnapshot<List<LecturaModel>> snapshot) {
-            if (snapshot.hasData) {
-              if (snapshot.data.length > 0) {
-                List<LecturaModel> lectura = snapshot.data;
+      body: ListView(
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text("Cerrar Sesión"),
+              GestureDetector(
+                  onTap: () async {
+                    prefs.clearPreferences();
 
-                return SafeArea(
-                  child: ListView(
-                    keyboardDismissBehavior:
-                        ScrollViewKeyboardDismissBehavior.onDrag,
-                    children: [
-                      Container(
-                        //color: Colors.red,
-                        height: responsive.hp(90),
-                        child: Column(
-                          children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Text("Cerrar Sesión"),
-                                GestureDetector(
-                                    onTap: () async {
-                                      prefs.clearPreferences();
+                    Navigator.pushNamedAndRemoveUntil(
+                        context, 'login', (route) => false);
+                  },
+                  child: Icon(Icons.exit_to_app))
+            ],
+          ),
+          Text("Inspector:"),
+          Text(prefs.personName),
+          SizedBox(
+            height: responsive.hp(3),
+          ),
+          StreamBuilder(
+              stream: lecturaBloc.lecturaStream,
+              builder: (BuildContext context,
+                  AsyncSnapshot<List<LecturaModel>> snapshot) {
+                if (snapshot.hasData) {
+                  if (snapshot.data.length > 0) {
+                    List<LecturaModel> lectura = snapshot.data;
 
-                                      Navigator.pushNamedAndRemoveUntil(
-                                          context, 'login', (route) => false);
-                                    },
-                                    child: Icon(Icons.exit_to_app))
-                              ],
-                            ),
-                            Text("Inspector:"),
-                            Text(prefs.personName),
-                            SizedBox(
-                              height: responsive.hp(3),
-                            ),
+                    return Container(
+                      //color: Colors.red,
+                      height: responsive.hp(90),
+                      child: Column(
+                        children: [
+                          //Para llamar al total de los registros
+                          _tablaResumen(responsive, lecturaBloc, lectura),
+                          Column(
+                            children: [
+                              Text(
+                                "Secuencia",
+                                style: TextStyle(fontSize: 18),
+                              ),
+                              SizedBox(
+                                height: responsive.hp(1),
+                              ),
+                              Container(
+                                width: responsive.wp(70),
+                                height: responsive.hp(18),
+                                child: StreamBuilder(
+                                  stream: lecturaBloc.secuenciaStream,
+                                  builder: (BuildContext context,
+                                      AsyncSnapshot<List<LecturaModel>>
+                                          snapshot) {
+                                    List<LecturaModel> secuencia =
+                                        snapshot.data;
 
-                            //Para llamar al total de los registros
-                            _tablaResumen(responsive, lecturaBloc, lectura),
-                            Column(
-                              children: [
-                                Text(
-                                  "Secuencia",
-                                  style: TextStyle(fontSize: 18),
-                                ),
-                                SizedBox(
-                                  height: responsive.hp(1),
-                                ),
-                                Container(
-                                  width: responsive.wp(70),
-                                  height: responsive.hp(18),
-                                  child: StreamBuilder(
-                                    stream: lecturaBloc.secuenciaStream,
-                                    builder: (BuildContext context,
-                                        AsyncSnapshot<List<LecturaModel>>
-                                            snapshot) {
-                                      List<LecturaModel> secuencia =
-                                          snapshot.data;
-
-                                      if (snapshot.hasData) {
-                                        if (snapshot.data.length > 0) {
-                                          return Column(
-                                            children: [
-                                              TextField(
-                                                //controller: _secuenciacontroller,
-                                                controller:
-                                                    TextEditingController(
-                                                        text: secuencia[
-                                                                indexLectura]
-                                                            .ordenenvio),
-                                                decoration: InputDecoration(
-                                                  border: OutlineInputBorder(),
-                                                  hintText: "N° de Correlativo",
-                                                  suffixIcon: Container(
-                                                    width: responsive.wp(7),
-                                                    height: responsive.hp(4),
-                                                    child: Column(
-                                                      children: [
-                                                        Expanded(
-                                                          flex: 1,
+                                    if (snapshot.hasData) {
+                                      if (snapshot.data.length > 0) {
+                                        return Column(
+                                          children: [
+                                            TextField(
+                                              //controller: _secuenciacontroller,
+                                              controller: TextEditingController(
+                                                  text: secuencia[indexLectura]
+                                                      .ordenenvio),
+                                              decoration: InputDecoration(
+                                                border: OutlineInputBorder(),
+                                                hintText: "N° de Correlativo",
+                                                suffixIcon: Container(
+                                                  width: responsive.wp(7),
+                                                  height: responsive.hp(4),
+                                                  child: Column(
+                                                    children: [
+                                                      Expanded(
+                                                        flex: 1,
+                                                        child: GestureDetector(
+                                                          onTap: () {
+                                                            setState(
+                                                              () {
+                                                                if (indexLectura <
+                                                                    secuencia
+                                                                            .length -
+                                                                        1) {
+                                                                  indexLectura++;
+                                                                } else {
+                                                                  utils.showToast1(
+                                                                      'Último registro',
+                                                                      2,
+                                                                      ToastGravity
+                                                                          .CENTER);
+                                                                }
+                                                              },
+                                                            );
+                                                          },
+                                                          child: Container(
+                                                            color: Colors
+                                                                .grey[300],
+                                                            child: Icon(
+                                                                Icons
+                                                                    .arrow_drop_up,
+                                                                color: Colors
+                                                                    .black),
+                                                          ),
+                                                        ),
+                                                      ),
+                                                      Expanded(
+                                                        flex: 1,
+                                                        child: Container(
+                                                          color:
+                                                              Colors.grey[300],
                                                           child:
                                                               GestureDetector(
                                                             onTap: () {
                                                               setState(
                                                                 () {
-                                                                  if (indexLectura <
-                                                                      secuencia
-                                                                              .length -
-                                                                          1) {
-                                                                    indexLectura++;
+                                                                  if (indexLectura >
+                                                                      0) {
+                                                                    indexLectura--;
                                                                   } else {
                                                                     utils.showToast1(
-                                                                        'Último registro',
+                                                                        'Primer registro',
                                                                         2,
                                                                         ToastGravity
                                                                             .CENTER);
@@ -151,126 +178,90 @@ class _HomePageState extends State<HomePage> {
                                                                 },
                                                               );
                                                             },
-                                                            child: Container(
-                                                              color: Colors
-                                                                  .grey[300],
-                                                              child: Icon(
-                                                                  Icons
-                                                                      .arrow_drop_up,
-                                                                  color: Colors
-                                                                      .black),
-                                                            ),
+                                                            child: Icon(
+                                                                Icons
+                                                                    .arrow_drop_down,
+                                                                color: Colors
+                                                                    .black),
                                                           ),
                                                         ),
-                                                        Expanded(
-                                                          flex: 1,
-                                                          child: Container(
-                                                            color: Colors
-                                                                .grey[300],
-                                                            child:
-                                                                GestureDetector(
-                                                              onTap: () {
-                                                                setState(
-                                                                  () {
-                                                                    if (indexLectura >
-                                                                        0) {
-                                                                      indexLectura--;
-                                                                    } else {
-                                                                      utils.showToast1(
-                                                                          'Primer registro',
-                                                                          2,
-                                                                          ToastGravity
-                                                                              .CENTER);
-                                                                    }
-                                                                  },
-                                                                );
-                                                              },
-                                                              child: Icon(
-                                                                  Icons
-                                                                      .arrow_drop_down,
-                                                                  color: Colors
-                                                                      .black),
-                                                            ),
-                                                          ),
-                                                        ),
-                                                      ],
-                                                    ),
+                                                      ),
+                                                    ],
                                                   ),
                                                 ),
                                               ),
-                                              SizedBox(
-                                                  height: responsive.hp(1)),
-                                              ElevatedButton(
-                                                  onPressed: () {
-                                                    Navigator.push(
-                                                      context,
-                                                      PageRouteBuilder(
-                                                        transitionDuration:
-                                                            const Duration(
-                                                                milliseconds:
-                                                                    700),
-                                                        pageBuilder: (context,
-                                                            animation,
-                                                            secondaryAnimation) {
-                                                          return DetalleLectura(
-                                                            lecturas: secuencia,
-                                                            numeroSecuencia:
-                                                                secuencia[
-                                                                        indexLectura]
-                                                                    .ordenenvio,
-                                                            indexLectura:
-                                                                indexLectura,
-                                                            codCliente: '',
-                                                            nMedidor: '',
-                                                          );
-                                                        },
-                                                        transitionsBuilder:
-                                                            (context,
-                                                                animation,
-                                                                secondaryAnimation,
-                                                                child) {
-                                                          return FadeTransition(
-                                                            opacity: animation,
-                                                            child: child,
-                                                          );
-                                                        },
-                                                      ),
-                                                    );
-                                                  },
-                                                  child: Text("Ingresar"))
-                                            ],
-                                          );
-                                        } else {
-                                          return Text("vacioooo");
-                                        }
+                                            ),
+                                            SizedBox(height: responsive.hp(1)),
+                                            ElevatedButton(
+                                                onPressed: () {
+                                                  Navigator.push(
+                                                    context,
+                                                    PageRouteBuilder(
+                                                      transitionDuration:
+                                                          const Duration(
+                                                              milliseconds:
+                                                                  700),
+                                                      pageBuilder: (context,
+                                                          animation,
+                                                          secondaryAnimation) {
+                                                        return DetalleLectura(
+                                                          lecturas: secuencia,
+                                                          numeroSecuencia:
+                                                              secuencia[
+                                                                      indexLectura]
+                                                                  .ordenenvio,
+                                                          indexLectura:
+                                                              indexLectura,
+                                                          codCliente: '',
+                                                          nMedidor: '',
+                                                        );
+                                                      },
+                                                      transitionsBuilder:
+                                                          (context,
+                                                              animation,
+                                                              secondaryAnimation,
+                                                              child) {
+                                                        return FadeTransition(
+                                                          opacity: animation,
+                                                          child: child,
+                                                        );
+                                                      },
+                                                    ),
+                                                  );
+                                                },
+                                                child: Text("Ingresar"))
+                                          ],
+                                        );
                                       } else {
-                                        return CircularProgressIndicator();
+                                        return Text("vacioooo");
                                       }
-                                    },
-                                  ),
+                                    } else {
+                                      return CircularProgressIndicator();
+                                    }
+                                  },
                                 ),
-                              ],
-                            ),
-                            SizedBox(
-                              height: responsive.hp(3),
-                            ),
-                            BusquedaWidgetPage(
-                              lecturas: lectura,
-                              indexLectura: indexLectura,
-                            )
-                          ],
-                        ),
+                              ),
+                            ],
+                          ),
+                          SizedBox(
+                            height: responsive.hp(3),
+                          ),
+                          BusquedaWidgetPage(
+                            lecturas: lectura,
+                            indexLectura: indexLectura,
+                          )
+                        ],
                       ),
-                    ],
-                  ),
-                );
-              } else {
-                return Text("vacio");
-              }
-            } else {
-              return Center(child: CircularProgressIndicator());
-            }
-          }),
+                    );
+                  } else {
+                    return Center(child: Text("No hay registros para mostrar"));
+                  }
+                } else {
+                  return Center(child: CircularProgressIndicator());
+                }
+              }),
+        ],
+      ),
     );
   }
 
@@ -452,13 +443,14 @@ class _BusquedaWidgetPageState extends State<BusquedaWidgetPage> {
                 )),
             onSubmitted: (value) {
               value = _medidorcontroller.text;
-              _submitBusquedaMedidor(value,lecturas, indexLectura);
+              _submitBusquedaMedidor(value, lecturas, indexLectura);
               // _medidorcontroller.clear();
             },
           ),
           ElevatedButton(
             onPressed: () {
-              _submitBusquedaMedidor(_medidorcontroller.text,lecturas, indexLectura);
+              _submitBusquedaMedidor(
+                  _medidorcontroller.text, lecturas, indexLectura);
               // _medidorcontroller.clear();
             },
             child: Text("BUSCAR"),
@@ -468,7 +460,8 @@ class _BusquedaWidgetPageState extends State<BusquedaWidgetPage> {
     );
   }
 
-  void _submitBusquedaMedidor(String valor,List<LecturaModel> lecturas, int indexLectura) {
+  void _submitBusquedaMedidor(
+      String valor, List<LecturaModel> lecturas, int indexLectura) {
     if (valor.length > 0) {
       Navigator.push(
           context,
@@ -516,7 +509,7 @@ class _BusquedaWidgetPageState extends State<BusquedaWidgetPage> {
         ),
         ElevatedButton(
           onPressed: () {
-            _submitCliente(_clientecontroller.text,lecturas, indexLectura);
+            _submitCliente(_clientecontroller.text, lecturas, indexLectura);
             _clientecontroller.clear();
           },
           child: Text("BUSCAR"),
@@ -525,7 +518,8 @@ class _BusquedaWidgetPageState extends State<BusquedaWidgetPage> {
     );
   }
 
-  void _submitCliente(String valor,List<LecturaModel> lecturas, int indexLectura) {
+  void _submitCliente(
+      String valor, List<LecturaModel> lecturas, int indexLectura) {
     if (valor.isNotEmpty) {
       Navigator.push(
           context,
