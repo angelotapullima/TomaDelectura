@@ -28,6 +28,7 @@ class DetalleLectura extends StatefulWidget {
 }
 
 class _DetalleLecturaState extends State<DetalleLectura> {
+  TextEditingController _lecturaController = TextEditingController();
   int cantItems = 0;
   int cantLlamada = 0;
   String dropdownSedes = '';
@@ -35,6 +36,12 @@ class _DetalleLecturaState extends State<DetalleLectura> {
   String codSede = "";
 
   int indiceDeLectura;
+
+  @override
+  void dispose() {
+    _lecturaController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -62,6 +69,12 @@ class _DetalleLecturaState extends State<DetalleLectura> {
           builder: (context, AsyncSnapshot<List<LecturaModel>> snapshot) {
             if (snapshot.hasData) {
               if (snapshot.data.length > 0) {
+
+                if(codSede.isEmpty){
+
+                _lecturaController.text = snapshot.data[0].estadolectura;
+                }
+
                 return SafeArea(
                   child: SingleChildScrollView(
                     child: Column(
@@ -80,13 +93,18 @@ class _DetalleLecturaState extends State<DetalleLectura> {
                                 onPressed: () {
                                   setState(
                                     () {
+                                      codSede='';
+                                      dropdownSedes = "Seleccionar";
                                       if (indiceDeLectura > 0) {
                                         indiceDeLectura--;
                                         lecturaBloc.obtenerDetalleLectura(
-                                            widget.lecturas[indiceDeLectura].ordenenvio, '', '');
+                                            widget.lecturas[indiceDeLectura]
+                                                .ordenenvio,
+                                            '',
+                                            '');
                                       } else {
                                         utils.showToast1('primer Registro', 2,
-                                            ToastGravity.CENTER); 
+                                            ToastGravity.CENTER);
                                       }
                                     },
                                   );
@@ -108,11 +126,16 @@ class _DetalleLecturaState extends State<DetalleLectura> {
                                 onPressed: () {
                                   setState(
                                     () {
+                                      codSede='';
+                                      dropdownSedes = "Seleccionar";
                                       if (indiceDeLectura <
                                           widget.lecturas.length - 1) {
                                         indiceDeLectura++;
                                         lecturaBloc.obtenerDetalleLectura(
-                                            widget.lecturas[indiceDeLectura].ordenenvio, '', '');
+                                            widget.lecturas[indiceDeLectura]
+                                                .ordenenvio,
+                                            '',
+                                            '');
                                       } else {
                                         utils.showToast1('Último registro', 2,
                                             ToastGravity.CENTER);
@@ -161,17 +184,29 @@ class _DetalleLecturaState extends State<DetalleLectura> {
                           ],
                         ),
                         Divider(),
-                        Container(
-                          padding:
-                              EdgeInsets.symmetric(vertical: responsive.hp(1)),
-                          width: double.infinity,
-                          color: Colors.blue,
-                          child: Text(
-                            'NO REGISTRO CONSUMO Y/O LECTURA',
-                            textAlign: TextAlign.center,
-                            style: TextStyle(color: Colors.white),
-                          ),
-                        ),
+                        ('${snapshot.data[0].estadoLecturaInterna}' == '0')
+                            ? Container(
+                                padding: EdgeInsets.symmetric(
+                                    vertical: responsive.hp(1)),
+                                width: double.infinity,
+                                color: Colors.blue,
+                                child: Text(
+                                  'NO REGISTRO CONSUMO Y/O LECTURA',
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(color: Colors.white),
+                                ),
+                              )
+                            : Container(
+                                padding: EdgeInsets.symmetric(
+                                    vertical: responsive.hp(1)),
+                                width: double.infinity,
+                                color: Colors.green,
+                                child: Text(
+                                  'REGISTRO COMPLETO',
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(color: Colors.white),
+                                ),
+                              ),
                         Container(
                           margin: EdgeInsets.symmetric(
                               horizontal: responsive.wp(2),
@@ -185,6 +220,7 @@ class _DetalleLecturaState extends State<DetalleLectura> {
                             border: Border.all(color: Colors.black45),
                           ),
                           child: TextField(
+                            controller: _lecturaController,
                             cursorColor: Colors.transparent,
                             keyboardType: TextInputType.text,
                             decoration: InputDecoration(
@@ -197,7 +233,23 @@ class _DetalleLecturaState extends State<DetalleLectura> {
                         ),
                         MaterialButton(
                           color: Colors.red,
-                          onPressed: () {},
+                          onPressed: () {
+                            if (codSede == 'Seleccionar' || codSede == '') {
+                              utils.showToast1(
+                                  'Por favor seleccione una observación',
+                                  2,
+                                  ToastGravity.CENTER);
+                            } else if (_lecturaController.text.length > 0) {
+                              utils.cambiarEstadoLectura(
+                                  context,
+                                  '${snapshot.data[0].ordenenvio}',
+                                  _lecturaController.text,
+                                  '1');
+                            } else {
+                              utils.showToast1('Por favor ingrese la lectura',
+                                  2, ToastGravity.CENTER);
+                            }
+                          },
                           child: Text(
                             '${snapshot.data[0].idCliente} >> Guardar',
                             style: TextStyle(color: Colors.white),
@@ -294,7 +346,7 @@ class _DetalleLecturaState extends State<DetalleLectura> {
     );
   }
 
-  var listSedes;
+  var listDescripcion;
 
   Widget _estadoMedidor(BuildContext context, Responsive responsive) {
     final tipoMedidor = ProviderBloc.tipoMedidor(context);
@@ -305,16 +357,17 @@ class _DetalleLecturaState extends State<DetalleLectura> {
         if (snapshot.hasData) {
           if (snapshot.data.length > 0) {
             if (cantItems == 0) {
-              listSedes = List<String>();
+              listDescripcion = List<String>();
 
-              listSedes.add('Seleccionar');
+              listDescripcion.add('Seleccionar');
               for (int i = 0; i < snapshot.data.length; i++) {
                 String nombreSedes = snapshot.data[i].descripcion;
-                listSedes.add(nombreSedes);
+                listDescripcion.add(nombreSedes);
               }
               dropdownSedes = "Seleccionar";
             }
-            return _estadoMedidorItem(responsive, snapshot.data, listSedes);
+            return _estadoMedidorItem(
+                responsive, snapshot.data, listDescripcion);
           } else {
             return Center(child: CupertinoActivityIndicator());
           }
@@ -355,6 +408,7 @@ class _DetalleLecturaState extends State<DetalleLectura> {
           setState(() {
             dropdownSedes = data;
             cantItems++;
+            cantLlamada++;
             print(data);
             obtenerIdEstadoMedidor(data, sedes);
           });

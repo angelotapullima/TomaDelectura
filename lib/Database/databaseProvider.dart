@@ -96,7 +96,7 @@ class DatabaseProvider {
           'lecturapromedio VARCHAR,'
           'consumo VARCHAR,'
           'tipopromedio VARCHAR,'
-          'fechahoraregistro VARCHAR,'
+          'fechahoraregistro VARCHAR,' 
           'nrodias VARCHAR,'
           'ordenenvio VARCHAR,'
           'valorconsumoexc VARCHAR,'
@@ -124,7 +124,7 @@ class DatabaseProvider {
           'c_permitemodif VARCHAR,'
           'nombre_sector VARCHAR,'
           'vivhabitada VARCHAR,'
-          'estado_lectura VARCHAR,'
+          'estado_lectura_interna VARCHAR,'
           'estado_enviado VARCHAR,'
           'fecha_lectura VARCHAR'
           ')');

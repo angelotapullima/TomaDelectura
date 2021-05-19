@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 
 import 'package:fluttertoast/fluttertoast.dart';
-
-
+import 'package:toma_de_lectura/Bloc/ProviderBloc.dart';
+import 'package:toma_de_lectura/Database/lecturaDatabase.dart';
+import 'package:toma_de_lectura/Models/lecturaModel.dart';
 
 void showToast1(String msg, int duration, ToastGravity gravity) {
   Fluttertoast.showToast(
@@ -14,54 +15,23 @@ void showToast1(String msg, int duration, ToastGravity gravity) {
       textColor: Colors.black,
       fontSize: 16.0);
 }
-/* 
-TextStyle titulotexto =TextStyle(fontFamily: 'Syne', fontSize: 24, fontWeight: FontWeight.bold);
-TextStyle subtitulotexto = TextStyle(fontFamily: 'Syne', fontSize: 20);
-TextStyle gridTitulo =TextStyle(fontFamily: 'Syne', fontSize: 16, fontWeight: FontWeight.bold);
-TextStyle formtexto = TextStyle(fontFamily: 'Syne', fontSize: 18,fontWeight: FontWeight.bold);
-TextStyle form2 = TextStyle(fontFamily: 'Syne', fontSize: 16);
 
- */
+void cambiarEstadoLectura(BuildContext context, String ordenenvio,
+    String lectura, String lecturaInterna) async {
+  final lecturaDatabase = LecturaDatabase();
+  final lecturaBloc = ProviderBloc.lectura(context);
 
-// Widget getDatePickerEnabled(BuildContext context) {
-//   final String _labelText = "Ingrese algo";
+  LecturaModel lecturaModel = LecturaModel();
+  lecturaModel.ordenenvio = ordenenvio;
+  lecturaModel.estadolectura = lectura;
+  lecturaModel.estadoLecturaInterna = lecturaInterna;
 
-//   var _dateSelected = (DateTime.now());
-
-//   return InkWell(
-//     onTap: () {
-//       _selectDate(context, _dateSelected);
-//     },
-//     child: InputDecorator(
-//       decoration: InputDecoration(labelText: _labelText, enabled: true),
-//       child: Row(
-//         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-//         mainAxisSize: MainAxisSize.max,
-//         children: <Widget>[
-//           Text(
-//             DateFormat.yMMMd().format(_dateSelected),
-//             // style: CustomTheme.of(context).textTheme.subhead.copyWith(),
-//           ),
-//           Icon(Icons.arrow_drop_down,
-//               color: Theme.of(context).brightness == Brightness.light
-//                   ? Colors.grey.shade700
-//                   : Colors.white70),
-//         ],
-//       ),
-//     ),
-//   );
-// }
-
-// Future<void> _selectDate(BuildContext context, _dateSelected) async {
-//   final minYear = 2010;
-//   final maxYear = 2021;
-//   DateTime _onDateChange = (DateTime.now());
-//   final DateTime picked = await showDatePicker(
-//       context: context,
-//       initialDate: _dateSelected,
-//       firstDate: new DateTime(minYear),
-//       lastDate: new DateTime(maxYear));
-//   if (picked != null && _onDateChange != null) {
-//    // _onDateChange(picked);
-//   }
-// }
+  await lecturaDatabase.updateLecturaDb(lecturaModel);
+  lecturaBloc.obtenerDetalleLectura(ordenenvio, '', '');
+  lecturaBloc.datosLectura();
+  lecturaBloc.lecturasPendientes();
+  lecturaBloc.lecturasRegistradas();
+  lecturaBloc.obtenerSector();
+  lecturaBloc.obtenerDetalleLectura(ordenenvio, '', '');
+  showToast1('Registro completado con éxito', 2, ToastGravity.CENTER);
+}

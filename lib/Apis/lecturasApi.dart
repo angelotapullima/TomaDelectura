@@ -88,9 +88,9 @@ class LecturaApi {
           final list = await lecturaDb.obtenerLecturaPorIdLectura(decodedData[i]["codcliente"]);
 
           if (list.length > 0) {
-          lecturaModel.estadoLectura = list[0].estadoLectura;
+          lecturaModel.estadoLecturaInterna = list[0].estadoLecturaInterna;
         } else {
-          lecturaModel.estadoLectura = "0";
+          lecturaModel.estadoLecturaInterna = "0";
         }
 
           await lecturaDb.insertarLectura(lecturaModel);

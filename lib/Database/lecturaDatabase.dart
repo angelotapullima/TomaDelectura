@@ -19,7 +19,7 @@ class LecturaDatabase {
           "fechahoraregistro,nrodias,ordenenvio,valorconsumoexc,codurbaso,web,fechamovil,obslectura,"
           "idciclo,altoconsumo,situacionmed,variasunidadesuso,unid_tarifa,mostrarlectant,"
           "registrado,latitud,longitud,img_base64,tiposervicio,estadomed,anio,mes,"
-          "padroncritica,c_permitemodif,nombre_sector,vivhabitada, estado_lectura,"
+          "padroncritica,c_permitemodif,nombre_sector,vivhabitada, estado_lectura_interna,"
           "estado_enviado,fecha_lectura) "
           "VALUES('${lecturaModel.idLectura}','${lecturaModel.idEmpresa}', '${lecturaModel.idSede}','${lecturaModel.idSucursal}',"
           "'${lecturaModel.idSector}','${lecturaModel.idCliente}','${lecturaModel.idInspectorMovil}','${lecturaModel.propietario}',"
@@ -38,7 +38,7 @@ class LecturaDatabase {
           "'${lecturaModel.imgBase64}', '${lecturaModel.tiposervicio}','${lecturaModel.estadomed}',"
           "'${lecturaModel.anio}', '${lecturaModel.mes}','${lecturaModel.padroncritica}',"
           "'${lecturaModel.cPermitemodif}','${lecturaModel.nombreSector}',"
-          " '${lecturaModel.vivhabitada}', '${lecturaModel.estadoLectura}', '${lecturaModel.estadoEnviado}', '${lecturaModel.fechaLectura}')");
+          " '${lecturaModel.vivhabitada}', '${lecturaModel.estadoLecturaInterna}', '${lecturaModel.estadoEnviado}', '${lecturaModel.fechaLectura}')");
       return res;
     } catch (exception) {
       print(exception);
@@ -95,8 +95,8 @@ class LecturaDatabase {
     final db = await dbprovider.database;
 
     final res =
-        await db.rawQuery("SELECT * FROM Lectura WHERE estado_lectura = '0'"
-            "ORDER BY estado_lectura");
+        await db.rawQuery("SELECT * FROM Lectura WHERE estado_lectura_interna = '0'"
+            "ORDER BY estado_lectura_interna");
     //print(res);
     List<LecturaModel> list =
         res.isNotEmpty ? res.map((c) => LecturaModel.fromJson(c)).toList() : [];
@@ -133,7 +133,7 @@ class LecturaDatabase {
     final db = await dbprovider.database;
 
     final res =
-        await db.rawQuery("SELECT * FROM Lectura WHERE estado_lectura = '0'");
+        await db.rawQuery("SELECT * FROM Lectura WHERE estado_lectura_interna = '0'");
     //print(res);
     List<LecturaModel> list =
         res.isNotEmpty ? res.map((c) => LecturaModel.fromJson(c)).toList() : [];
@@ -145,7 +145,7 @@ class LecturaDatabase {
     final db = await dbprovider.database;
 
     final res =
-        await db.rawQuery("SELECT * FROM Lectura WHERE estado_lectura = '1'");
+        await db.rawQuery("SELECT * FROM Lectura WHERE estado_lectura_interna = '1'");
     //print(res);
     List<LecturaModel> list =
         res.isNotEmpty ? res.map((c) => LecturaModel.fromJson(c)).toList() : [];
@@ -229,4 +229,21 @@ class LecturaDatabase {
       return [];
     }
   }
+
+
+
+  updateLecturaDb(LecturaModel carrito)async{
+    final db = await dbprovider.database;
+
+    final res = await db.rawUpdate("UPDATE Lectura SET " 
+    "estado_lectura_interna='${carrito.estadoLecturaInterna}', "
+    "estadolectura='${carrito.estadolectura}' "
+    "WHERE ordenenvio = '${carrito.ordenenvio}' " 
+    );
+
+    return res;
+  }
+
+  
+
 }

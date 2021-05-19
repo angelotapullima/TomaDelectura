@@ -55,7 +55,7 @@ class LecturaModel {
     this.nombreSector,
     this.cPermitemodif,
     this.vivhabitada,
-    this.estadoLectura,
+    this.estadoLecturaInterna,
     this.estadoEnviado,
     this.fechaLectura,
   });
@@ -115,7 +115,7 @@ class LecturaModel {
   String nombreSector;
   String cPermitemodif;
   String vivhabitada;
-  String estadoLectura;
+  String estadoLecturaInterna;
   String estadoEnviado;
   String fechaLectura;
 
@@ -174,7 +174,7 @@ class LecturaModel {
         nombreSector: json["nombre_sector"],
         cPermitemodif: json["c_permitemodif"],
         vivhabitada: json["vivhabitada"],
-        estadoLectura: json["estado_lectura"],
+        estadoLecturaInterna: json["estado_lectura_interna"],
         estadoEnviado: json["estado_enviado"],
         fechaLectura: json["fecha_lectura"],
       );

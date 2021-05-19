@@ -57,13 +57,14 @@ class _HomePageState extends State<HomePage> {
             children: [
               Text("Cerrar Sesión"),
               GestureDetector(
-                  onTap: () async {
-                    prefs.clearPreferences();
+                onTap: () async {
+                  prefs.clearPreferences();
 
-                    Navigator.pushNamedAndRemoveUntil(
-                        context, 'login', (route) => false);
-                  },
-                  child: Icon(Icons.exit_to_app))
+                  Navigator.pushNamedAndRemoveUntil(
+                      context, 'login', (route) => false);
+                },
+                child: Icon(Icons.exit_to_app),
+              )
             ],
           ),
           Text("Inspector:"),
@@ -98,147 +99,118 @@ class _HomePageState extends State<HomePage> {
                               Container(
                                 width: responsive.wp(70),
                                 height: responsive.hp(18),
-                                child: StreamBuilder(
-                                  stream: lecturaBloc.secuenciaStream,
-                                  builder: (BuildContext context,
-                                      AsyncSnapshot<List<LecturaModel>>
-                                          snapshot) {
-                                    List<LecturaModel> secuencia =
-                                        snapshot.data;
-
-                                    if (snapshot.hasData) {
-                                      if (snapshot.data.length > 0) {
-                                        return Column(
-                                          children: [
-                                            TextField(
-                                              //controller: _secuenciacontroller,
-                                              controller: TextEditingController(
-                                                  text: secuencia[indexLectura]
-                                                      .ordenenvio),
-                                              decoration: InputDecoration(
-                                                border: OutlineInputBorder(),
-                                                hintText: "N° de Correlativo",
-                                                suffixIcon: Container(
-                                                  width: responsive.wp(7),
-                                                  height: responsive.hp(4),
-                                                  child: Column(
-                                                    children: [
-                                                      Expanded(
-                                                        flex: 1,
-                                                        child: GestureDetector(
-                                                          onTap: () {
-                                                            setState(
-                                                              () {
-                                                                if (indexLectura <
-                                                                    secuencia
-                                                                            .length -
-                                                                        1) {
-                                                                  indexLectura++;
-                                                                } else {
-                                                                  utils.showToast1(
-                                                                      'Último registro',
-                                                                      2,
-                                                                      ToastGravity
-                                                                          .CENTER);
-                                                                }
-                                                              },
-                                                            );
-                                                          },
-                                                          child: Container(
-                                                            color: Colors
-                                                                .grey[300],
-                                                            child: Icon(
-                                                                Icons
-                                                                    .arrow_drop_up,
-                                                                color: Colors
-                                                                    .black),
-                                                          ),
-                                                        ),
-                                                      ),
-                                                      Expanded(
-                                                        flex: 1,
-                                                        child: Container(
-                                                          color:
-                                                              Colors.grey[300],
-                                                          child:
-                                                              GestureDetector(
-                                                            onTap: () {
-                                                              setState(
-                                                                () {
-                                                                  if (indexLectura >
-                                                                      0) {
-                                                                    indexLectura--;
-                                                                  } else {
-                                                                    utils.showToast1(
-                                                                        'Primer registro',
-                                                                        2,
-                                                                        ToastGravity
-                                                                            .CENTER);
-                                                                  }
-                                                                },
-                                                              );
-                                                            },
-                                                            child: Icon(
-                                                                Icons
-                                                                    .arrow_drop_down,
-                                                                color: Colors
-                                                                    .black),
-                                                          ),
-                                                        ),
-                                                      ),
-                                                    ],
+                                child: Column(
+                                  children: [
+                                    TextField(
+                                      //controller: _secuenciacontroller,
+                                      controller: TextEditingController(
+                                          text:
+                                              lectura[indexLectura].ordenenvio),
+                                      decoration: InputDecoration(
+                                        border: OutlineInputBorder(),
+                                        hintText: "N° de Correlativo",
+                                        suffixIcon: Container(
+                                          width: responsive.wp(7),
+                                          height: responsive.hp(4),
+                                          child: Column(
+                                            children: [
+                                              Expanded(
+                                                flex: 1,
+                                                child: GestureDetector(
+                                                  onTap: () {
+                                                    setState(
+                                                      () {
+                                                        if (indexLectura <
+                                                            lectura.length -
+                                                                1) {
+                                                          indexLectura++;
+                                                        } else {
+                                                          utils.showToast1(
+                                                              'Último registro',
+                                                              2,
+                                                              ToastGravity
+                                                                  .CENTER);
+                                                        }
+                                                      },
+                                                    );
+                                                  },
+                                                  child: Container(
+                                                    color: Colors.grey[300],
+                                                    child: Icon(
+                                                        Icons.arrow_drop_up,
+                                                        color: Colors.black),
                                                   ),
                                                 ),
                                               ),
+                                              Expanded(
+                                                flex: 1,
+                                                child: Container(
+                                                  color: Colors.grey[300],
+                                                  child: GestureDetector(
+                                                    onTap: () {
+                                                      setState(
+                                                        () {
+                                                          if (indexLectura >
+                                                              0) {
+                                                            indexLectura--;
+                                                          } else {
+                                                            utils.showToast1(
+                                                                'Primer registro',
+                                                                2,
+                                                                ToastGravity
+                                                                    .CENTER);
+                                                          }
+                                                        },
+                                                      );
+                                                    },
+                                                    child: Icon(
+                                                        Icons.arrow_drop_down,
+                                                        color: Colors.black),
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      height: responsive.hp(1),
+                                    ),
+                                    ElevatedButton(
+                                        onPressed: () {
+                                          Navigator.push(
+                                            context,
+                                            PageRouteBuilder(
+                                              transitionDuration:
+                                                  const Duration(
+                                                      milliseconds: 700),
+                                              pageBuilder: (context, animation,
+                                                  secondaryAnimation) {
+                                                return DetalleLectura(
+                                                  lecturas: lectura,
+                                                  numeroSecuencia:
+                                                      lectura[indexLectura]
+                                                          .ordenenvio,
+                                                  indexLectura: indexLectura,
+                                                  codCliente: '',
+                                                  nMedidor: '',
+                                                );
+                                              },
+                                              transitionsBuilder: (context,
+                                                  animation,
+                                                  secondaryAnimation,
+                                                  child) {
+                                                return FadeTransition(
+                                                  opacity: animation,
+                                                  child: child,
+                                                );
+                                              },
                                             ),
-                                            SizedBox(height: responsive.hp(1)),
-                                            ElevatedButton(
-                                                onPressed: () {
-                                                  Navigator.push(
-                                                    context,
-                                                    PageRouteBuilder(
-                                                      transitionDuration:
-                                                          const Duration(
-                                                              milliseconds:
-                                                                  700),
-                                                      pageBuilder: (context,
-                                                          animation,
-                                                          secondaryAnimation) {
-                                                        return DetalleLectura(
-                                                          lecturas: secuencia,
-                                                          numeroSecuencia:
-                                                              secuencia[
-                                                                      indexLectura]
-                                                                  .ordenenvio,
-                                                          indexLectura:
-                                                              indexLectura,
-                                                          codCliente: '',
-                                                          nMedidor: '',
-                                                        );
-                                                      },
-                                                      transitionsBuilder:
-                                                          (context,
-                                                              animation,
-                                                              secondaryAnimation,
-                                                              child) {
-                                                        return FadeTransition(
-                                                          opacity: animation,
-                                                          child: child,
-                                                        );
-                                                      },
-                                                    ),
-                                                  );
-                                                },
-                                                child: Text("Ingresar"))
-                                          ],
-                                        );
-                                      } else {
-                                        return Text("vacioooo");
-                                      }
-                                    } else {
-                                      return CircularProgressIndicator();
-                                    }
-                                  },
+                                          );
+                                        },
+                                        child: Text("Ingresar"),)
+                                  ],
                                 ),
                               ),
                             ],
@@ -254,10 +226,14 @@ class _HomePageState extends State<HomePage> {
                       ),
                     );
                   } else {
-                    return Center(child: Text("No hay registros para mostrar"));
+                    return Center(
+                      child: Text("No hay registros para mostrar"),
+                    );
                   }
                 } else {
-                  return Center(child: CircularProgressIndicator());
+                  return Center(
+                    child: CircularProgressIndicator(),
+                  );
                 }
               }),
         ],
@@ -286,85 +262,93 @@ class _HomePageState extends State<HomePage> {
             ),
           ),
         ]),
-        TableRow(children: [
-          TableCell(
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                //sector
-                Container(
-                  height: responsive.hp(7),
-                  width: responsive.wp(20),
-                  child: StreamBuilder(
-                    stream: lecturaBloc.sectorStream,
+        TableRow(
+          children: [
+            TableCell(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  //sector
+                  Container(
+                    height: responsive.hp(7),
+                    width: responsive.wp(20),
+                    child: StreamBuilder(
+                      stream: lecturaBloc.sectorStream,
+                      builder: (BuildContext context,
+                          AsyncSnapshot<List<LecturaModel>> snapshot) {
+                        List<LecturaModel> sector = snapshot.data;
+                        if (snapshot.hasData) {
+                          if (snapshot.data.length > 0) {
+                            return ListView.builder(
+                              shrinkWrap: true,
+                              itemCount: sector.length,
+                              itemBuilder: (BuildContext context, int index) {
+                                return Text(sector[index].nombreSector);
+                              },
+                            );
+                          } else {
+                            return Text("data");
+                          }
+                        } else {
+                          return CircularProgressIndicator();
+                        }
+                      },
+                    ),
+                  ),
+                  //registradas
+                  StreamBuilder(
+                    stream: lecturaBloc.lecturaTerminadaStream,
                     builder: (BuildContext context,
                         AsyncSnapshot<List<LecturaModel>> snapshot) {
-                      List<LecturaModel> sector = snapshot.data;
+                      List<LecturaModel> lecturaTerminada = snapshot.data;
                       if (snapshot.hasData) {
                         if (snapshot.data.length > 0) {
-                          return ListView.builder(
-                            shrinkWrap: true,
-                            itemCount: sector.length,
-                            itemBuilder: (BuildContext context, int index) {
-                              return Text(sector[index].nombreSector);
-                            },
+                          return Container(
+                            child: Text(
+                              lecturaTerminada.length.toString(),
+                            ),
                           );
                         } else {
-                          return Text("data");
+                          return Text("0");
                         }
                       } else {
                         return CircularProgressIndicator();
                       }
                     },
                   ),
-                ),
-                //registradas
-                StreamBuilder(
-                  stream: lecturaBloc.lecturaTerminadaStream,
-                  builder: (BuildContext context,
-                      AsyncSnapshot<List<LecturaModel>> snapshot) {
-                    List<LecturaModel> lecturaTerminada = snapshot.data;
-                    if (snapshot.hasData) {
-                      if (snapshot.data.length > 0) {
-                        return Container(
-                          child: Text(lecturaTerminada.length.toString()),
-                        );
+                  //faltantes
+                  StreamBuilder(
+                    stream: lecturaBloc.lecturaPendienteStream,
+                    builder: (BuildContext context,
+                        AsyncSnapshot<List<LecturaModel>> snapshot) {
+                      List<LecturaModel> lecturaPendiente = snapshot.data;
+                      if (snapshot.hasData) {
+                        if (snapshot.data.length > 0) {
+                          return Container(
+                            child: Text(
+                              lecturaPendiente.length.toString(),
+                            ),
+                          );
+                        } else {
+                          return Text("0");
+                        }
                       } else {
-                        return Text("0");
+                        return CircularProgressIndicator();
                       }
-                    } else {
-                      return CircularProgressIndicator();
-                    }
-                  },
-                ),
-                //faltantes
-                StreamBuilder(
-                  stream: lecturaBloc.lecturaPendienteStream,
-                  builder: (BuildContext context,
-                      AsyncSnapshot<List<LecturaModel>> snapshot) {
-                    List<LecturaModel> lecturaPendiente = snapshot.data;
-                    if (snapshot.hasData) {
-                      if (snapshot.data.length > 0) {
-                        return Container(
-                          child: Text(
-                            lecturaPendiente.length.toString(),
-                          ),
-                        );
-                      } else {
-                        return Text("0");
-                      }
-                    } else {
-                      return CircularProgressIndicator();
-                    }
-                  },
-                ),
+                    },
+                  ),
 
-                //total
-                Container(child: Text(lectura.length.toString()))
-              ],
-            ),
-          )
-        ])
+                  //total
+                  Container(
+                    child: Text(
+                      lectura.length.toString(),
+                    ),
+                  )
+                ],
+              ),
+            )
+          ],
+        )
       ],
     );
   }
