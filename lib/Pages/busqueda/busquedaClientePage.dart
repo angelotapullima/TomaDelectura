@@ -25,6 +25,14 @@ class _BusquedaXIdClientePageState extends State<BusquedaXIdClientePage> {
     final lecturaBloc = ProviderBloc.lectura(context);
     lecturaBloc.busquedaPorCliente(widget.idcliente);
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.white,
+        elevation: 0,
+        iconTheme: IconThemeData(
+          color: Colors.black,
+        ),
+         title: Text("Código del Cliente", style: TextStyle(color: Colors.black),),
+      ),
       body: SafeArea(
         child: Container(
           child: StreamBuilder(

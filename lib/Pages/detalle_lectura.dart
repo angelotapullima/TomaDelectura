@@ -33,7 +33,7 @@ class _DetalleLecturaState extends State<DetalleLectura> {
   int cantLlamada = 0;
   String dropdownSedes = '';
   String dropdownCiclos = '';
-  String codSede = "";
+  String codObserv = "";
 
   int indiceDeLectura;
 
@@ -63,163 +63,189 @@ class _DetalleLecturaState extends State<DetalleLectura> {
         iconTheme: IconThemeData(
           color: Colors.black,
         ),
+        title:
+            Text("Registo de Lectura", style: TextStyle(color: Colors.black)),
       ),
       body: StreamBuilder(
           stream: lecturaBloc.detalleLecturaStream,
           builder: (context, AsyncSnapshot<List<LecturaModel>> snapshot) {
             if (snapshot.hasData) {
               if (snapshot.data.length > 0) {
-
-                if(codSede.isEmpty){
+                if(codObserv.isEmpty){
 
                 _lecturaController.text = snapshot.data[0].estadolectura;
                 }
 
                 return SafeArea(
-                  child: SingleChildScrollView(
-                    child: Column(
+                  child: Container(
+                    color: snapshot.data[0].estadoLecturaInterna == '1'
+                        ? Colors.green[100]
+                        : Colors.white,
+                    child: ListView(
+                      keyboardDismissBehavior:
+                          ScrollViewKeyboardDismissBehavior.onDrag,
                       children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        Column(
                           children: [
-                            MaterialButton(
-                                child: Text(
-                                  'Anterior',
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              children: [
+                                MaterialButton(
+                                    child: Text(
+                                      'Anterior',
+                                      style: TextStyle(
+                                          fontSize: responsive.ip(2),
+                                          color: Colors.white),
+                                    ),
+                                    color: Colors.red,
+                                    onPressed: () {
+                                      setState(
+                                        () {
+                                          codObserv = '';
+                                          dropdownSedes = "Seleccionar";
+                                          if (indiceDeLectura > 0) {
+                                            indiceDeLectura--;
+                                            lecturaBloc.obtenerDetalleLectura(
+                                                widget.lecturas[indiceDeLectura]
+                                                    .ordenenvio,
+                                                '',
+                                                '');
+                                          } else {
+                                            utils.showToast1('primer Registro',
+                                                2, ToastGravity.CENTER);
+                                          }
+                                        },
+                                      );
+                                    }),
+                                Text(
+                                  '${snapshot.data[0].ordenenvio}',
                                   style: TextStyle(
                                       fontSize: responsive.ip(2),
-                                      color: Colors.white),
+                                      fontWeight: FontWeight.bold),
                                 ),
-                                color: Colors.red,
-                                onPressed: () {
-                                  setState(
-                                    () {
-                                      codSede='';
-                                      dropdownSedes = "Seleccionar";
-                                      if (indiceDeLectura > 0) {
-                                        indiceDeLectura--;
-                                        lecturaBloc.obtenerDetalleLectura(
-                                            widget.lecturas[indiceDeLectura]
-                                                .ordenenvio,
-                                            '',
-                                            '');
-                                      } else {
-                                        utils.showToast1('primer Registro', 2,
-                                            ToastGravity.CENTER);
-                                      }
-                                    },
-                                  );
-                                }),
-                            Text(
-                              '${snapshot.data[0].ordenenvio}',
-                              style: TextStyle(
-                                  fontSize: responsive.ip(2),
-                                  fontWeight: FontWeight.bold),
+                                MaterialButton(
+                                    child: Text(
+                                      'siguiente',
+                                      style: TextStyle(
+                                          fontSize: responsive.ip(2),
+                                          color: Colors.white),
+                                    ),
+                                    color: Colors.red,
+                                    onPressed: () {
+                                      setState(
+                                        () {
+                                          codObserv = '';
+                                          dropdownSedes = "Seleccionar";
+                                          if (indiceDeLectura <
+                                              widget.lecturas.length - 1) {
+                                            indiceDeLectura++;
+                                            lecturaBloc.obtenerDetalleLectura(
+                                                widget.lecturas[indiceDeLectura]
+                                                    .ordenenvio,
+                                                '',
+                                                '');
+                                          } else {
+                                            utils.showToast1('Último registro',
+                                                2, ToastGravity.CENTER);
+                                          }
+                                        },
+                                      );
+                                    })
+                              ],
                             ),
-                            MaterialButton(
-                                child: Text(
-                                  'siguiente',
+                            SizedBox(
+                              height: responsive.hp(2),
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              children: [
+                                Text(
+                                  'N° de Medidor:',
                                   style: TextStyle(
-                                      fontSize: responsive.ip(2),
-                                      color: Colors.white),
+                                    fontSize: responsive.ip(2),
+                                  ),
                                 ),
-                                color: Colors.red,
-                                onPressed: () {
-                                  setState(
-                                    () {
-                                      codSede='';
-                                      dropdownSedes = "Seleccionar";
-                                      if (indiceDeLectura <
-                                          widget.lecturas.length - 1) {
-                                        indiceDeLectura++;
-                                        lecturaBloc.obtenerDetalleLectura(
-                                            widget.lecturas[indiceDeLectura]
-                                                .ordenenvio,
-                                            '',
-                                            '');
-                                      } else {
-                                        utils.showToast1('Último registro', 2,
-                                            ToastGravity.CENTER);
-                                      }
-                                    },
-                                  );
-                                })
-                          ],
-                        ),
-                        SizedBox(
-                          height: responsive.hp(2),
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          children: [
-                            Text(
-                              'Med:',
-                              style: TextStyle(
-                                fontSize: responsive.ip(2),
-                              ),
+                                Text(
+                                  '${snapshot.data[0].nromedidor}',
+                                  style: TextStyle(
+                                    fontSize: responsive.ip(2),
+                                  ),
+                                )
+                              ],
                             ),
-                            Text(
-                              '${snapshot.data[0].nromedidor}',
-                              style: TextStyle(
-                                fontSize: responsive.ip(2),
-                              ),
-                            )
-                          ],
-                        ),
-                        Divider(),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          children: [
-                            Text(
-                              'Ruta:',
-                              style: TextStyle(
-                                fontSize: responsive.ip(2),
-                              ),
+                            Divider(),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              children: [
+                                Text(
+                                  'Cod. del cliente:',
+                                  style: TextStyle(
+                                    fontSize: responsive.ip(2),
+                                  ),
+                                ),
+                                Text(
+                                  '${snapshot.data[0].idCliente}',
+                                  style: TextStyle(
+                                    fontSize: responsive.ip(2),
+                                  ),
+                                )
+                              ],
                             ),
-                            Text(
-                              '${snapshot.data[0].codrutalectura}',
-                              style: TextStyle(
-                                fontSize: responsive.ip(2),
-                              ),
-                            )
-                          ],
-                        ),
-                        Divider(),
-                        ('${snapshot.data[0].estadoLecturaInterna}' == '0')
-                            ? Container(
-                                padding: EdgeInsets.symmetric(
-                                    vertical: responsive.hp(1)),
-                                width: double.infinity,
-                                color: Colors.blue,
-                                child: Text(
-                                  'NO REGISTRO CONSUMO Y/O LECTURA',
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(color: Colors.white),
+                            Divider(),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              children: [
+                                Text(
+                                  'Ruta:',
+                                  style: TextStyle(
+                                    fontSize: responsive.ip(2),
+                                  ),
                                 ),
-                              )
-                            : Container(
+                                Text(
+                                  '${snapshot.data[0].codrutalectura}',
+                                  style: TextStyle(
+                                    fontSize: responsive.ip(2),
+                                  ),
+                                )
+                              ],
+                            ),
+                            Divider(),
+                            ('${snapshot.data[0].estadoLecturaInterna}' == '0')
+                                ? Container(
+                                    padding: EdgeInsets.symmetric(
+                                        vertical: responsive.hp(1)),
+                                    width: double.infinity,
+                                    color: Colors.blue,
+                                    child: Text(
+                                      'NO REGISTRO CONSUMO Y/O LECTURA',
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(color: Colors.white),
+                                    ),
+                                  )
+                                : Container(
+                                    padding: EdgeInsets.symmetric(
+                                        vertical: responsive.hp(1)),
+                                    width: double.infinity,
+                                    color: Colors.green,
+                                    child: Text(
+                                      'REGISTRO COMPLETO',
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(color: Colors.white),
+                                    ),
+                                  ),
+                            Container(
+                                margin: EdgeInsets.symmetric(
+                                    horizontal: responsive.wp(2),
+                                    vertical: responsive.hp(2)),
                                 padding: EdgeInsets.symmetric(
-                                    vertical: responsive.hp(1)),
-                                width: double.infinity,
-                                color: Colors.green,
-                                child: Text(
-                                  'REGISTRO COMPLETO',
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(color: Colors.white),
+                                  horizontal: responsive.wp(2),
                                 ),
-                              ),
-                        Container(
-                          margin: EdgeInsets.symmetric(
-                              horizontal: responsive.wp(2),
-                              vertical: responsive.hp(2)),
-                          padding: EdgeInsets.symmetric(
-                            horizontal: responsive.wp(2),
-                          ),
-                          width: double.infinity,
-                          height: responsive.hp(8),
-                          decoration: BoxDecoration(
-                            border: Border.all(color: Colors.black45),
-                          ),
-                          child: TextField(
+                                width: double.infinity,
+                                height: responsive.hp(8),
+                                decoration: BoxDecoration(
+                                  border: Border.all(color: Colors.black45),
+                                ),
+                                  child: TextField(
                             controller: _lecturaController,
                             cursorColor: Colors.transparent,
                             keyboardType: TextInputType.text,
@@ -230,107 +256,115 @@ class _DetalleLecturaState extends State<DetalleLectura> {
                             enableInteractiveSelection: false,
                             //controller: montoPagarontroller,
                           ),
-                        ),
-                        MaterialButton(
-                          color: Colors.red,
-                          onPressed: () {
-                            if (codSede == 'Seleccionar' || codSede == '') {
-                              utils.showToast1(
-                                  'Por favor seleccione una observación',
-                                  2,
-                                  ToastGravity.CENTER);
-                            } else if (_lecturaController.text.length > 0) {
-                              utils.cambiarEstadoLectura(
-                                  context,
-                                  '${snapshot.data[0].ordenenvio}',
-                                  _lecturaController.text,
-                                  '1');
-                            } else {
-                              utils.showToast1('Por favor ingrese la lectura',
-                                  2, ToastGravity.CENTER);
-                            }
-                          },
-                          child: Text(
-                            '${snapshot.data[0].idCliente} >> Guardar',
-                            style: TextStyle(color: Colors.white),
-                          ),
-                        ),
-                        Padding(
-                          padding: EdgeInsets.symmetric(
-                              horizontal: responsive.wp(2)),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
-                              Text(
-                                'Unid. uso: 1 DOM',
+                                        ),
+                            MaterialButton(
+                              color: Colors.red,
+                              onPressed: () {
+                                if (codObserv == 'Seleccionar' ||
+                                    codObserv == '') {
+                                  utils.showToast1(
+                                      'Por favor seleccione una observación',
+                                      2,
+                                      ToastGravity.CENTER);
+                                } else if (_lecturaController.text.length > 0) {
+                                  utils.cambiarEstadoLectura(
+                                      context,
+                                      '${snapshot.data[0].ordenenvio}',
+                                      _lecturaController.text,
+                                      '1');
+                                 // _lecturaController.clear();
+                                } else {
+                                  utils.showToast1(
+                                      'Por favor ingrese la lectura',
+                                      2,
+                                      ToastGravity.CENTER);
+                                }
+                              },
+                              child: Text(
+                                ' Guardar',
                                 style: TextStyle(
-                                  fontSize: responsive.ip(2),
-                                ),
+                                    color: Colors.white,
+                                    fontSize: responsive.ip(2.2)),
                               ),
-                            ],
-                          ),
-                        ),
-                        Divider(),
-                        Padding(
-                          padding: EdgeInsets.symmetric(
-                              horizontal: responsive.wp(2)),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
-                              Text(
-                                'Observaciones',
-                                style: TextStyle(
-                                  fontSize: responsive.ip(2),
-                                ),
+                            ),
+                            Padding(
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: responsive.wp(2)),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    'Unid. uso: 1 DOM',
+                                    style: TextStyle(
+                                      fontSize: responsive.ip(2),
+                                    ),
+                                  ),
+                                ],
                               ),
-                            ],
-                          ),
-                        ),
-                        Divider(),
-                        Padding(
-                          padding: EdgeInsets.symmetric(
-                              horizontal: responsive.wp(2)),
-                          child: _estadoMedidor(context, responsive),
-                        ),
-                        Padding(
-                          padding: EdgeInsets.symmetric(
-                              horizontal: responsive.wp(2)),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
-                              Text(
-                                'Observaciones',
-                                style: TextStyle(
-                                  fontSize: responsive.ip(2),
-                                ),
+                            ),
+                            Divider(),
+                            Padding(
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: responsive.wp(2)),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    'Observaciones',
+                                    style: TextStyle(
+                                      fontSize: responsive.ip(2),
+                                    ),
+                                  ),
+                                ],
                               ),
-                            ],
-                          ),
-                        ),
-                        Container(
-                          margin: EdgeInsets.symmetric(
-                            horizontal: responsive.wp(2),
-                            vertical: responsive.hp(2),
-                          ),
-                          padding: EdgeInsets.symmetric(
-                            horizontal: responsive.wp(2),
-                          ),
-                          width: double.infinity,
-                          height: responsive.hp(16),
-                          decoration: BoxDecoration(
-                            border: Border.all(color: Colors.black45),
-                          ),
-                          child: TextField(
-                            cursorColor: Colors.transparent,
-                            keyboardType: TextInputType.text,
-                            maxLines: 3,
-                            decoration: InputDecoration(
-                                border: InputBorder.none,
-                                hintStyle: TextStyle(color: Colors.black54),
-                                hintText: 'Lectura de medidor'),
-                            enableInteractiveSelection: false,
-                            //controller: montoPagarontroller,
-                          ),
+                            ),
+                            Divider(),
+                            Padding(
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: responsive.wp(2)),
+                              child: _estadoMedidor(context, responsive),
+                            ),
+                            Padding(
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: responsive.wp(2)),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    'Observaciones',
+                                    style: TextStyle(
+                                      fontSize: responsive.ip(2),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            Container(
+                              margin: EdgeInsets.symmetric(
+                                horizontal: responsive.wp(2),
+                                vertical: responsive.hp(2),
+                              ),
+                              padding: EdgeInsets.symmetric(
+                                horizontal: responsive.wp(2),
+                              ),
+                              width: double.infinity,
+                              height: responsive.hp(16),
+                              decoration: BoxDecoration(
+                                border: Border.all(color: Colors.black45),
+                              ),
+                              child: TextField(
+                                cursorColor: Colors.transparent,
+                                keyboardType: TextInputType.text,
+                                maxLines: 3,
+                                decoration: InputDecoration(
+                                    border: InputBorder.none,
+                                    hintStyle: TextStyle(color: Colors.black54),
+                                    hintText: 'Lectura de medidor'),
+                                enableInteractiveSelection: false,
+                                //controller: montoPagarontroller,
+                              ),
+                            ),
+                          ],
                         ),
                       ],
                     ),
@@ -364,6 +398,7 @@ class _DetalleLecturaState extends State<DetalleLectura> {
                 String nombreSedes = snapshot.data[i].descripcion;
                 listDescripcion.add(nombreSedes);
               }
+
               dropdownSedes = "Seleccionar";
             }
             return _estadoMedidorItem(
@@ -436,10 +471,10 @@ class _DetalleLecturaState extends State<DetalleLectura> {
   void obtenerIdEstadoMedidor(String dato, List<TipoEstadoMedidorModel> list) {
     for (int i = 0; i < list.length; i++) {
       if (dato == list[i].descripcion) {
-        codSede = list[i].estadoMedidor;
+        codObserv = list[i].estadoMedidor;
       }
     }
 
-    print(codSede);
+    print(codObserv);
   }
 }

@@ -57,9 +57,12 @@ class LecturaDatabase {
 
   Future<List<LecturaModel>> obtenerLecturaPorIdIsnpector() async {
     final idInspector = prefs.idUser;
+    final idsede = prefs.idsede;
+    final idciclo = prefs.idCiclo;
+    final idempresa = prefs.idEmpresa;
     final db = await dbprovider.database;
     final res = await db
-        .rawQuery("SELECT * FROM Lectura where idInspectormovil='$idInspector' ");
+        .rawQuery("SELECT * FROM Lectura where idInspectormovil='$idInspector' and idciclo='$idciclo' and idSede='$idsede' and idEmpresa='$idempresa'");
 
     List<LecturaModel> list =
         res.isNotEmpty ? res.map((c) => LecturaModel.fromJson(c)).toList() : [];

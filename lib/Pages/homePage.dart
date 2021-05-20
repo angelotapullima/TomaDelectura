@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -49,26 +48,49 @@ class _HomePageState extends State<HomePage> {
             "Home",
             style: TextStyle(color: Colors.white),
           ),
+          actions: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  "Salir",
+                  style: TextStyle(fontSize: responsive.ip(2)),
+                ),
+                SizedBox(height: responsive.wp(5)),
+                GestureDetector(
+                  onTap: () async {
+                    prefs.clearPreferences();
+
+                    Navigator.pushNamedAndRemoveUntil(
+                        context, 'login', (route) => false);
+                  },
+                  child: Icon(Icons.exit_to_app, size: 26),
+                )
+              ],
+            ),
+          ],
           backgroundColor: Colors.blueGrey),
       body: ListView(
+        keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
         children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text("Cerrar Sesión"),
-              GestureDetector(
-                onTap: () async {
-                  prefs.clearPreferences();
-
-                  Navigator.pushNamedAndRemoveUntil(
-                      context, 'login', (route) => false);
-                },
-                child: Icon(Icons.exit_to_app),
-              )
-            ],
+          SizedBox(height: responsive.hp(4)),
+          Padding(
+            padding:  EdgeInsets.symmetric(horizontal: responsive.ip(2)
+            
+            ),
+            child: Container(
+              //color: Colors.blue,
+              height: responsive.hp(6),
+              child: Row(
+                children: [
+                  Text("Inspector:",
+                      style: TextStyle(fontSize: responsive.ip(2))),
+                  Text(prefs.personName,
+                      style: TextStyle(fontSize: responsive.ip(2), fontWeight: FontWeight.bold)),
+                ],
+              ),
+            ),
           ),
-          Text("Inspector:"),
-          Text(prefs.personName),
           SizedBox(
             height: responsive.hp(3),
           ),
@@ -106,6 +128,7 @@ class _HomePageState extends State<HomePage> {
                                       controller: TextEditingController(
                                           text:
                                               lectura[indexLectura].ordenenvio),
+                                      readOnly: true,
                                       decoration: InputDecoration(
                                         border: OutlineInputBorder(),
                                         hintText: "N° de Correlativo",
@@ -178,38 +201,38 @@ class _HomePageState extends State<HomePage> {
                                       height: responsive.hp(1),
                                     ),
                                     ElevatedButton(
-                                        onPressed: () {
-                                          Navigator.push(
-                                            context,
-                                            PageRouteBuilder(
-                                              transitionDuration:
-                                                  const Duration(
-                                                      milliseconds: 700),
-                                              pageBuilder: (context, animation,
-                                                  secondaryAnimation) {
-                                                return DetalleLectura(
-                                                  lecturas: lectura,
-                                                  numeroSecuencia:
-                                                      lectura[indexLectura]
-                                                          .ordenenvio,
-                                                  indexLectura: indexLectura,
-                                                  codCliente: '',
-                                                  nMedidor: '',
-                                                );
-                                              },
-                                              transitionsBuilder: (context,
-                                                  animation,
-                                                  secondaryAnimation,
-                                                  child) {
-                                                return FadeTransition(
-                                                  opacity: animation,
-                                                  child: child,
-                                                );
-                                              },
-                                            ),
-                                          );
-                                        },
-                                        child: Text("Ingresar"),)
+                                      onPressed: () {
+                                        Navigator.push(
+                                          context,
+                                          PageRouteBuilder(
+                                            transitionDuration: const Duration(
+                                                milliseconds: 700),
+                                            pageBuilder: (context, animation,
+                                                secondaryAnimation) {
+                                              return DetalleLectura(
+                                                lecturas: lectura,
+                                                numeroSecuencia:
+                                                    lectura[indexLectura]
+                                                        .ordenenvio,
+                                                indexLectura: indexLectura,
+                                                codCliente: '',
+                                                nMedidor: '',
+                                              );
+                                            },
+                                            transitionsBuilder: (context,
+                                                animation,
+                                                secondaryAnimation,
+                                                child) {
+                                              return FadeTransition(
+                                                opacity: animation,
+                                                child: child,
+                                              );
+                                            },
+                                          ),
+                                        );
+                                      },
+                                      child: Text("Ingresar"),
+                                    )
                                   ],
                                 ),
                               ),
@@ -227,8 +250,16 @@ class _HomePageState extends State<HomePage> {
                     );
                   } else {
                     return Center(
-                      child: Text("No hay registros para mostrar"),
-                    );
+                    child: Column(
+                      children: [
+                        Text("Espere un momento..."),
+                        CircularProgressIndicator(),
+                      ],
+                    ),
+                  );
+                    // return Center(
+                    //   child: Text("No hay registros para mostrar"),
+                    // );
                   }
                 } else {
                   return Center(
@@ -243,113 +274,109 @@ class _HomePageState extends State<HomePage> {
 
   Widget _tablaResumen(Responsive responsive, LecturaBloc lecturaBloc,
       List<LecturaModel> lectura) {
-    return Table(
-      border: TableBorder.all(width: 1, color: Colors.black),
-      children: [
-        TableRow(children: [
-          TableCell(
-            child: Container(
-              color: Colors.grey,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  Text("Sector"),
-                  Text("Registro"),
-                  Text("Falta"),
-                  Text("Total"),
-                ],
+    var lecturasPendientes =
+        lectura.where((l) => l.estadoLecturaInterna == '0').toList();
+    var lecturasTerminadas =
+        lectura.where((l) => l.estadoLecturaInterna == '1').toList();
+
+    return Container(
+      width: responsive.wp(97),
+      child: Table(
+        border: TableBorder.all(width: 1, color: Colors.black),
+        children: [
+          TableRow(children: [
+            TableCell(
+              child: Container(
+                color: Colors.grey[400],
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    Text("Sector",
+                        style: TextStyle(
+                            fontSize: responsive.ip(2),
+                            fontWeight: FontWeight.bold)),
+                    Text("Registro",
+                        style: TextStyle(
+                            fontSize: responsive.ip(2),
+                            fontWeight: FontWeight.bold)),
+                    Text("Falta",
+                        style: TextStyle(
+                            fontSize: responsive.ip(2),
+                            fontWeight: FontWeight.bold)),
+                    Text("Total",
+                        style: TextStyle(
+                            fontSize: responsive.ip(2),
+                            fontWeight: FontWeight.bold)),
+                  ],
+                ),
               ),
             ),
-          ),
-        ]),
-        TableRow(
-          children: [
-            TableCell(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  //sector
-                  Container(
-                    height: responsive.hp(7),
-                    width: responsive.wp(20),
-                    child: StreamBuilder(
-                      stream: lecturaBloc.sectorStream,
-                      builder: (BuildContext context,
-                          AsyncSnapshot<List<LecturaModel>> snapshot) {
-                        List<LecturaModel> sector = snapshot.data;
-                        if (snapshot.hasData) {
-                          if (snapshot.data.length > 0) {
-                            return ListView.builder(
-                              shrinkWrap: true,
-                              itemCount: sector.length,
-                              itemBuilder: (BuildContext context, int index) {
-                                return Text(sector[index].nombreSector);
-                              },
-                            );
-                          } else {
-                            return Text("data");
-                          }
-                        } else {
-                          return CircularProgressIndicator();
-                        }
-                      },
-                    ),
-                  ),
-                  //registradas
-                  StreamBuilder(
-                    stream: lecturaBloc.lecturaTerminadaStream,
-                    builder: (BuildContext context,
-                        AsyncSnapshot<List<LecturaModel>> snapshot) {
-                      List<LecturaModel> lecturaTerminada = snapshot.data;
-                      if (snapshot.hasData) {
-                        if (snapshot.data.length > 0) {
-                          return Container(
-                            child: Text(
-                              lecturaTerminada.length.toString(),
-                            ),
-                          );
-                        } else {
-                          return Text("0");
-                        }
-                      } else {
-                        return CircularProgressIndicator();
-                      }
-                    },
-                  ),
-                  //faltantes
-                  StreamBuilder(
-                    stream: lecturaBloc.lecturaPendienteStream,
-                    builder: (BuildContext context,
-                        AsyncSnapshot<List<LecturaModel>> snapshot) {
-                      List<LecturaModel> lecturaPendiente = snapshot.data;
-                      if (snapshot.hasData) {
-                        if (snapshot.data.length > 0) {
-                          return Container(
-                            child: Text(
-                              lecturaPendiente.length.toString(),
-                            ),
-                          );
-                        } else {
-                          return Text("0");
-                        }
-                      } else {
-                        return CircularProgressIndicator();
-                      }
-                    },
-                  ),
+          ]),
+          TableRow(
+            children: [
+              TableCell(
+                child: Container(
+                  height: responsive.hp(8),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      //sector
+                      Text(
+                        lectura[0].nombreSector,
+                        style: TextStyle(fontSize: responsive.ip(2)),
+                      ),
 
-                  //total
-                  Container(
-                    child: Text(
-                      lectura.length.toString(),
-                    ),
-                  )
-                ],
-              ),
-            )
-          ],
-        )
-      ],
+                      // Container(
+                      //   height: responsive.hp(7),
+                      //   width: responsive.wp(20),
+                      //   child: StreamBuilder(
+                      //     stream: lecturaBloc.sectorStream,
+                      //     builder: (BuildContext context,
+                      //         AsyncSnapshot<List<LecturaModel>> snapshot) {
+                      //       List<LecturaModel> sector = snapshot.data;
+                      //       if (snapshot.hasData) {
+                      //         if (snapshot.data.length > 0) {
+                      //           return ListView.builder(
+                      //             shrinkWrap: true,
+                      //             itemCount: sector.length,
+                      //             itemBuilder: (BuildContext context, int index) {
+                      //               return Text(sector[index].nombreSector);
+                      //             },
+                      //           );
+                      //         } else {
+                      //           return Text("data");
+                      //         }
+                      //       } else {
+                      //         return CircularProgressIndicator();
+                      //       }
+                      //     },
+                      //   ),
+                      // ),
+                      //registradas
+                      Container(
+                        child: Text(lecturasTerminadas.length.toString(),
+                            style: TextStyle(fontSize: responsive.ip(2))),
+                      ),
+
+                      //faltantes
+                      Container(
+                        child: Text(lecturasPendientes.length.toString(),
+                            style: TextStyle(fontSize: responsive.ip(2))),
+                      ),
+
+                      //total
+                      Container(
+                        child: Text(lectura.length.toString(),
+                            style: TextStyle(fontSize: responsive.ip(2))),
+                      )
+                    ],
+                  ),
+                ),
+              )
+            ],
+          )
+        ],
+      ),
     );
   }
 }

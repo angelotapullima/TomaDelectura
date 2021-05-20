@@ -24,6 +24,14 @@ class _BusquedaXMedidorPageState extends State<BusquedaXMedidorPage> {
     final lecturaBloc = ProviderBloc.lectura(context);
     lecturaBloc.busquedaPorMedidor(widget.nroMedidor);
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.white,
+        elevation: 0,
+        iconTheme: IconThemeData(
+          color: Colors.black,
+        ),
+         title: Text("Código del Medidor", style: TextStyle(color: Colors.black)),
+      ),
       body: SafeArea(
               child: Container(
             child: StreamBuilder(
@@ -71,7 +79,7 @@ class _BusquedaXMedidorPageState extends State<BusquedaXMedidorPage> {
                         },
                       );
                     } else {
-                      return Center(child: Text("No hay resultados para la búsqueda"));
+                      return Center(child: Text("No hay resultados para la búsqueda", style: TextStyle(fontSize: 18, color: Colors.grey[700])));
                     }
                   } else {
                     return CircularProgressIndicator();

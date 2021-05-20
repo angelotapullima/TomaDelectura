@@ -22,6 +22,14 @@ class _BusquedaXSecuenciaPageState extends State<BusquedaXSecuenciaPage> {
     final lecturaBloc = ProviderBloc.lectura(context);
     lecturaBloc.busquedaPorSecuencia(widget.idCliente);
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.white,
+        elevation: 0,
+        iconTheme: IconThemeData(
+          color: Colors.black,
+        ),
+        title: Text("Código del Cliente", style: TextStyle(color: Colors.black)),
+      ),
       body: SafeArea(
               child: Container(
           child: StreamBuilder(
@@ -68,7 +76,7 @@ class _BusquedaXSecuenciaPageState extends State<BusquedaXSecuenciaPage> {
                     },
                   );
                 } else {
-                  return Text("No hay resultados para la búsqueda");
+                  return Text("No hay resultados para la búsqueda", style: TextStyle(fontSize: 18, color: Colors.grey[700]));
                 }
               } else {
                 return CircularProgressIndicator();
