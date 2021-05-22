@@ -181,7 +181,7 @@ class LecturaDatabase {
     try {
       final db = await dbprovider.database;
       final res = await db
-          .rawQuery("SELECT * FROM Lectura WHERE ordenenvio LIKE '%$query%'");
+          .rawQuery("SELECT * FROM Lectura WHERE ordenenvio ='$query'");
 
       List<LecturaModel> list = res.isNotEmpty
           ? res.map((c) => LecturaModel.fromJson(c)).toList()
@@ -200,7 +200,7 @@ class LecturaDatabase {
     try {
       final db = await dbprovider.database;
       final res = await db
-          .rawQuery("SELECT * FROM Lectura WHERE idCliente LIKE '%$query%'");
+          .rawQuery("SELECT * FROM Lectura WHERE idCliente= '$query'");
 
       List<LecturaModel> list = res.isNotEmpty
           ? res.map((c) => LecturaModel.fromJson(c)).toList()
@@ -219,7 +219,7 @@ class LecturaDatabase {
     try {
       final db = await dbprovider.database;
       final res = await db
-          .rawQuery("SELECT * FROM Lectura WHERE nromedidor LIKE '%$query%'");
+          .rawQuery("SELECT * FROM Lectura WHERE nromedidor= '$query'");
 
       List<LecturaModel> list = res.isNotEmpty
           ? res.map((c) => LecturaModel.fromJson(c)).toList()

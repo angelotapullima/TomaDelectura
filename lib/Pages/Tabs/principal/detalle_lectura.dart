@@ -371,7 +371,7 @@ class _DetalleLecturaState extends State<DetalleLectura> {
                   ),
                 );
               } else {
-                return Text("No hay resultados para esta búsqueda");
+                return Center(child: Text("No hay resultados para esta búsqueda",style: TextStyle(fontSize: responsive.ip(2), fontWeight: FontWeight.w400),));
               }
             } else {
               return CupertinoActivityIndicator();

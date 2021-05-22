@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:toma_de_lectura/Bloc/ciclos_bloc.dart';
 import 'package:toma_de_lectura/Bloc/lecturaBloc.dart';
 import 'package:toma_de_lectura/Bloc/loginBloc.dart';
+import 'package:toma_de_lectura/Bloc/principal_bloc.dart';
 import 'package:toma_de_lectura/Bloc/sedesBloc.dart';
 import 'package:toma_de_lectura/Bloc/tiposEstadoMedidor.dart';
 
@@ -9,6 +10,7 @@ class ProviderBloc extends InheritedWidget {
   static ProviderBloc _instancia;
 
   final loginBloc = LoginBloc();
+  final tabsNavigationbloc = TabNavigationBloc();
   final sedesBloc = SedesBloc();
   final ciclosBloc = CiclosBloc();
   final lecturaBloc = LecturaBloc();
@@ -32,6 +34,12 @@ class ProviderBloc extends InheritedWidget {
   static LoginBloc login(BuildContext context) {
     return (context.dependOnInheritedWidgetOfExactType<ProviderBloc>())
         .loginBloc;
+  }
+
+  //tab
+  static TabNavigationBloc tabs(BuildContext context) {
+    return (context.dependOnInheritedWidgetOfExactType<ProviderBloc>())
+        .tabsNavigationbloc;
   }
 
   static SedesBloc sedes(BuildContext context) {

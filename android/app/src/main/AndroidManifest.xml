@@ -1,5 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.toma_de_lectura">
+
+    <uses-permission android:name="android.permission.INTERNET"/>
    <application
         android:label="toma_de_lectura"
         android:icon="@mipmap/ic_launcher">

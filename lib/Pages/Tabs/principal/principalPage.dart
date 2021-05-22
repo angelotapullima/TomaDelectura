@@ -4,24 +4,30 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:toma_de_lectura/Bloc/ProviderBloc.dart';
 import 'package:toma_de_lectura/Bloc/lecturaBloc.dart';
 import 'package:toma_de_lectura/Models/lecturaModel.dart';
-import 'package:toma_de_lectura/Pages/busqueda/busquedaClientePage.dart';
-import 'package:toma_de_lectura/Pages/busqueda/busquedaMedidorPage.dart';
-import 'package:toma_de_lectura/Pages/detalle_lectura.dart';
+import 'package:toma_de_lectura/Pages/Tabs/principal/detalle_lectura.dart';
 import 'package:toma_de_lectura/preferencias/preferencias_usuario.dart';
 import 'package:toma_de_lectura/utils/responsive.dart';
 import 'package:toma_de_lectura/utils/utils.dart' as utils;
 
-class HomePage extends StatefulWidget {
-  const HomePage({Key key}) : super(key: key);
+class PrincipalPage extends StatefulWidget {
+  const PrincipalPage({Key key}) : super(key: key);
 
   @override
-  _HomePageState createState() => _HomePageState();
+  _PrincipalPageState createState() => _PrincipalPageState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _PrincipalPageState extends State<PrincipalPage> {
+  TextEditingController _lecturaController = TextEditingController();
+
   int cant = 0;
 
   int indexLectura = 0;
+
+  @override
+  void dispose() {
+    _lecturaController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -75,9 +81,7 @@ class _HomePageState extends State<HomePage> {
         children: [
           SizedBox(height: responsive.hp(4)),
           Padding(
-            padding:  EdgeInsets.symmetric(horizontal: responsive.ip(2)
-            
-            ),
+            padding: EdgeInsets.symmetric(horizontal: responsive.ip(2)),
             child: Container(
               //color: Colors.blue,
               height: responsive.hp(6),
@@ -86,7 +90,9 @@ class _HomePageState extends State<HomePage> {
                   Text("Inspector:",
                       style: TextStyle(fontSize: responsive.ip(2))),
                   Text(prefs.personName,
-                      style: TextStyle(fontSize: responsive.ip(2), fontWeight: FontWeight.bold)),
+                      style: TextStyle(
+                          fontSize: responsive.ip(2),
+                          fontWeight: FontWeight.bold)),
                 ],
               ),
             ),
@@ -101,7 +107,8 @@ class _HomePageState extends State<HomePage> {
                 if (snapshot.hasData) {
                   if (snapshot.data.length > 0) {
                     List<LecturaModel> lectura = snapshot.data;
-
+                    //Definir el valor de la secuencia
+                    _lecturaController.text = lectura[indexLectura].ordenenvio;
                     return Container(
                       //color: Colors.red,
                       height: responsive.hp(90),
@@ -124,11 +131,13 @@ class _HomePageState extends State<HomePage> {
                                 child: Column(
                                   children: [
                                     TextField(
-                                      //controller: _secuenciacontroller,
-                                      controller: TextEditingController(
-                                          text:
-                                              lectura[indexLectura].ordenenvio),
-                                      readOnly: true,
+                                      controller: _lecturaController,
+                                      // controller: TextEditingController(
+                                      //     text:
+                                      //         lectura[indexLectura].ordenenvio),
+
+                                      //readOnly: true,
+                                      keyboardType: TextInputType.number,
                                       decoration: InputDecoration(
                                         border: OutlineInputBorder(),
                                         hintText: "N° de Correlativo",
@@ -141,12 +150,20 @@ class _HomePageState extends State<HomePage> {
                                                 flex: 1,
                                                 child: GestureDetector(
                                                   onTap: () {
+                                                    // indice = lectura.indexWhere(
+                                                    //     (l) =>
+                                                    //         l.ordenenvio ==
+                                                    //         lectura[indice]
+                                                    //             .ordenenvio);
+
                                                     setState(
                                                       () {
                                                         if (indexLectura <
                                                             lectura.length -
                                                                 1) {
                                                           indexLectura++;
+
+                                                          print(indexLectura);
                                                         } else {
                                                           utils.showToast1(
                                                               'Último registro',
@@ -196,7 +213,40 @@ class _HomePageState extends State<HomePage> {
                                           ),
                                         ),
                                       ),
+                                      // onChanged: (valor) {
+                                      //   //otro = valor;
+                                      //   print(valor);
+                                      // },
+                                      onSubmitted: (value) {
+                                        Navigator.push(
+                                          context,
+                                          PageRouteBuilder(
+                                            transitionDuration: const Duration(
+                                                milliseconds: 700),
+                                            pageBuilder: (context, animation,
+                                                secondaryAnimation) {
+                                              return DetalleLectura(
+                                                lecturas: lectura,
+                                                numeroSecuencia: value,
+                                                indexLectura: indexLectura,
+                                                codCliente: '',
+                                                nMedidor: '',
+                                              );
+                                            },
+                                            transitionsBuilder: (context,
+                                                animation,
+                                                secondaryAnimation,
+                                                child) {
+                                              return FadeTransition(
+                                                opacity: animation,
+                                                child: child,
+                                              );
+                                            },
+                                          ),
+                                        );
+                                      },
                                     ),
+                                    //Text(lectura[indexLectura].ordenenvio),
                                     SizedBox(
                                       height: responsive.hp(1),
                                     ),
@@ -212,8 +262,7 @@ class _HomePageState extends State<HomePage> {
                                               return DetalleLectura(
                                                 lecturas: lectura,
                                                 numeroSecuencia:
-                                                    lectura[indexLectura]
-                                                        .ordenenvio,
+                                                    _lecturaController.text,
                                                 indexLectura: indexLectura,
                                                 codCliente: '',
                                                 nMedidor: '',
@@ -250,13 +299,13 @@ class _HomePageState extends State<HomePage> {
                     );
                   } else {
                     return Center(
-                    child: Column(
-                      children: [
-                        Text("Espere un momento..."),
-                        CircularProgressIndicator(),
-                      ],
-                    ),
-                  );
+                      child: Column(
+                        children: [
+                          Text("Espere un momento..."),
+                          CircularProgressIndicator(),
+                        ],
+                      ),
+                    );
                     // return Center(
                     //   child: Text("No hay registros para mostrar"),
                     // );
@@ -475,13 +524,34 @@ class _BusquedaWidgetPageState extends State<BusquedaWidgetPage> {
       String valor, List<LecturaModel> lecturas, int indexLectura) {
     if (valor.length > 0) {
       Navigator.push(
-          context,
-          MaterialPageRoute(
-              builder: (context) => BusquedaXMedidorPage(
-                    nroMedidor: _medidorcontroller.text,
-                    lecturas: lecturas,
-                    indexLectura: indexLectura,
-                  )));
+        context,
+        PageRouteBuilder(
+          transitionDuration: const Duration(milliseconds: 700),
+          pageBuilder: (context, animation, secondaryAnimation) {
+            return DetalleLectura(
+              lecturas: widget.lecturas,
+              numeroSecuencia: '',
+              indexLectura: widget.indexLectura,
+              nMedidor: valor,
+              codCliente: '',
+            );
+          },
+          transitionsBuilder: (context, animation, secondaryAnimation, child) {
+            return FadeTransition(
+              opacity: animation,
+              child: child,
+            );
+          },
+        ),
+      );
+      // Navigator.push(
+      //     context,
+      //     MaterialPageRoute(
+      //         builder: (context) => BusquedaXMedidorPage(
+      //               nroMedidor: _medidorcontroller.text,
+      //               lecturas: lecturas,
+      //               indexLectura: indexLectura,
+      //             )));
     } else {
       utils.showToast1('Ingrese un código para buscar', 2, ToastGravity.CENTER);
     }
@@ -533,13 +603,26 @@ class _BusquedaWidgetPageState extends State<BusquedaWidgetPage> {
       String valor, List<LecturaModel> lecturas, int indexLectura) {
     if (valor.isNotEmpty) {
       Navigator.push(
-          context,
-          MaterialPageRoute(
-              builder: (context) => BusquedaXIdClientePage(
-                    idcliente: valor,
-                    lecturas: lecturas,
-                    indexLectura: indexLectura,
-                  )));
+        context,
+        PageRouteBuilder(
+          transitionDuration: const Duration(milliseconds: 700),
+          pageBuilder: (context, animation, secondaryAnimation) {
+            return DetalleLectura(
+              lecturas: widget.lecturas,
+              numeroSecuencia: '',
+              indexLectura: widget.indexLectura,
+              nMedidor: '',
+              codCliente: valor,
+            );
+          },
+          transitionsBuilder: (context, animation, secondaryAnimation, child) {
+            return FadeTransition(
+              opacity: animation,
+              child: child,
+            );
+          },
+        ),
+      );
     } else {
       utils.showToast1('Ingrese el código del cliente', 2, ToastGravity.CENTER);
     }
