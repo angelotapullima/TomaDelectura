@@ -4,7 +4,7 @@ import 'package:toma_de_lectura/Bloc/lecturaBloc.dart';
 import 'package:toma_de_lectura/Models/lecturaModel.dart';
 import 'package:toma_de_lectura/Pages/Tabs/principal/detalle_lectura.dart';
 import 'package:toma_de_lectura/utils/responsive.dart';
-import 'package:toma_de_lectura/utils/utils.dart';
+
 
 class TabRegistrosLecturaPage extends StatefulWidget {
   TabRegistrosLecturaPage({Key key}) : super(key: key);
@@ -31,7 +31,7 @@ class _TabRegistrosLecturaPageState extends State<TabRegistrosLecturaPage>
         appBar: AppBar(
           title: Center(
             child: Text(
-              "Lista de Lecturas",
+              "Reporte de Registros de Lecturas",
               style: TextStyle(color: Colors.black),
             ),
           ),
@@ -89,8 +89,9 @@ class PendientesPages extends StatelessWidget {
             } else {
               return Center(
                 child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text("Espere un momento..."),
+                    Text("Cargando información..."),
                     CircularProgressIndicator(),
                   ],
                 ),
@@ -101,15 +102,21 @@ class PendientesPages extends StatelessWidget {
             }
           } else {
             return Center(
-              child: CircularProgressIndicator(),
-            );
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text("Cargando información..."),
+                    CircularProgressIndicator(),
+                  ],
+                ),
+              );
           }
         });
   }
 
   Widget _tablaPendientes(Responsive responsive, LecturaBloc lecturaBloc,
       List<LecturaModel> lectura) {
-    int indice = 0;
+    //int indice = 0;
     return Padding(
       padding: const EdgeInsets.all(5),
       child: Container(
@@ -223,35 +230,37 @@ class PendientesPages extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.all(1.0),
                   child: GestureDetector(
-                    onTap: () {
-                      //obtenerIndexLectura(context,lectura[0].nromedidor );
+                    onTap: () async {
+                      //Obtener los datos de la lista general de lecturas                      
+                    List listaGeneral= await lecturaBloc.obtnerListaGeneralLecturas();
+                    //obtener la posicion o indice del medidor dentro de la lista general
+                      int indice = listaGeneral.indexWhere(
+                          (l) => l.nromedidor == lectura[i].nromedidor);
+                     // print(indice);
 
-                      // indice = lectura.indexWhere(
-                      //     (l) => l.nromedidor == lectura[indice].nromedidor);
-                      // print(indice);
-                      // Navigator.push(
-                      //   context,
-                      //   PageRouteBuilder(
-                      //     transitionDuration: const Duration(milliseconds: 700),
-                      //     pageBuilder:
-                      //         (context, animation, secondaryAnimation) {
-                      //       return DetalleLectura(
-                      //         lecturas: lectura,
-                      //         numeroSecuencia: '',
-                      //         indexLectura: null,
-                      //         codCliente: '',
-                      //         nMedidor: lectura[index].nromedidor,
-                      //       );
-                      //     },
-                      //     transitionsBuilder:
-                      //         (context, animation, secondaryAnimation, child) {
-                      //       return FadeTransition(
-                      //         opacity: animation,
-                      //         child: child,
-                      //       );
-                      //     },
-                      //   ),
-                      // );
+                      Navigator.push(
+                        context,
+                        PageRouteBuilder(
+                          transitionDuration: const Duration(milliseconds: 700),
+                          pageBuilder:
+                              (context, animation, secondaryAnimation) {
+                            return DetalleLectura(
+                              lecturas: listaGeneral,
+                              numeroSecuencia: '',
+                              indexLectura: indice,
+                              codCliente: '',
+                              nMedidor: lectura[i].nromedidor,
+                            );
+                          },
+                          transitionsBuilder:
+                              (context, animation, secondaryAnimation, child) {
+                            return FadeTransition(
+                              opacity: animation,
+                              child: child,
+                            );
+                          },
+                        ),
+                      );
                     },
                     child: Container(
                       color: Colors.white,
@@ -260,6 +269,7 @@ class PendientesPages extends StatelessWidget {
                       child: Text(
                         lectura[i].nromedidor,
                         style: TextStyle(
+                          decoration: TextDecoration.underline,
                             fontSize: responsive.ip(2.2),
                             fontWeight: FontWeight.w500),
                       ),
@@ -296,99 +306,7 @@ class PendientesPages extends StatelessWidget {
       ),
     );
 
-    // Table(
-    //   border: TableBorder.all(width: 1, color: Colors.black),
-    //   children: [
-    //     TableRow(children: [
-    //       TableCell(
-    //         child: Container(
-    //           height: responsive.hp(4),
-    //           color: Colors.grey[400],
-    //           child: Row(
-    //             mainAxisAlignment: MainAxisAlignment.spaceAround,
-    //             children: [
-    //               Text("Ruta",
-    //                   style: TextStyle(
-    //                       fontSize: responsive.ip(2),
-    //                       fontWeight: FontWeight.bold)),
-    //               Text("N° de Medidor",
-    //                   style: TextStyle(
-    //                       fontSize: responsive.ip(2),
-    //                       fontWeight: FontWeight.bold)),
-    //               Text("Dirección",
-    //                   style: TextStyle(
-    //                       fontSize: responsive.ip(2),
-    //                       fontWeight: FontWeight.bold)),
-    //               Text("Secuencia",
-    //                   style: TextStyle(
-    //                       fontSize: responsive.ip(2),
-    //                       fontWeight: FontWeight.bold)),
-    //             ],
-    //           ),
-    //         ),
-    //       ),
-    //     ]),
-    //     TableRow(
-    //       children: [
-    //         TableCell(
-    //           child: Row(
-    //             mainAxisAlignment: MainAxisAlignment.spaceAround,
-    //             children: [
-    //               //sector
-    //               // Container(
-    //               //   child: Text(lecturasTerminadas.length.toString(),
-    //               //       style: TextStyle(fontSize: responsive.ip(2))),
-    //               // ),
-    //               Container(
-    //                 height: responsive.hp(50),
-    //                 width: responsive.wp(3),
-    //                 child: ListView.builder(
-    //                   shrinkWrap: true,
-    //                   itemCount: lectura.length,
-    //                   itemBuilder: (BuildContext context, int index) {
-    //                     return Text(
-    //                       lectura[0].nombreSector,
-    //                       style: TextStyle(fontSize: responsive.ip(2)),
-    //                     );
-    //                   },
-    //                 ),
-    //               ),
-
-    //               //registradas
-    //               Container(
-    //                 height: responsive.hp(70),
-    //                 width: responsive.wp(25),
-    //                 color: Colors.yellow,
-    //                 child: ListView.builder(
-    //                   shrinkWrap: true,
-    //                   itemCount: lectura.length,
-    //                   itemBuilder: (BuildContext context, int index) {
-    //                     return Text(
-    //                       lectura[index].nromedidor,
-    //                       style: TextStyle(fontSize: responsive.ip(2)),
-    //                     );
-    //                   },
-    //                 ),
-    //               ),
-
-    //               //faltantes
-    //               Container(
-    //                 child: Text(lecturasPendientes.length.toString(),
-    //                     style: TextStyle(fontSize: responsive.ip(2))),
-    //               ),
-
-    //               //total
-    //               Container(
-    //                 child: Text(lectura.length.toString(),
-    //                     style: TextStyle(fontSize: responsive.ip(2))),
-    //               )
-    //             ],
-    //           ),
-    //         )
-    //       ],
-    //     )
-    //   ],
-    // );
+    
   }
 }
 
@@ -410,9 +328,10 @@ class TerminadasPages extends StatelessWidget {
             } else {
               return Center(
                 child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text("Espere un momento..."),
-                    CircularProgressIndicator(),
+                    Text("No tiene ninguna lectura registrada"),
+                    //CircularProgressIndicator(),
                   ],
                 ),
               );
@@ -422,8 +341,14 @@ class TerminadasPages extends StatelessWidget {
             }
           } else {
             return Center(
-              child: CircularProgressIndicator(),
-            );
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text("Cargando información..."),
+                    CircularProgressIndicator(),
+                  ],
+                ),
+              );
           }
         });
   }
@@ -555,7 +480,8 @@ class TerminadasPages extends StatelessWidget {
                       lectura[i].nromedidor,
                       style: TextStyle(
                           fontSize: responsive.ip(2.2),
-                          fontWeight: FontWeight.w500),
+                         // fontWeight: FontWeight.w500
+                          ),
                     ),
                   ),
                 ),
@@ -589,98 +515,98 @@ class TerminadasPages extends StatelessWidget {
       ),
     );
 
-    Table(
-      border: TableBorder.all(width: 1, color: Colors.black),
-      children: [
-        TableRow(children: [
-          TableCell(
-            child: Container(
-              height: responsive.hp(4),
-              color: Colors.grey[400],
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  Text("Ruta",
-                      style: TextStyle(
-                          fontSize: responsive.ip(2),
-                          fontWeight: FontWeight.bold)),
-                  Text("N° de Medidor",
-                      style: TextStyle(
-                          fontSize: responsive.ip(2),
-                          fontWeight: FontWeight.bold)),
-                  Text("Dirección",
-                      style: TextStyle(
-                          fontSize: responsive.ip(2),
-                          fontWeight: FontWeight.bold)),
-                  Text("Secuencia",
-                      style: TextStyle(
-                          fontSize: responsive.ip(2),
-                          fontWeight: FontWeight.bold)),
-                ],
-              ),
-            ),
-          ),
-        ]),
-        TableRow(
-          children: [
-            TableCell(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  //sector
-                  // Container(
-                  //   child: Text(lecturasTerminadas.length.toString(),
-                  //       style: TextStyle(fontSize: responsive.ip(2))),
-                  // ),
-                  Container(
-                    height: responsive.hp(50),
-                    width: responsive.wp(3),
-                    child: ListView.builder(
-                      shrinkWrap: true,
-                      itemCount: lectura.length,
-                      itemBuilder: (BuildContext context, int index) {
-                        return Text(
-                          lectura[0].nombreSector,
-                          style: TextStyle(fontSize: responsive.ip(2)),
-                        );
-                      },
-                    ),
-                  ),
+    // Table(
+    //   border: TableBorder.all(width: 1, color: Colors.black),
+    //   children: [
+    //     TableRow(children: [
+    //       TableCell(
+    //         child: Container(
+    //           height: responsive.hp(4),
+    //           color: Colors.grey[400],
+    //           child: Row(
+    //             mainAxisAlignment: MainAxisAlignment.spaceAround,
+    //             children: [
+    //               Text("Ruta",
+    //                   style: TextStyle(
+    //                       fontSize: responsive.ip(2),
+    //                       fontWeight: FontWeight.bold)),
+    //               Text("N° de Medidor",
+    //                   style: TextStyle(
+    //                       fontSize: responsive.ip(2),
+    //                       fontWeight: FontWeight.bold)),
+    //               Text("Dirección",
+    //                   style: TextStyle(
+    //                       fontSize: responsive.ip(2),
+    //                       fontWeight: FontWeight.bold)),
+    //               Text("Secuencia",
+    //                   style: TextStyle(
+    //                       fontSize: responsive.ip(2),
+    //                       fontWeight: FontWeight.bold)),
+    //             ],
+    //           ),
+    //         ),
+    //       ),
+    //     ]),
+    //     TableRow(
+    //       children: [
+    //         TableCell(
+    //           child: Row(
+    //             mainAxisAlignment: MainAxisAlignment.spaceAround,
+    //             children: [
+    //               //sector
+    //               // Container(
+    //               //   child: Text(lecturasTerminadas.length.toString(),
+    //               //       style: TextStyle(fontSize: responsive.ip(2))),
+    //               // ),
+    //               Container(
+    //                 height: responsive.hp(50),
+    //                 width: responsive.wp(3),
+    //                 child: ListView.builder(
+    //                   shrinkWrap: true,
+    //                   itemCount: lectura.length,
+    //                   itemBuilder: (BuildContext context, int index) {
+    //                     return Text(
+    //                       lectura[0].nombreSector,
+    //                       style: TextStyle(fontSize: responsive.ip(2)),
+    //                     );
+    //                   },
+    //                 ),
+    //               ),
 
-                  //registradas
-                  Container(
-                    height: responsive.hp(70),
-                    width: responsive.wp(25),
-                    color: Colors.yellow,
-                    child: ListView.builder(
-                      shrinkWrap: true,
-                      itemCount: lectura.length,
-                      itemBuilder: (BuildContext context, int index) {
-                        return Text(
-                          lectura[index].nromedidor,
-                          style: TextStyle(fontSize: responsive.ip(2)),
-                        );
-                      },
-                    ),
-                  ),
+    //               //registradas
+    //               Container(
+    //                 height: responsive.hp(70),
+    //                 width: responsive.wp(25),
+    //                 color: Colors.yellow,
+    //                 child: ListView.builder(
+    //                   shrinkWrap: true,
+    //                   itemCount: lectura.length,
+    //                   itemBuilder: (BuildContext context, int index) {
+    //                     return Text(
+    //                       lectura[index].nromedidor,
+    //                       style: TextStyle(fontSize: responsive.ip(2)),
+    //                     );
+    //                   },
+    //                 ),
+    //               ),
 
-                  //faltantes
-                  Container(
-                    child: Text(lecturasTerminadas.length.toString(),
-                        style: TextStyle(fontSize: responsive.ip(2))),
-                  ),
+    //               //faltantes
+    //               Container(
+    //                 child: Text(lecturasTerminadas.length.toString(),
+    //                     style: TextStyle(fontSize: responsive.ip(2))),
+    //               ),
 
-                  //total
-                  Container(
-                    child: Text(lectura.length.toString(),
-                        style: TextStyle(fontSize: responsive.ip(2))),
-                  )
-                ],
-              ),
-            )
-          ],
-        )
-      ],
-    );
+    //               //total
+    //               Container(
+    //                 child: Text(lectura.length.toString(),
+    //                     style: TextStyle(fontSize: responsive.ip(2))),
+    //               )
+    //             ],
+    //           ),
+    //         )
+    //       ],
+    //     )
+    //   ],
+    // );
   }
 }

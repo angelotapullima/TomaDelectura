@@ -36,6 +36,7 @@ class LoginApi {
             prefs.personName = decodedData[i]['nombres'];
             prefs.idEmpresa = decodedData[i]['codemp'];
             prefs.idsede = decodedData[i]['codsede1'];
+            prefs.asigConsulta = decodedData[i]['asignadoconsultas'];
                     
             //Agregamos al modelo de inspectores
             inspectorModel.idsede = decodedData[i]["codsede"];

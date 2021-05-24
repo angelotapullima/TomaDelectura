@@ -37,7 +37,8 @@ class Preferences {
   set usuario(String value) {
     _prefs.setString('login', value);
   }
-  
+
+  //nombre  
   get personName {
     return _prefs.getString('p_n');
   }
@@ -69,6 +70,15 @@ class Preferences {
 
   set idCiclo(String value) {
     _prefs.setString('codciclo', value);
+  }
+
+  //habilitado para conslutar clientes
+  get asigConsulta {
+    return _prefs.getString('asignadoaConsulta');
+  }
+
+  set asigConsulta(String value) {
+    _prefs.setString('asignadoaConsulta', value);
   }
   
   //año 

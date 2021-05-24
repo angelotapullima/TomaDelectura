@@ -64,12 +64,18 @@ class LecturaBloc {
   //   _cargandoLoginController.sink.add(false);
   // }
 
-   void datosLectura() async {
+  void datosLectura() async {
     _cargandoLoginController.sink.add(true);
     _lecturaController.sink.add(await lecturaDb.obtenerLecturaPorIdIsnpector());
     await lecturaApi.lectura();
     _lecturaController.sink.add(await lecturaDb.obtenerLecturaPorIdIsnpector());
     _cargandoLoginController.sink.add(false);
+  }
+
+//Obtener los datos de la lista general de lecturas 
+  Future<List<LecturaModel>> obtnerListaGeneralLecturas() async {
+    return await lecturaDb.obtenerLecturaPorIdIsnpector();
+    
   }
 
 //Pendientes de registro

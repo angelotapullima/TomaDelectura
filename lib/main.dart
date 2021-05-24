@@ -2,8 +2,8 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:toma_de_lectura/Bloc/ProviderBloc.dart';
+import 'package:toma_de_lectura/Pages/opcionesUsuario.dart';
 import 'package:toma_de_lectura/homePage.dart';
-import 'package:toma_de_lectura/Pages/Tabs/principal/principalPage.dart';
 import 'package:toma_de_lectura/Pages/loginPage.dart';
 import 'package:toma_de_lectura/Pages/splash.dart';
 import 'package:toma_de_lectura/preferencias/preferencias_usuario.dart';
@@ -48,6 +48,7 @@ class MyApp extends StatelessWidget {
             "login": (BuildContext context) => LoginScreen(),
             "home": (BuildContext context) => HomePage(),
             "splash": (BuildContext context) => Splash(),
+            "opcionesUsuario": (BuildContext context) => OpcionesUsuario(),
           }),
     );
   }

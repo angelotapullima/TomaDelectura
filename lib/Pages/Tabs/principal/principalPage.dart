@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:toma_de_lectura/Bloc/ProviderBloc.dart';
 import 'package:toma_de_lectura/Bloc/lecturaBloc.dart';
 import 'package:toma_de_lectura/Models/lecturaModel.dart';
@@ -56,24 +55,25 @@ class _PrincipalPageState extends State<PrincipalPage> {
             style: TextStyle(color: Colors.black),
           ),
           actions: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  "Salir",
-                  style: TextStyle(fontSize: responsive.ip(2)),
-                ),
-                SizedBox(height: responsive.wp(5)),
-                GestureDetector(
-                  onTap: () async {
-                    prefs.clearPreferences();
+            GestureDetector(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    "Salir",
+                    style: TextStyle(
+                        fontSize: responsive.ip(2), color: Colors.black),
+                  ),
+                  SizedBox(height: responsive.wp(5)),
+                  Icon(Icons.exit_to_app, size: 26)
+                ],
+              ),
+              onTap: () async {
+                prefs.clearPreferences();
 
-                    Navigator.pushNamedAndRemoveUntil(
-                        context, 'login', (route) => false);
-                  },
-                  child: Icon(Icons.exit_to_app, size: 26),
-                )
-              ],
+                Navigator.pushNamedAndRemoveUntil(
+                    context, 'login', (route) => false);
+              },
             ),
 
             //PopupMenuButton( itemBuilder: (BuildContext context) { return [ PopupMenuItem( child: IconButton( icon: const Icon(Icons.lock_open), onPressed: () {}, ), ), PopupMenuItem(child: Text('Text')), ]; }, )
@@ -84,277 +84,108 @@ class _PrincipalPageState extends State<PrincipalPage> {
 
           //automaticallyImplyLeading: false,
         ),
-        body: SingleChildScrollView(
-          child: Container(
-            color: Colors.blueAccent[50],
-            child: Column(
-              children: [
-                SizedBox(height: responsive.hp(2)),
-                _datosUsuario(responsive, prefs),
-                SizedBox(
-                  height: responsive.hp(4),
-                ),
-                StreamBuilder(
-                    stream: lecturaBloc.lecturaStream,
-                    builder: (BuildContext context,
-                        AsyncSnapshot<List<LecturaModel>> snapshot) {
-                      if (snapshot.hasData) {
-                        if (snapshot.data.length > 0) {
-                          List<LecturaModel> lectura = snapshot.data;
-                          //Definir el valor de la secuencia
-                          _lecturaController.text =
-                              lectura[indexLectura].ordenenvio;
-                          return Container(
-                            //color: Colors.red,
-                            height: responsive.hp(90),
-                            child: Column(
-                              children: [
-                                //Para llamar al total de los registros
-                                _tablaResumen(responsive, lecturaBloc, lectura),
+        body: ListView(
+          keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
+          children: [
+            Container(
+              color: Colors.grey[200],
+              child: Column(
+                children: [
+                  SizedBox(height: responsive.hp(1)),
+                  //Divider(),
+                  _datosUsuario(responsive, prefs),
+                  // SizedBox(
+                  //   height: responsive.hp(2)
+                  // ),
+                  StreamBuilder(
+                      stream: lecturaBloc.lecturaStream,
+                      builder: (BuildContext context,
+                          AsyncSnapshot<List<LecturaModel>> snapshot) {
+                        if (snapshot.hasData) {
+                          if (snapshot.data.length > 0) {
+                            List<LecturaModel> lectura = snapshot.data;
+                            //Definir el valor de la secuencia
+                            _lecturaController.text =
+                                lectura[indexLectura].ordenenvio;
+                            return Container(
+                              //color: Colors.red,
+                              height: responsive.hp(90),
+                              child: Column(
+                                children: [
+                                  //Para llamar al total de los registros
+                                  _tablaResumen(
+                                      responsive, lecturaBloc, lectura),
 
-                                //Secuencia/ orden de envio
-                                _secuencia(responsive, lectura, context),
-                                SizedBox(
-                                  height: responsive.hp(2),
-                                ),
-                                BusquedaWidgetPage(
-                                  lecturas: lectura,
-                                  indexLectura: indexLectura,
-                                )
-                              ],
-                            ),
-                          );
+                                  //Secuencia/ orden de envio
+                                  _secuencia(responsive, lectura, context),
+                                  SizedBox(
+                                    height: responsive.hp(2),
+                                  ),
+                                  BusquedaWidgetPage(
+                                    lecturas: lectura,
+                                    indexLectura: indexLectura,
+                                  )
+                                ],
+                              ),
+                            );
+                          } else {
+                            return Center(
+                              child: Column(
+                                children: [
+                                  Text("Espere un momento..."),
+                                  CircularProgressIndicator(),
+                                ],
+                              ),
+                            );
+                            // return Center(
+                            //   child: Text("No hay registros para mostrar"),
+                            // );
+                          }
                         } else {
                           return Center(
-                            child: Column(
-                              children: [
-                                Text("Espere un momento..."),
-                                CircularProgressIndicator(),
-                              ],
-                            ),
+                            child: CircularProgressIndicator(),
                           );
-                          // return Center(
-                          //   child: Text("No hay registros para mostrar"),
-                          // );
                         }
-                      } else {
-                        return Center(
-                          child: CircularProgressIndicator(),
-                        );
-                      }
-                    }),
-              ],
+                      }),
+                ],
+              ),
             ),
-          ),
+          ],
         ));
   }
 
-  Widget _secuencia(
-      Responsive responsive, List<LecturaModel> lectura, BuildContext context) {
-    return Container(
-      //color: Colors.white,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(8),
-        color: Colors.white,
-        boxShadow: [
-          BoxShadow(
-            color: Colors.grey.withOpacity(0.5),
-            spreadRadius: 1,
-            blurRadius: 1,
-            offset: Offset(0, 2), // changes position of shadow
-          ),
-        ],
-      ),
-      width: responsive.wp(97),
-      child: Column(
-        children: [
-          SizedBox(height: responsive.hp(3)),
-          Text(
-            "Secuencia",
-            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-          ),
-          SizedBox(
-            height: responsive.hp(1),
-          ),
-          Container(
-            width: responsive.wp(70),
-            height: responsive.hp(18),
-            child: Column(
-              children: [
-                TextField(
-                  controller: _lecturaController,
-                  // controller: TextEditingController(
-                  //     text:
-                  //         lectura[indexLectura].ordenenvio),
-
-                  //readOnly: true,
-                  keyboardType: TextInputType.number,
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(),
-                    hintText: "N° de Correlativo",
-                    suffixIcon: Container(
-                      width: responsive.wp(7),
-                      height: responsive.hp(4),
-                      child: Column(
-                        children: [
-                          Expanded(
-                            flex: 1,
-                            child: GestureDetector(
-                              onTap: () {
-                                // indice = lectura.indexWhere(
-                                //     (l) =>
-                                //         l.ordenenvio ==
-                                //         lectura[indice]
-                                //             .ordenenvio);
-
-                                setState(
-                                  () {
-                                    if (indexLectura < lectura.length - 1) {
-                                      indexLectura++;
-
-                                      print(indexLectura);
-                                    } else {
-                                      utils.showToast1('Último registro', 2,
-                                          ToastGravity.CENTER);
-                                    }
-                                  },
-                                );
-                              },
-                              child: Container(
-                                color: Colors.grey[300],
-                                child: Icon(Icons.arrow_drop_up,
-                                    color: Colors.black),
-                              ),
-                            ),
-                          ),
-                          Expanded(
-                            flex: 1,
-                            child: Container(
-                              color: Colors.grey[300],
-                              child: GestureDetector(
-                                onTap: () {
-                                  setState(
-                                    () {
-                                      if (indexLectura > 0) {
-                                        indexLectura--;
-                                      } else {
-                                        utils.showToast1('Primer registro', 2,
-                                            ToastGravity.CENTER);
-                                      }
-                                    },
-                                  );
-                                },
-                                child: Icon(Icons.arrow_drop_down,
-                                    color: Colors.black),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                  // onChanged: (valor) {
-                  //   //otro = valor;
-                  //   print(valor);
-                  // },
-                  onSubmitted: (value) {
-                    Navigator.push(
-                      context,
-                      PageRouteBuilder(
-                        transitionDuration: const Duration(milliseconds: 700),
-                        pageBuilder: (context, animation, secondaryAnimation) {
-                          return DetalleLectura(
-                            lecturas: lectura,
-                            numeroSecuencia: value,
-                            indexLectura: indexLectura,
-                            codCliente: '',
-                            nMedidor: '',
-                          );
-                        },
-                        transitionsBuilder:
-                            (context, animation, secondaryAnimation, child) {
-                          return FadeTransition(
-                            opacity: animation,
-                            child: child,
-                          );
-                        },
-                      ),
-                    );
-                  },
-                ),
-                //Text(lectura[indexLectura].ordenenvio),
-                SizedBox(
-                  height: responsive.hp(1),
-                ),
-                ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    primary: Colors.blue[400],
-                  ),
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      PageRouteBuilder(
-                        transitionDuration: const Duration(milliseconds: 700),
-                        pageBuilder: (context, animation, secondaryAnimation) {
-                          return DetalleLectura(
-                            lecturas: lectura,
-                            numeroSecuencia: _lecturaController.text,
-                            indexLectura: indexLectura,
-                            codCliente: '',
-                            nMedidor: '',
-                          );
-                        },
-                        transitionsBuilder:
-                            (context, animation, secondaryAnimation, child) {
-                          return FadeTransition(
-                            opacity: animation,
-                            child: child,
-                          );
-                        },
-                      ),
-                    );
-                  },
-                  child: Text("Ingresar",
-                      style: TextStyle(
-                          fontSize: responsive.ip(2),
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold)),
-                )
-              ],
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
   Widget _datosUsuario(Responsive responsive, Preferences prefs) {
-    return Padding(
-      padding: EdgeInsets.symmetric(horizontal: responsive.ip(2)),
-      child: Container(
-        // color: Colors.white,
-        // width: responsive.wp(97),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(8),
-          //color: Colors.greenAccent[200],
-          color: Colors.white,
-          boxShadow: [
-            BoxShadow(
-              color: Colors.grey.withOpacity(0.5),
-              spreadRadius: 1,
-              blurRadius: 1,
-              offset: Offset(0, 2), // changes position of shadow
-            ),
-          ],
-        ),
-        height: responsive.hp(6),
+    return Container(
+      color: Colors.white,
+      width: responsive.wp(97),
+      height: responsive.hp(10),
+      // decoration: BoxDecoration(
+      //   borderRadius: BorderRadius.circular(8),
+      // //color: Colors.blue[100],
+      //   color: Colors.white,
+      //   boxShadow: [
+      //     BoxShadow(
+      //       color: Colors.grey.withOpacity(0.5),
+      //       spreadRadius: 1,
+      //       blurRadius: 1,
+      //       offset: Offset(0, 2), // changes position of shadow
+      //     ),
+      //   ],
+      // ),
+
+      child: Padding(
+        padding: EdgeInsets.only(left: 5),
         child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            Text("Inspector:", style: TextStyle(fontSize: responsive.ip(2))),
+            Text("Inspector:",
+                style: TextStyle(
+                    fontSize: responsive.ip(2), color: Colors.blue[900])),
             Text(prefs.personName,
                 style: TextStyle(
-                    fontSize: responsive.ip(2), fontWeight: FontWeight.bold)),
+                    fontSize: responsive.ip(2),
+                    fontWeight: FontWeight.bold,
+                    color: Colors.blue[900])),
           ],
         ),
       ),
@@ -381,22 +212,22 @@ class _PrincipalPageState extends State<PrincipalPage> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
-                    Text("Sector",
+                    Text("SECTOR",
                         style: TextStyle(
                             fontSize: responsive.ip(2),
                             fontWeight: FontWeight.bold,
                             color: Colors.white)),
-                    Text("Registro",
+                    Text("REGISTRO",
                         style: TextStyle(
                             fontSize: responsive.ip(2),
                             fontWeight: FontWeight.bold,
                             color: Colors.white)),
-                    Text("Falta",
+                    Text("FALTA",
                         style: TextStyle(
                             fontSize: responsive.ip(2),
                             fontWeight: FontWeight.bold,
                             color: Colors.white)),
-                    Text("Total",
+                    Text("TOTAL",
                         style: TextStyle(
                             fontSize: responsive.ip(2),
                             fontWeight: FontWeight.bold,
@@ -455,7 +286,7 @@ class _PrincipalPageState extends State<PrincipalPage> {
                       Container(
                         child: Text(lecturasTerminadas.length.toString(),
                             style: TextStyle(
-                                fontSize: responsive.ip(2.2),
+                                fontSize: responsive.ip(2.3),
                                 color: Colors.blue,
                                 fontWeight: FontWeight.bold)),
                       ),
@@ -470,11 +301,11 @@ class _PrincipalPageState extends State<PrincipalPage> {
                                   style: TextStyle(
                                       decoration: TextDecoration.underline,
                                       //height: 1.5,
-                                      fontSize: responsive.ip(2.2),
+                                      fontSize: responsive.ip(2.3),
                                       color: Colors.red,
                                       fontWeight: FontWeight.bold)),
                             ),
-                            Icon(FontAwesomeIcons.handHolding)
+                            //Icon(FontAwesomeIcons.handHolding)
                             // IconButton(
                             //   mouseCursor: SystemMouseCursors.click,
                             //   icon: Icon(Icons.mouse_rounded), onPressed: (){})
@@ -490,7 +321,7 @@ class _PrincipalPageState extends State<PrincipalPage> {
                       Container(
                         child: Text(lectura.length.toString(),
                             style: TextStyle(
-                                fontSize: responsive.ip(2),
+                                fontSize: responsive.ip(2.3),
                                 fontWeight: FontWeight.bold)),
                       )
                     ],
@@ -499,6 +330,207 @@ class _PrincipalPageState extends State<PrincipalPage> {
               )
             ],
           )
+        ],
+      ),
+    );
+  }
+
+  Widget _secuencia(
+      Responsive responsive, List<LecturaModel> lectura, BuildContext context) {
+    return Container(
+      //color: Colors.white,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(8),
+        color: Colors.white,
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey.withOpacity(0.5),
+            spreadRadius: 1,
+            blurRadius: 1,
+            offset: Offset(0, 2), // changes position of shadow
+          ),
+        ],
+      ),
+      width: responsive.wp(97),
+      child: Column(
+        children: [
+          SizedBox(height: responsive.hp(3)),
+          Text(
+            "Secuencia",
+            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+          ),
+          SizedBox(
+            height: responsive.hp(1),
+          ),
+          Container(
+            width: responsive.wp(70),
+            height: responsive.hp(18),
+            child: Column(
+              children: [
+                Container(
+                  decoration: BoxDecoration(
+                      border: Border.all(color: Colors.grey),
+                      borderRadius: BorderRadius.circular(4)),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Container(
+                        width: responsive.wp(60),
+                        height: responsive.hp(8),
+                        child: TextField(
+                          controller: _lecturaController,
+                          style: TextStyle(fontSize: 17,  fontWeight: FontWeight.bold),
+                          keyboardType: TextInputType.number,
+                          decoration: InputDecoration(
+                            // border: OutlineInputBorder(
+                            //   borderSide: BorderSide(color: Colors.green)
+                            // ),
+                            border: OutlineInputBorder(
+                              // borderRadius: BorderRadius.circular(30),
+                              borderSide: BorderSide(
+                                width: 0,
+                                style: BorderStyle.none,
+                              ),
+                              
+                            ),
+                           
+                            //filled: true,
+                            hintText: "N° de Correlativo",
+                          ),
+                         
+                          onSubmitted: (value) {
+                            Navigator.push(
+                              context,
+                              PageRouteBuilder(
+                                transitionDuration:
+                                    const Duration(milliseconds: 700),
+                                pageBuilder:
+                                    (context, animation, secondaryAnimation) {
+                                  return DetalleLectura(
+                                    lecturas: lectura,
+                                    numeroSecuencia: value,
+                                    indexLectura: indexLectura,
+                                    codCliente: '',
+                                    nMedidor: '',
+                                  );
+                                },
+                                transitionsBuilder: (context, animation,
+                                    secondaryAnimation, child) {
+                                  return FadeTransition(
+                                    opacity: animation,
+                                    child: child,
+                                  );
+                                },
+                              ),
+                            );
+                          },
+                        ),
+                      ),
+
+                      //suffixIcon:
+                      Container(
+                        width: responsive.wp(6),
+                        height: responsive.hp(8),
+                        child: Column(
+                          children: [
+                            Expanded(
+                              flex: 1,
+                              child: GestureDetector(
+                                onTap: () {
+                                  
+                                  setState(
+                                    () {
+                                      if (indexLectura < lectura.length - 1) {
+                                        indexLectura++;
+
+                                        print(indexLectura);
+                                      } else {
+                                        utils.showToast1('Último registro', 2,
+                                            ToastGravity.CENTER);
+                                      }
+                                    },
+                                  );
+                                },
+                                child: Container(
+                                  color:Colors.grey[300],
+                                  // Colors.greenAccent,
+                                  child: Icon(Icons.arrow_drop_up,
+                                      color: Colors.black),
+                                ),
+                              ),
+                            ),
+                            Expanded(
+                              flex: 1,
+                              child: Container(
+                                color: 
+                                //Colors.greenAccent,
+                                Colors.grey[300],
+                                child: GestureDetector(
+                                  onTap: () {
+                                    setState(
+                                      () {
+                                        if (indexLectura > 0) {
+                                          indexLectura--;
+                                        } else {
+                                          utils.showToast1('Primer registro', 2,
+                                              ToastGravity.CENTER);
+                                        }
+                                      },
+                                    );
+                                  },
+                                  child: Icon(Icons.arrow_drop_down,
+                                      color: Colors.black),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                //Text(lectura[indexLectura].ordenenvio),
+                SizedBox(
+                  height: responsive.hp(1),
+                ),
+                ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    primary: Colors.greenAccent,
+                    
+                  ),
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      PageRouteBuilder(
+                        transitionDuration: const Duration(milliseconds: 700),
+                        pageBuilder: (context, animation, secondaryAnimation) {
+                          return DetalleLectura(
+                            lecturas: lectura,
+                            numeroSecuencia: _lecturaController.text,
+                            indexLectura: indexLectura,
+                            codCliente: '',
+                            nMedidor: '',
+                          );
+                        },
+                        transitionsBuilder:
+                            (context, animation, secondaryAnimation, child) {
+                          return FadeTransition(
+                            opacity: animation,
+                            child: child,
+                          );
+                        },
+                      ),
+                    );
+                  },
+                  child: Text("Ingresar",
+                      style: TextStyle(
+                          fontSize: responsive.ip(2),
+                          color: Colors.blue[900],
+                          fontWeight: FontWeight.bold)),
+                )
+              ],
+            ),
+          ),
         ],
       ),
     );
@@ -603,10 +635,12 @@ class _BusquedaWidgetPageState extends State<BusquedaWidgetPage> {
                 // _medidorcontroller.clear();
               },
             ),
-            ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                primary: Colors.blue[400],
-              ),
+            MaterialButton(
+              // style: ElevatedButton.styleFrom(
+              //   primary: Colors.greenAccent,
+              // ),
+              color:Colors.greenAccent,
+              
               onPressed: () {
                 _submitBusquedaMedidor(
                     _medidorcontroller.text, lecturas, indexLectura);
@@ -615,7 +649,7 @@ class _BusquedaWidgetPageState extends State<BusquedaWidgetPage> {
               child: Text("BUSCAR",
                   style: TextStyle(
                       fontSize: responsive.ip(2),
-                      color: Colors.white,
+                      color: Colors.blue[900],
                       fontWeight: FontWeight.bold)),
             )
           ],
@@ -694,7 +728,7 @@ class _BusquedaWidgetPageState extends State<BusquedaWidgetPage> {
         ),
         ElevatedButton(
           style: ElevatedButton.styleFrom(
-            primary: Colors.blue[400],
+            primary: Colors.greenAccent,
           ),
           onPressed: () {
             _submitCliente(_clientecontroller.text, lecturas, indexLectura);
@@ -703,7 +737,7 @@ class _BusquedaWidgetPageState extends State<BusquedaWidgetPage> {
           child: Text("BUSCAR",
               style: TextStyle(
                   fontSize: responsive.ip(2),
-                  color: Colors.white,
+                  color: Colors.blue[900],
                   fontWeight: FontWeight.bold)),
         )
       ],

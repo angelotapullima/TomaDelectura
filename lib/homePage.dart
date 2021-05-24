@@ -4,6 +4,7 @@ import 'package:toma_de_lectura/Bloc/principal_bloc.dart';
 import 'package:toma_de_lectura/Pages/Tabs/registrosInfo.dart';
 import 'package:toma_de_lectura/Pages/Tabs/principal/principalPage.dart';
 import 'package:toma_de_lectura/Pages/Tabs/usuarioPage.dart';
+import 'package:toma_de_lectura/preferencias/preferencias_usuario.dart';
 import 'package:toma_de_lectura/utils/responsive.dart';
 
 class HomePage extends StatefulWidget {
@@ -15,6 +16,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   List<Widget> listPages = [];
+  final prefs = new Preferences(); 
 
   @override
   void initState() {
@@ -28,6 +30,7 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+     
     final Responsive responsive = new Responsive.of(context);
     final buttonBloc = ProviderBloc.tabs(context);
     if (buttonBloc.page == null) {
@@ -79,7 +82,7 @@ class _HomePageState extends State<HomePage> {
                       size: responsive.ip(3),
                     ),
                     //title: Text('Registros'),
-                    label: 'Registros',
+                    label: 'Reporte',
                     
                   ),
                   BottomNavigationBarItem(
@@ -89,14 +92,17 @@ class _HomePageState extends State<HomePage> {
                     ),
                    // title: Text('Usuarios'),
                     label: 'Usuarios',
+                            
                   ),
+                  
+                 //( prefs.asigConsulta=='1')?
                   // BottomNavigationBarItem(
                   //   icon: Icon(
                   //     Icons.store,
                   //     size: responsive.ip(3),
                   //   ),
                   //   title: Text('Negocio'),
-                  // ),
+                  // )
                   // BottomNavigationBarItem(
                   //     title: Text('Cuenta'),
                   //     icon: Icon(

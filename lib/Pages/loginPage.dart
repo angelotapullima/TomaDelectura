@@ -353,6 +353,8 @@ class _LoginScreenState extends State<LoginScreen> {
 
         if (res) {
           print(res);
+          prefs.asigConsulta=='1'?
+           Navigator.pushReplacementNamed(context, 'opcionesUsuario'):
           Navigator.pushReplacementNamed(context, 'home');
         } else {
           print(res);
