@@ -37,6 +37,7 @@ dependencies:
   http: ^0.12.2
   flutter_svg: ^0.19.1
   cached_network_image: ^2.4.1
+  font_awesome_flutter: ^9.0.0
 
 dev_dependencies:
   flutter_test:

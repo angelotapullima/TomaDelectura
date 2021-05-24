@@ -51,54 +51,62 @@ class _HomePageState extends State<HomePage> {
     return StreamBuilder(
         stream: buttonBloc.selectPageStream,
         builder: (BuildContext context, AsyncSnapshot snapshot) {
-          return BottomNavigationBar(
-              backgroundColor: Colors.grey[400],
-              elevation: 0.0,
-              selectedItemColor: Colors.red,
-              unselectedItemColor: Colors.grey[700],
-              selectedLabelStyle: TextStyle(fontWeight: FontWeight.w600),
-              unselectedLabelStyle: TextStyle(fontWeight: FontWeight.w600),
-              type: BottomNavigationBarType.fixed,
-              items: [
-                BottomNavigationBarItem(
-                  icon: Icon(
-                    Icons.home,
-                    size: responsive.ip(3),
+          return ClipRRect(
+            borderRadius: BorderRadius.only(
+        topRight: Radius.circular(20),
+        topLeft: Radius.circular(20)),
+                      child: BottomNavigationBar(
+                backgroundColor: Colors.white,
+                               // Colors.teal,
+                //Color(0Xff0097a7),
+                elevation: 2,
+                selectedItemColor: Colors.blue[500],
+                unselectedItemColor: Colors.grey[600],
+                selectedLabelStyle: TextStyle(fontWeight: FontWeight.w600),
+                unselectedLabelStyle: TextStyle(fontWeight: FontWeight.w600),
+                type: BottomNavigationBarType.fixed,
+                items: [
+                  BottomNavigationBarItem(
+                    icon: Icon(
+                      Icons.home,
+                      size: responsive.ip(3),
+                    ),
+                    label: 'Principal',
                   ),
-                  label: 'Principal',
-                ),
-                BottomNavigationBarItem(
-                  icon: Icon(
-                    Icons.pages_sharp,
-                    size: responsive.ip(3),
+                  BottomNavigationBarItem(
+                    icon: Icon(
+                      Icons.pages_sharp,
+                      size: responsive.ip(3),
+                    ),
+                    //title: Text('Registros'),
+                    label: 'Registros',
+                    
                   ),
-                  //title: Text('Registros'),
-                  label: 'Registros',
-                ),
-                BottomNavigationBarItem(
-                  icon: Icon(
-                    Icons.supervised_user_circle_sharp,
-                    size: responsive.ip(3),
+                  BottomNavigationBarItem(
+                    icon: Icon(
+                      Icons.supervised_user_circle_sharp,
+                      size: responsive.ip(3),
+                    ),
+                   // title: Text('Usuarios'),
+                    label: 'Usuarios',
                   ),
-                 // title: Text('Usuarios'),
-                  label: 'Usuarios',
-                ),
-                // BottomNavigationBarItem(
-                //   icon: Icon(
-                //     Icons.store,
-                //     size: responsive.ip(3),
-                //   ),
-                //   title: Text('Negocio'),
-                // ),
-                // BottomNavigationBarItem(
-                //     title: Text('Cuenta'),
-                //     icon: Icon(
-                //       Icons.person,
-                //       size: responsive.ip(3),
-                //     )),
-              ],
-              currentIndex: buttonBloc.page,
-              onTap: (index) => {buttonBloc.changePage(index)});
+                  // BottomNavigationBarItem(
+                  //   icon: Icon(
+                  //     Icons.store,
+                  //     size: responsive.ip(3),
+                  //   ),
+                  //   title: Text('Negocio'),
+                  // ),
+                  // BottomNavigationBarItem(
+                  //     title: Text('Cuenta'),
+                  //     icon: Icon(
+                  //       Icons.person,
+                  //       size: responsive.ip(3),
+                  //     )),
+                ],
+                currentIndex: buttonBloc.page,
+                onTap: (index) => {buttonBloc.changePage(index)}),
+          );
         });
   }
 

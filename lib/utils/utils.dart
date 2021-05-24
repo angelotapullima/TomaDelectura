@@ -35,3 +35,5 @@ void cambiarEstadoLectura(BuildContext context, String ordenenvio,
   lecturaBloc.obtenerDetalleLectura(ordenenvio, '', '');
   showToast1('Registro completado con éxito', 2, ToastGravity.CENTER);
 }
+
+
