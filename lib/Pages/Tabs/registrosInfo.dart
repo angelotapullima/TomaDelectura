@@ -270,7 +270,7 @@ class PendientesPages extends StatelessWidget {
                         lectura[i].nromedidor,
                         style: TextStyle(
                           decoration: TextDecoration.underline,
-                            fontSize: responsive.ip(2.2),
+                            fontSize: responsive.ip(2.1),
                             fontWeight: FontWeight.w500),
                       ),
                     ),
@@ -479,7 +479,7 @@ class TerminadasPages extends StatelessWidget {
                     child: Text(
                       lectura[i].nromedidor,
                       style: TextStyle(
-                          fontSize: responsive.ip(2.2),
+                          fontSize: responsive.ip(2.1),
                          // fontWeight: FontWeight.w500
                           ),
                     ),

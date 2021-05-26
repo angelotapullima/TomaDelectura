@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:toma_de_lectura/utils/responsive.dart';
 
@@ -14,9 +16,21 @@ class OpcionesUsuario extends StatelessWidget {
           Container(
             decoration: BoxDecoration(
               image: DecorationImage(
-                  image: AssetImage('assets/images/fondoa.jpg'), fit: BoxFit.cover),
+                  image: AssetImage('assets/images/fondod.jpg'), fit: BoxFit.cover),
+            ),
+            child: new BackdropFilter(
+            filter:  ImageFilter.blur(sigmaX: 1.0, sigmaY: 1.0),
+            child: new Container(
+              decoration: new BoxDecoration(
+                color: Colors.white.withOpacity(0.1),
+              ),
             ),
           ),
+        ),
+        Container(
+          color: Colors.grey[200].withOpacity(.1),
+        ),
+          
       
           Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -24,9 +38,9 @@ class OpcionesUsuario extends StatelessWidget {
             children: [
               Text('Seleccione una opción para ingresar',
                           style: TextStyle(
-                              fontSize: responsive.ip(2.2),
+                              fontSize: responsive.ip(3),
                               fontWeight: FontWeight.bold,
-                              color: Colors.black)),
+                              color: Colors.white)),
 
                SizedBox(height: responsive.hp(10)),
               Row(
@@ -91,10 +105,12 @@ class OpcionesUsuario extends StatelessWidget {
                 begin: Alignment.bottomLeft,
                 end: Alignment.topRight,
                 colors: [
-                  Colors.blue[600],
-                  Colors.blue[400],
-                  Colors.blue[400],
-                  Colors.blue[300],
+                  Colors.red[600],
+                  Colors.red[400],
+                  Colors.red[400],
+                  Colors.red[400],
+                  Colors.red[300],
+                  
                 ]),
             borderRadius: BorderRadius.circular(15)),
         child: Column(
@@ -103,7 +119,7 @@ class OpcionesUsuario extends StatelessWidget {
             // SizedBox(height: responsive.hp(2)),
             Icon(
               Icons.note,
-              color: Colors.orange,
+              color: Colors.blue,
             ),
             SizedBox(height: responsive.hp(1)),
             Text('Registrar Lecturas',

@@ -88,7 +88,7 @@ class _PrincipalPageState extends State<PrincipalPage> {
           keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
           children: [
             Container(
-              color: Colors.grey[200],
+              color: Colors.grey[100],
               child: Column(
                 children: [
                   SizedBox(height: responsive.hp(1)),
@@ -203,12 +203,12 @@ class _PrincipalPageState extends State<PrincipalPage> {
       color: Colors.white,
       width: responsive.wp(97),
       child: Table(
-        border: TableBorder.all(width: 1, color: Colors.blue),
+        border: TableBorder.all(width: 1, color: Colors.blue[900]),
         children: [
           TableRow(children: [
             TableCell(
               child: Container(
-                color: Colors.blue[500],
+                color: Colors.greenAccent,
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
@@ -216,22 +216,22 @@ class _PrincipalPageState extends State<PrincipalPage> {
                         style: TextStyle(
                             fontSize: responsive.ip(2),
                             fontWeight: FontWeight.bold,
-                            color: Colors.white)),
+                            color: Colors.blue[900])),
                     Text("REGISTRO",
                         style: TextStyle(
                             fontSize: responsive.ip(2),
                             fontWeight: FontWeight.bold,
-                            color: Colors.white)),
+                            color: Colors.blue[900])),
                     Text("FALTA",
                         style: TextStyle(
                             fontSize: responsive.ip(2),
                             fontWeight: FontWeight.bold,
-                            color: Colors.white)),
+                            color: Colors.blue[900])),
                     Text("TOTAL",
                         style: TextStyle(
                             fontSize: responsive.ip(2),
                             fontWeight: FontWeight.bold,
-                            color: Colors.white)),
+                            color: Colors.blue[900])),
                   ],
                 ),
               ),
@@ -369,7 +369,7 @@ class _PrincipalPageState extends State<PrincipalPage> {
               children: [
                 Container(
                   decoration: BoxDecoration(
-                      border: Border.all(color: Colors.grey),
+                      border: Border.all(color: Colors.blue),
                       borderRadius: BorderRadius.circular(4)),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -379,25 +379,25 @@ class _PrincipalPageState extends State<PrincipalPage> {
                         height: responsive.hp(8),
                         child: TextField(
                           controller: _lecturaController,
-                          style: TextStyle(fontSize: 17,  fontWeight: FontWeight.bold),
+                          style: TextStyle(
+                              fontSize: 17, fontWeight: FontWeight.bold),
                           keyboardType: TextInputType.number,
                           decoration: InputDecoration(
                             // border: OutlineInputBorder(
                             //   borderSide: BorderSide(color: Colors.green)
                             // ),
+                            
                             border: OutlineInputBorder(
                               // borderRadius: BorderRadius.circular(30),
                               borderSide: BorderSide(
                                 width: 0,
                                 style: BorderStyle.none,
                               ),
-                              
                             ),
-                           
+
                             //filled: true,
                             hintText: "N° de Correlativo",
                           ),
-                         
                           onSubmitted: (value) {
                             Navigator.push(
                               context,
@@ -429,7 +429,7 @@ class _PrincipalPageState extends State<PrincipalPage> {
 
                       //suffixIcon:
                       Container(
-                        width: responsive.wp(6),
+                        width: responsive.wp(6.5),
                         height: responsive.hp(8),
                         child: Column(
                           children: [
@@ -437,7 +437,6 @@ class _PrincipalPageState extends State<PrincipalPage> {
                               flex: 1,
                               child: GestureDetector(
                                 onTap: () {
-                                  
                                   setState(
                                     () {
                                       if (indexLectura < lectura.length - 1) {
@@ -452,19 +451,22 @@ class _PrincipalPageState extends State<PrincipalPage> {
                                   );
                                 },
                                 child: Container(
-                                  color:Colors.grey[300],
+                                  width: responsive.wp(6.5),
+                                  color: Colors.blue[500],
                                   // Colors.greenAccent,
                                   child: Icon(Icons.arrow_drop_up,
-                                      color: Colors.black),
+                                      color: Colors.white, size: 26),
                                 ),
                               ),
                             ),
                             Expanded(
                               flex: 1,
                               child: Container(
-                                color: 
-                                //Colors.greenAccent,
-                                Colors.grey[300],
+                                color:
+                                    //Colors.greenAccent,
+
+                                    Colors.blue[500],
+                                width: responsive.wp(6.5),
                                 child: GestureDetector(
                                   onTap: () {
                                     setState(
@@ -479,7 +481,7 @@ class _PrincipalPageState extends State<PrincipalPage> {
                                     );
                                   },
                                   child: Icon(Icons.arrow_drop_down,
-                                      color: Colors.black),
+                                      color: Colors.white, size: 26),
                                 ),
                               ),
                             ),
@@ -496,7 +498,7 @@ class _PrincipalPageState extends State<PrincipalPage> {
                 ElevatedButton(
                   style: ElevatedButton.styleFrom(
                     primary: Colors.greenAccent,
-                    
+                    side: BorderSide(width: 1, color: Colors.blue[500]),
                   ),
                   onPressed: () {
                     Navigator.push(
@@ -522,7 +524,7 @@ class _PrincipalPageState extends State<PrincipalPage> {
                       ),
                     );
                   },
-                  child: Text("Ingresar",
+                  child: Text("INGRESAR",
                       style: TextStyle(
                           fontSize: responsive.ip(2),
                           color: Colors.blue[900],
@@ -622,7 +624,12 @@ class _BusquedaWidgetPageState extends State<BusquedaWidgetPage> {
               //obscureText: true,
               decoration: InputDecoration(
                   border: OutlineInputBorder(),
+                  enabledBorder:  OutlineInputBorder(
+                              borderSide:  BorderSide(
+                                  color: Colors.blue, width: 1.0),
+                            ),
                   labelText: 'N° DE MEDIDOR',
+                  labelStyle: TextStyle(color: Colors.blue[900]),
                   suffixIcon: IconButton(
                     icon: Icon(Icons.close),
                     onPressed: () {
@@ -635,12 +642,12 @@ class _BusquedaWidgetPageState extends State<BusquedaWidgetPage> {
                 // _medidorcontroller.clear();
               },
             ),
-            MaterialButton(
-              // style: ElevatedButton.styleFrom(
-              //   primary: Colors.greenAccent,
-              // ),
-              color:Colors.greenAccent,
-              
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                  primary: Colors.greenAccent,
+                  side: BorderSide(width: 1, color: Colors.blue[500])),
+              //color:Colors.greenAccent,
+
               onPressed: () {
                 _submitBusquedaMedidor(
                     _medidorcontroller.text, lecturas, indexLectura);
@@ -711,7 +718,12 @@ class _BusquedaWidgetPageState extends State<BusquedaWidgetPage> {
             autocorrect: true,
             decoration: InputDecoration(
               border: OutlineInputBorder(),
+              enabledBorder:  OutlineInputBorder(
+                              borderSide:  BorderSide(
+                                  color: Colors.blue, width: 1.0),
+                            ),
               labelText: 'CÓDIGO DEL CLIENTE',
+              labelStyle: TextStyle(color: Colors.blue[900]),
               suffixIcon: IconButton(
                 icon: Icon(Icons.close),
                 onPressed: () {
@@ -728,8 +740,8 @@ class _BusquedaWidgetPageState extends State<BusquedaWidgetPage> {
         ),
         ElevatedButton(
           style: ElevatedButton.styleFrom(
-            primary: Colors.greenAccent,
-          ),
+              primary: Colors.greenAccent,
+              side: BorderSide(width: 1, color: Colors.blue[500])),
           onPressed: () {
             _submitCliente(_clientecontroller.text, lecturas, indexLectura);
             _clientecontroller.clear();
