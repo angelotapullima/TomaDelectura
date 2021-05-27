@@ -181,3 +181,31 @@ class OpcionesUsuario extends StatelessWidget {
         ));
   }
 }
+
+
+// decoration: BoxDecoration(
+//         borderRadius: BorderRadius.all(Radius.circular(15)),
+//         gradient: new LinearGradient(
+//             colors: [
+//               const Color(0xFF358814),
+//               const Color(0xFF1BD854),
+//             ],
+//             begin: const FractionalOffset(0.0, 0.0),
+//             end: const FractionalOffset(1.0, 0.0),
+//             stops: [0.0, 1.0],
+//             tileMode: TileMode.clamp),
+//       ),
+
+//rojo 
+// decoration: BoxDecoration(
+//         borderRadius: BorderRadius.all(Radius.circular(15)),
+//         gradient: new LinearGradient(
+//             colors: [
+//               const Color(0xFFDB6F44),
+//               const Color(0xFFD8211B),
+//             ],
+//             begin: const FractionalOffset(0.0, 0.0),
+//             end: const FractionalOffset(1.0, 0.0),
+//             stops: [0.0, 1.0],
+//             tileMode: TileMode.clamp),
+//       ),

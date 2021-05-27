@@ -6,6 +6,7 @@ import 'package:toma_de_lectura/Bloc/lecturaBloc.dart';
 import 'package:toma_de_lectura/Models/lecturaModel.dart';
 import 'package:toma_de_lectura/Pages/Tabs/principal/detalle_lectura.dart';
 import 'package:toma_de_lectura/preferencias/preferencias_usuario.dart';
+import 'package:toma_de_lectura/utils/constants.dart';
 import 'package:toma_de_lectura/utils/responsive.dart';
 import 'package:toma_de_lectura/utils/utils.dart' as utils;
 
@@ -104,9 +105,9 @@ class _PrincipalPageState extends State<PrincipalPage> {
                         if (snapshot.hasData) {
                           if (snapshot.data.length > 0) {
                             List<LecturaModel> lectura = snapshot.data;
+                            var lecturasPendientes = lectura.where((l) => l.estadoLecturaInterna == '0').toList();
                             //Definir el valor de la secuencia
-                            _lecturaController.text =
-                                lectura[indexLectura].ordenenvio;
+                            _lecturaController.text = lectura[indexLectura].ordenenvio;
                             return Container(
                               //color: Colors.red,
                               height: responsive.hp(90),
@@ -208,7 +209,7 @@ class _PrincipalPageState extends State<PrincipalPage> {
           TableRow(children: [
             TableCell(
               child: Container(
-                color: Colors.greenAccent,
+                color: Colors.blue,
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
@@ -216,22 +217,22 @@ class _PrincipalPageState extends State<PrincipalPage> {
                         style: TextStyle(
                             fontSize: responsive.ip(2),
                             fontWeight: FontWeight.bold,
-                            color: Colors.blue[900])),
+                            color: Colors.white)),
                     Text("REGISTRO",
                         style: TextStyle(
                             fontSize: responsive.ip(2),
                             fontWeight: FontWeight.bold,
-                            color: Colors.blue[900])),
+                            color: Colors.white)),
                     Text("FALTA",
                         style: TextStyle(
                             fontSize: responsive.ip(2),
                             fontWeight: FontWeight.bold,
-                            color: Colors.blue[900])),
+                            color: Colors.white)),
                     Text("TOTAL",
                         style: TextStyle(
                             fontSize: responsive.ip(2),
                             fontWeight: FontWeight.bold,
-                            color: Colors.blue[900])),
+                            color: Colors.white)),
                   ],
                 ),
               ),
@@ -497,8 +498,8 @@ class _PrincipalPageState extends State<PrincipalPage> {
                 ),
                 ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                    primary: Colors.greenAccent,
-                    side: BorderSide(width: 1, color: Colors.blue[500]),
+                    primary: Colors.red[500],
+                    side: BorderSide(width: 1, color: Colors.red),
                   ),
                   onPressed: () {
                     Navigator.push(
@@ -527,7 +528,7 @@ class _PrincipalPageState extends State<PrincipalPage> {
                   child: Text("INGRESAR",
                       style: TextStyle(
                           fontSize: responsive.ip(2),
-                          color: Colors.blue[900],
+                          color: Colors.white,
                           fontWeight: FontWeight.bold)),
                 )
               ],
@@ -615,37 +616,44 @@ class _BusquedaWidgetPageState extends State<BusquedaWidgetPage> {
       child: Container(
         width: responsive.wp(80),
         //height: responsive.hp(5),
+        
         child: Column(
           children: [
-            TextField(
-              controller: _medidorcontroller,
-              autocorrect: true,
-              textCapitalization: TextCapitalization.characters,
-              //obscureText: true,
-              decoration: InputDecoration(
-                  border: OutlineInputBorder(),
-                  enabledBorder:  OutlineInputBorder(
-                              borderSide:  BorderSide(
-                                  color: Colors.blue, width: 1.0),
-                            ),
-                  labelText: 'N° DE MEDIDOR',
-                  labelStyle: TextStyle(color: Colors.blue[900]),
-                  suffixIcon: IconButton(
-                    icon: Icon(Icons.close),
-                    onPressed: () {
-                      _medidorcontroller.clear();
-                    },
-                  )),
-              onSubmitted: (value) {
-                value = _medidorcontroller.text;
-                _submitBusquedaMedidor(value, lecturas, indexLectura);
-                // _medidorcontroller.clear();
-              },
+            Container(
+              decoration: BoxDecoration(
+        //color: kPrimaryLightColor,
+        //borderRadius: BorderRadius.circular(29),
+      ),
+              child: TextField(
+                controller: _medidorcontroller,
+                autocorrect: true,
+                textCapitalization: TextCapitalization.characters,
+                //obscureText: true,
+                decoration: InputDecoration(
+                    border: OutlineInputBorder(),
+                    enabledBorder:  OutlineInputBorder(
+                                borderSide:  BorderSide(
+                                    color: Colors.grey, width: 1.0),
+                              ),
+                    labelText: 'N° DE MEDIDOR',
+                   // labelStyle: TextStyle(color: Colors.grey),
+                    suffixIcon: IconButton(
+                      icon: Icon(Icons.close),
+                      onPressed: () {
+                        _medidorcontroller.clear();
+                      },
+                    )),
+                onSubmitted: (value) {
+                  value = _medidorcontroller.text;
+                  _submitBusquedaMedidor(value, lecturas, indexLectura);
+                  // _medidorcontroller.clear();
+                },
+              ),
             ),
             ElevatedButton(
               style: ElevatedButton.styleFrom(
-                  primary: Colors.greenAccent,
-                  side: BorderSide(width: 1, color: Colors.blue[500])),
+                  primary: Colors.red[500],
+                    side: BorderSide(width: 1, color: Colors.red)),
               //color:Colors.greenAccent,
 
               onPressed: () {
@@ -656,7 +664,7 @@ class _BusquedaWidgetPageState extends State<BusquedaWidgetPage> {
               child: Text("BUSCAR",
                   style: TextStyle(
                       fontSize: responsive.ip(2),
-                      color: Colors.blue[900],
+                      color: Colors.white,
                       fontWeight: FontWeight.bold)),
             )
           ],
@@ -720,10 +728,10 @@ class _BusquedaWidgetPageState extends State<BusquedaWidgetPage> {
               border: OutlineInputBorder(),
               enabledBorder:  OutlineInputBorder(
                               borderSide:  BorderSide(
-                                  color: Colors.blue, width: 1.0),
+                                  color: Colors.grey, width: 1.0),
                             ),
               labelText: 'CÓDIGO DEL CLIENTE',
-              labelStyle: TextStyle(color: Colors.blue[900]),
+             // labelStyle: TextStyle(color: Colors.grey),
               suffixIcon: IconButton(
                 icon: Icon(Icons.close),
                 onPressed: () {
@@ -740,8 +748,8 @@ class _BusquedaWidgetPageState extends State<BusquedaWidgetPage> {
         ),
         ElevatedButton(
           style: ElevatedButton.styleFrom(
-              primary: Colors.greenAccent,
-              side: BorderSide(width: 1, color: Colors.blue[500])),
+              primary: Colors.red[500],
+                    side: BorderSide(width: 1, color: Colors.red)),
           onPressed: () {
             _submitCliente(_clientecontroller.text, lecturas, indexLectura);
             _clientecontroller.clear();
@@ -749,7 +757,7 @@ class _BusquedaWidgetPageState extends State<BusquedaWidgetPage> {
           child: Text("BUSCAR",
               style: TextStyle(
                   fontSize: responsive.ip(2),
-                  color: Colors.blue[900],
+                  color: Colors.white,
                   fontWeight: FontWeight.bold)),
         )
       ],

@@ -138,6 +138,41 @@ class DatabaseProvider {
           'permiteLectura VARCHAR,'
           'estadoRegistroMov VARCHAR'
           ')');
+
+ //http://gis.sedaayacucho.pe/api_appSysco/index.php/cliente/20173657
+      await db.execute('CREATE TABLE Cliente ('
+          'id_cliente VARCHAR  PRIMARY KEY,'
+          'tipo_usuario VARCHAR,'
+          'nombre_cliente VARCHAR,'
+          'nromedidor VARCHAR,'
+          'id_sucursal VARCHAR,'
+          'id_estado_servicio VARCHAR,'
+          'tipo_servicio VARCHAR,'
+          'nombre_sucursal VARCHAR,'
+          'id_sector VARCHAR,'
+          'id_manzana VARCHAR,'
+          'nro_lote VARCHAR,'
+          'nro_sublote VARCHAR,'
+          'descripcion_urba VARCHAR,'
+          'descripcion_corta VARCHAR,'
+          'descripcion_calle VARCHAR,'
+          'nro_calle VARCHAR,'
+          'cod_ruta_distribucion VARCHAR,'
+          'nro_orden_ruta_distribucion VARCHAR,'
+          'catetarifa VARCHAR,'
+          'unidades_uso VARCHAR,'
+          'actividad VARCHAR,'
+          'tipo_promedio VARCHAR,'
+          'lectura_anterior VARCHAR,'
+          'lectura_ultima VARCHAR,'
+          'consumo VARCHAR,'
+          'situacion_medidor VARCHAR,'
+          'consumo_facturacion VARCHAR,'
+          'importe_mes_deuda VARCHAR,'
+          'importe_deuda VARCHAR,'
+          'importe_deuda_refinanci VARCHAR,'
+          'fecha_corte VARCHAR'
+          ')');
     });
   }
 }

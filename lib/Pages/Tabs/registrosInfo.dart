@@ -31,7 +31,7 @@ class _TabRegistrosLecturaPageState extends State<TabRegistrosLecturaPage>
         appBar: AppBar(
           title: Center(
             child: Text(
-              "Reporte de Registros de Lecturas",
+              "Reporte de Lecturas",
               style: TextStyle(color: Colors.black),
             ),
           ),
@@ -42,7 +42,7 @@ class _TabRegistrosLecturaPageState extends State<TabRegistrosLecturaPage>
             labelStyle: TextStyle(
                 fontSize: 18, fontWeight: FontWeight.bold, color: Colors.red),
             controller: _controllerTab,
-            labelColor: Colors.blue,
+            labelColor:  Colors.blue[900],
             unselectedLabelColor: Colors.grey,
             indicatorSize: TabBarIndicatorSize.label,
             indicatorColor: Colors.blue[500],
@@ -223,7 +223,7 @@ class PendientesPages extends StatelessWidget {
                     width: responsive.wp(8),
                     child: Text(
                       (i + 1).toString(),
-                      style: TextStyle(fontSize: responsive.ip(2)),
+                      style: TextStyle(fontSize: responsive.ip(2), color: Colors.black87),
                     ),
                   ),
                 ),
@@ -271,7 +271,7 @@ class PendientesPages extends StatelessWidget {
                         style: TextStyle(
                           decoration: TextDecoration.underline,
                             fontSize: responsive.ip(2.1),
-                            fontWeight: FontWeight.w500),
+                            fontWeight: FontWeight.w500, color: Colors.blue[900]),
                       ),
                     ),
                   ),
@@ -281,7 +281,7 @@ class PendientesPages extends StatelessWidget {
                     color: Colors.white,
                     child: Text(
                       lectura[i].direccion,
-                      style: TextStyle(fontSize: responsive.ip(2)),
+                      style: TextStyle(fontSize: responsive.ip(2), color: Colors.black87),
                     ),
                   ),
                 ),
@@ -294,7 +294,7 @@ class PendientesPages extends StatelessWidget {
                     child: Center(
                       child: Text(
                         lectura[i].ordenenvio,
-                        style: TextStyle(fontSize: responsive.ip(2)),
+                        style: TextStyle(fontSize: responsive.ip(2), color: Colors.black87),
                       ),
                     ),
                   ),
@@ -357,8 +357,8 @@ class TerminadasPages extends StatelessWidget {
       List<LecturaModel> lectura) {
     //var lecturasPendientes =lectura.where((l) => l.estadoLecturaInterna == '0').toList();
     //lecturasPendientes = lecturasPendientes.toList()..sort();
-    var lecturasTerminadas =
-        lectura.where((l) => l.estadoLecturaInterna == '1').toList();
+    // var lecturasTerminadas =
+    //     lectura.where((l) => l.estadoLecturaInterna == '1').toList();
 
     return Padding(
       padding: const EdgeInsets.all(5),
@@ -366,7 +366,7 @@ class TerminadasPages extends StatelessWidget {
         color: Colors.white,
         height: double.infinity,
         child: ListView.builder(
-          itemCount: lecturasTerminadas.length + 1,
+          itemCount: lectura.length + 1,
           itemBuilder: (BuildContext context, int index) {
             if (index == 0) {
               return Column(
@@ -515,98 +515,6 @@ class TerminadasPages extends StatelessWidget {
       ),
     );
 
-    // Table(
-    //   border: TableBorder.all(width: 1, color: Colors.black),
-    //   children: [
-    //     TableRow(children: [
-    //       TableCell(
-    //         child: Container(
-    //           height: responsive.hp(4),
-    //           color: Colors.grey[400],
-    //           child: Row(
-    //             mainAxisAlignment: MainAxisAlignment.spaceAround,
-    //             children: [
-    //               Text("Ruta",
-    //                   style: TextStyle(
-    //                       fontSize: responsive.ip(2),
-    //                       fontWeight: FontWeight.bold)),
-    //               Text("N° de Medidor",
-    //                   style: TextStyle(
-    //                       fontSize: responsive.ip(2),
-    //                       fontWeight: FontWeight.bold)),
-    //               Text("Dirección",
-    //                   style: TextStyle(
-    //                       fontSize: responsive.ip(2),
-    //                       fontWeight: FontWeight.bold)),
-    //               Text("Secuencia",
-    //                   style: TextStyle(
-    //                       fontSize: responsive.ip(2),
-    //                       fontWeight: FontWeight.bold)),
-    //             ],
-    //           ),
-    //         ),
-    //       ),
-    //     ]),
-    //     TableRow(
-    //       children: [
-    //         TableCell(
-    //           child: Row(
-    //             mainAxisAlignment: MainAxisAlignment.spaceAround,
-    //             children: [
-    //               //sector
-    //               // Container(
-    //               //   child: Text(lecturasTerminadas.length.toString(),
-    //               //       style: TextStyle(fontSize: responsive.ip(2))),
-    //               // ),
-    //               Container(
-    //                 height: responsive.hp(50),
-    //                 width: responsive.wp(3),
-    //                 child: ListView.builder(
-    //                   shrinkWrap: true,
-    //                   itemCount: lectura.length,
-    //                   itemBuilder: (BuildContext context, int index) {
-    //                     return Text(
-    //                       lectura[0].nombreSector,
-    //                       style: TextStyle(fontSize: responsive.ip(2)),
-    //                     );
-    //                   },
-    //                 ),
-    //               ),
-
-    //               //registradas
-    //               Container(
-    //                 height: responsive.hp(70),
-    //                 width: responsive.wp(25),
-    //                 color: Colors.yellow,
-    //                 child: ListView.builder(
-    //                   shrinkWrap: true,
-    //                   itemCount: lectura.length,
-    //                   itemBuilder: (BuildContext context, int index) {
-    //                     return Text(
-    //                       lectura[index].nromedidor,
-    //                       style: TextStyle(fontSize: responsive.ip(2)),
-    //                     );
-    //                   },
-    //                 ),
-    //               ),
-
-    //               //faltantes
-    //               Container(
-    //                 child: Text(lecturasTerminadas.length.toString(),
-    //                     style: TextStyle(fontSize: responsive.ip(2))),
-    //               ),
-
-    //               //total
-    //               Container(
-    //                 child: Text(lectura.length.toString(),
-    //                     style: TextStyle(fontSize: responsive.ip(2))),
-    //               )
-    //             ],
-    //           ),
-    //         )
-    //       ],
-    //     )
-    //   ],
-    // );
+   
   }
 }
