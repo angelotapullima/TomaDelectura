@@ -3,7 +3,7 @@ import 'package:toma_de_lectura/Bloc/ProviderBloc.dart';
 import 'package:toma_de_lectura/Bloc/principal_bloc.dart';
 import 'package:toma_de_lectura/Pages/Tabs/registrosInfo.dart';
 import 'package:toma_de_lectura/Pages/Tabs/principal/principalPage.dart';
-import 'package:toma_de_lectura/Pages/Tabs/usuarioPage.dart';
+import 'package:toma_de_lectura/Pages/Tabs/clientePage.dart';
 import 'package:toma_de_lectura/preferencias/preferencias_usuario.dart';
 import 'package:toma_de_lectura/utils/responsive.dart';
 
@@ -22,7 +22,7 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     listPages.add(PrincipalPage());
     listPages.add(TabRegistrosLecturaPage());
-    listPages.add(UsuarioPage());
+    listPages.add(ClientePage());
     // listPages.add(NegociosPage());
     // listPages.add(UserPage());
     super.initState();
@@ -91,7 +91,7 @@ class _HomePageState extends State<HomePage> {
                       size: responsive.ip(3),
                     ),
                    // title: Text('Usuarios'),
-                    label: 'Usuarios',
+                    label: 'Cliente',
                             
                   ),
                   
