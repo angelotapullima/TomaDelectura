@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:io';
 import 'package:http/http.dart' as http;
 import 'package:toma_de_lectura/Database/clienteDatabase.dart';
 import 'package:toma_de_lectura/Models/clienteModel.dart';
