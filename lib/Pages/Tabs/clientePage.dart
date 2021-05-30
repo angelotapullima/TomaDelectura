@@ -65,7 +65,7 @@ class _ClientePageState extends State<ClientePage> {
               //           height: responsive.hp(4),
               //           child: Text('BÚSQUEDA DE CLIENTES',
               //               style: TextStyle(
-              //                   fontSize: responsive.ip(2),
+              //                   fontSize: responsive.ip(1.8),
               //                   color: Colors.black))),
               //       SizedBox(height: responsive.hp(1)),
               //       _busqueda(responsive, clienteBloc),
@@ -80,7 +80,7 @@ class _ClientePageState extends State<ClientePage> {
                         height: responsive.hp(4),
                         child: Text('BÚSQUEDA DE CLIENTES',
                             style: TextStyle(
-                                fontSize: responsive.ip(2),
+                                fontSize: responsive.ip(1.8),
                                 color: Colors.black))),
                     SizedBox(height: responsive.hp(1)),
                     _busqueda(responsive, clienteBloc),
@@ -96,6 +96,7 @@ class _ClientePageState extends State<ClientePage> {
                     builder: (BuildContext context,
                         AsyncSnapshot<List<ClienteModel>> snapshot) {
                       if (snapshot.hasData) {
+                        // if (snapshot.data == null) {
                         if (snapshot.data.length > 0) {
                           List<ClienteModel> listCliente = snapshot.data;
 
@@ -108,7 +109,7 @@ class _ClientePageState extends State<ClientePage> {
                                 child: Center(
                                   child: Text('${listCliente[0].nombreCliente}',
                                       style: TextStyle(
-                                          fontSize: responsive.ip(2),
+                                          fontSize: responsive.ip(1.8),
                                           fontWeight: FontWeight.bold,
                                           color: Colors.white)),
                                 ),
@@ -119,9 +120,9 @@ class _ClientePageState extends State<ClientePage> {
                                   child: Text(
                                       'ID CLIENTE: ${listCliente[0].idcliente}',
                                       style: TextStyle(
-                                          fontSize: responsive.ip(2),
-                                          fontWeight: FontWeight.w400,
-                                          color: Colors.black)),
+                                          fontSize: responsive.ip(1.8),
+                                          fontWeight: FontWeight.bold,
+                                          color: Color(0xff19bc9c))),
                                 ),
                               ),
                               WidgetContainer(
@@ -131,29 +132,29 @@ class _ClientePageState extends State<ClientePage> {
                                   children: [
                                     Text('SECTOR',
                                         style: TextStyle(
-                                            fontSize: responsive.ip(2),
+                                            fontSize: responsive.ip(1.8),
                                             fontWeight: FontWeight.w600,
                                             color: Colors.black)),
                                     Text('MZA',
                                         style: TextStyle(
-                                            fontSize: responsive.ip(2),
+                                            fontSize: responsive.ip(1.8),
                                             fontWeight: FontWeight.w600,
                                             color: Colors.black)),
                                     Text('LOTE',
                                         style: TextStyle(
-                                            fontSize: responsive.ip(2),
+                                            fontSize: responsive.ip(1.8),
                                             fontWeight: FontWeight.w600,
                                             color: Colors.black)),
                                     Text('CONEX',
                                         style: TextStyle(
-                                            fontSize: responsive.ip(2),
+                                            fontSize: responsive.ip(1.8),
                                             fontWeight: FontWeight.w600,
                                             color: Colors.black)),
                                   ],
                                 ),
                               ),
                               // Divider(
-                              //   height: responsive.ip(2),
+                              //   height: responsive.ip(1.8),
                               // ),
                               WidgetContainer(
                                 child: Center(
@@ -174,7 +175,7 @@ class _ClientePageState extends State<ClientePage> {
                                 ),
                               ),
                               // Divider(
-                              //   height: responsive.ip(2),
+                              //   height: responsive.ip(1.8),
                               // ),
                               WidgetContainer(
                                 child: Center(
@@ -185,21 +186,21 @@ class _ClientePageState extends State<ClientePage> {
                                       Text(
                                           'Ruta: ${listCliente[0].codrutadistribucion}',
                                           style: TextStyle(
-                                              fontSize: responsive.ip(2),
+                                              fontSize: responsive.ip(1.8),
                                               fontWeight: FontWeight.w600,
                                               color: Colors.black)),
                                       SizedBox(width: responsive.wp(3)),
                                       Text(
-                                          'Secuencia: ${listCliente[0].codrutadistribucion}',
+                                          'Secuencia: ${listCliente[0].nroordenrutadist}',
                                           style: TextStyle(
-                                              fontSize: responsive.ip(2),
+                                              fontSize: responsive.ip(1.8),
                                               fontWeight: FontWeight.w600,
                                               color: Colors.black)),
                                     ],
                                   ),
                                 ),
                               ),
-                              //Divider(height: responsive.ip(2)),
+                              //Divider(height: responsive.ip(1.8)),
                               WidgetContainer(
                                 child: Row(
                                   mainAxisAlignment:
@@ -207,12 +208,15 @@ class _ClientePageState extends State<ClientePage> {
                                   children: [
                                     Text('DIRECCIÓN',
                                         style: TextStyle(
-                                          fontSize: responsive.ip(2),
+                                          fontSize: responsive.ip(1.8),
                                           fontWeight: FontWeight.w600,
                                           // color: Colors.black54
                                         )),
-                                    _buttonVerde(responsive,
-                                        '${listCliente[0].nombreSucusal}')
+                                    _buttonVerde(
+                                      responsive,
+                                      '${listCliente[0].nombreSucusal}',
+                                      Color(0xff7eae14),
+                                    )
                                   ],
                                 ),
                               ),
@@ -245,7 +249,7 @@ class _ClientePageState extends State<ClientePage> {
                                       child: Text(
                                           '${listCliente[0].descripcioncorta}',
                                           style: TextStyle(
-                                              fontSize: responsive.ip(2),
+                                              fontSize: responsive.ip(1.8),
                                               color: Colors.black87)),
                                     ),
                                     SizedBox(height: responsive.hp(.5)),
@@ -267,7 +271,7 @@ class _ClientePageState extends State<ClientePage> {
                                       child: Text(
                                           '${listCliente[0].descripcioncalle}',
                                           style: TextStyle(
-                                              fontSize: responsive.ip(2),
+                                              fontSize: responsive.ip(1.8),
                                               color: Colors.black87)),
                                     ),
                                     SizedBox(height: responsive.hp(.5)),
@@ -289,7 +293,7 @@ class _ClientePageState extends State<ClientePage> {
                                       ),
                                       child: Text('${listCliente[0].nrocalle}',
                                           style: TextStyle(
-                                              fontSize: responsive.ip(2),
+                                              fontSize: responsive.ip(1.8),
                                               color: Colors.black87)),
                                     ),
                                   ],
@@ -306,7 +310,7 @@ class _ClientePageState extends State<ClientePage> {
                                         child: Text(
                                             'HABILITACION/ASOCIACIÓN/SECTOR ',
                                             style: TextStyle(
-                                                fontSize: responsive.ip(2),
+                                                fontSize: responsive.ip(1.8),
                                                 fontWeight: FontWeight.w600,
                                                 color: Colors.black)),
                                       ),
@@ -338,7 +342,7 @@ class _ClientePageState extends State<ClientePage> {
                                             child: Text(
                                               '${listCliente[0].descripcionurba}',
                                               style: TextStyle(
-                                                fontSize: responsive.ip(2),
+                                                fontSize: responsive.ip(1.8),
                                                 fontWeight: FontWeight.w400,
 
                                                 // color: Colors
@@ -359,7 +363,7 @@ class _ClientePageState extends State<ClientePage> {
                                 child: Center(
                                   child: Text('DATOS COMPLEMENTARIOS ',
                                       style: TextStyle(
-                                          fontSize: responsive.ip(2),
+                                          fontSize: responsive.ip(1.8),
                                           fontWeight: FontWeight.w600,
                                           color: Colors.black)),
                                 ),
@@ -367,7 +371,11 @@ class _ClientePageState extends State<ClientePage> {
                               WidgetContainer(
                                 child: Row(
                                   children: [
-                                    _buttonVerde(responsive, 'SITUACIÓN'),
+                                    _buttonVerde(
+                                      responsive,
+                                      'SITUACIÓN',
+                                      Color(0xff7eae14),
+                                    ),
                                     SizedBox(width: responsive.wp(3)),
                                     Container(
                                       width: responsive.wp(61),
@@ -382,7 +390,7 @@ class _ClientePageState extends State<ClientePage> {
                                       child: Text(
                                           '${listCliente[0].idestadoservicio}',
                                           style: TextStyle(
-                                              fontSize: responsive.ip(2),
+                                              fontSize: responsive.ip(1.8),
                                               fontWeight: FontWeight.w400,
                                               color: Colors.black)),
                                     ),
@@ -393,7 +401,11 @@ class _ClientePageState extends State<ClientePage> {
                               WidgetContainer(
                                 child: Row(
                                   children: [
-                                    _buttonVerde(responsive, 'SERVICIO'),
+                                    _buttonVerde(
+                                      responsive,
+                                      'SERVICIO',
+                                      Color(0xffdb3325),
+                                    ),
                                     SizedBox(width: responsive.wp(3)),
                                     Container(
                                       width: responsive.wp(61),
@@ -408,7 +420,202 @@ class _ClientePageState extends State<ClientePage> {
                                       child: Text(
                                           '${listCliente[0].tiposervicio}',
                                           style: TextStyle(
-                                              fontSize: responsive.ip(2),
+                                              fontSize: responsive.ip(1.8),
+                                              fontWeight: FontWeight.w400,
+                                              color: Colors.black)),
+                                    ),
+                                  ],
+                                ),
+                              ),
+
+                              WidgetContainer(
+                                child: Row(
+                                  children: [
+                                    _buttonVerde(
+                                      responsive,
+                                      'TARIFA',
+                                      Color(0xfff5a732),
+                                    ),
+                                    SizedBox(width: responsive.wp(3)),
+                                    Container(
+                                      width: responsive.wp(61),
+                                      height: responsive.hp(4),
+                                      //color: Colors.grey[200],
+                                      decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(3),
+                                          color: Colors.grey[200],
+                                          border: Border.all(
+                                              color: Colors.grey[300])),
+                                      child: Text(
+                                          '${listCliente[0].catetarifa}',
+                                          style: TextStyle(
+                                              fontSize: responsive.ip(1.8),
+                                              fontWeight: FontWeight.w400,
+                                              color: Colors.black)),
+                                    ),
+                                  ],
+                                ),
+                              ),
+
+                              WidgetContainer(
+                                child: Row(
+                                  children: [
+                                    _buttonVerde(
+                                      responsive,
+                                      'UNID DE USO',
+                                      Color(0xff21a9ec),
+                                    ),
+                                    SizedBox(width: responsive.wp(3)),
+                                    Container(
+                                      width: responsive.wp(61),
+                                      height: responsive.hp(4),
+                                      //color: Colors.grey[200],
+                                      decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(3),
+                                          color: Colors.grey[200],
+                                          border: Border.all(
+                                              color: Colors.grey[300])),
+                                      child: Text(
+                                          '${listCliente[0].unidadesUso}',
+                                          style: TextStyle(
+                                              fontSize: responsive.ip(1.8),
+                                              fontWeight: FontWeight.w400,
+                                              color: Colors.black)),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              WidgetContainer(
+                                child: Row(
+                                  children: [
+                                    _buttonVerde(responsive, 'ACTIVIDAD',
+                                        Color(0xff7eae14)),
+                                    SizedBox(width: responsive.wp(3)),
+                                    Container(
+                                      width: responsive.wp(61),
+                                      height: responsive.hp(4),
+                                      //color: Colors.grey[200],
+                                      decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(3),
+                                          color: Colors.grey[200],
+                                          border: Border.all(
+                                              color: Colors.grey[300])),
+                                      child: Text('${listCliente[0].actividad}',
+                                          style: TextStyle(
+                                              fontSize: responsive.ip(1.8),
+                                              fontWeight: FontWeight.w400,
+                                              color: Colors.black)),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              //info MEDIDOR
+                               WidgetContainer(
+                                child: Center(
+                                  child: Text('INFORMACION DEL MEDIDOR',
+                                      style: TextStyle(
+                                          fontSize: responsive.ip(1.8),
+                                          fontWeight: FontWeight.w600,
+                                          color: Colors.black)),
+                                ),
+                              ),
+                              WidgetContainer(
+                                child: Row(
+                                  children: [
+                                    _buttonVerde(responsive, 'N° MEDIDOR',
+                                        Color(0xff7eae14)),
+                                    SizedBox(width: responsive.wp(3)),
+                                    Container(
+                                      width: responsive.wp(61),
+                                      height: responsive.hp(4),
+                                      //color: Colors.grey[200],
+                                      decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(3),
+                                          color: Colors.grey[200],
+                                          border: Border.all(
+                                              color: Colors.grey[300])),
+                                      child: Text('${listCliente[0].nroMedidor}',
+                                          style: TextStyle(
+                                              fontSize: responsive.ip(1.8),
+                                              fontWeight: FontWeight.w400,
+                                              color: Colors.black)),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              WidgetContainer(
+                                child: _rowCuentaCorriente(responsive,
+                                    'TIPO FACT', '${listCliente[0].tipopromedio}'),
+                              ),
+                              WidgetContainer(
+                                child: _rowCuentaCorriente(
+                                    responsive,
+                                    'LECT. ANTERIOR',
+                                    '${listCliente[0].lecturaanterior}'),
+                              ),
+                              WidgetContainer(
+                                child: _rowCuentaCorriente(responsive,
+                                    'LECT. ÚLTIMA', '${listCliente[0].lecturaultima}'),
+                              ),
+                              WidgetContainer(
+                                child: _rowCuentaCorriente(
+                                    responsive,
+                                    'CONSUMO',
+                                    '${listCliente[0].consumo}'),
+                              ),
+                              WidgetContainer(
+                                child: _rowCuentaCorriente(responsive,
+                                    'ESTADO', '${listCliente[0].situaciomed}'),
+                              ),
+
+                              //CUENTA CORRIENTE
+                              WidgetContainer(
+                                child: Center(
+                                  child: Text('CUENTA CORRIENTE',
+                                      style: TextStyle(
+                                          fontSize: responsive.ip(1.8),
+                                          fontWeight: FontWeight.w600,
+                                          color: Colors.black)),
+                                ),
+                              ),
+                              WidgetContainer(
+                                child: _rowCuentaCorriente(responsive,
+                                    'DEUDA MES', '${listCliente[0].importeDeuda}'),
+                              ),
+                              WidgetContainer(
+                                child: _rowCuentaCorriente(
+                                    responsive,
+                                    'DEUDA ANTERIOR',
+                                    '${listCliente[0].importeMesDeuda}'),
+                              ),
+                              WidgetContainer(
+                                child: _rowCuentaCorriente(responsive,
+                                    'CONVENIO', '${listCliente[0].importeDeudaRefin}'),
+                              ),
+                              
+                              WidgetContainer(
+                                child: Row(
+                                  children: [
+                                    _buttonVerde(responsive, 'TOTAL',
+                                        Color(0xff7eae14)),
+                                    SizedBox(width: responsive.wp(3)),
+                                    Container(
+                                      width: responsive.wp(61),
+                                      height: responsive.hp(4),
+                                      //color: Colors.grey[200],
+                                      decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(3),
+                                          color: Colors.grey[200],
+                                          border: Border.all(
+                                              color: Colors.grey[300])),
+                                      child: Text('${listCliente[0].importeDeuda}',
+                                          style: TextStyle(
+                                              fontSize: responsive.ip(1.8),
                                               fontWeight: FontWeight.w400,
                                               color: Colors.black)),
                                     ),
@@ -431,6 +638,9 @@ class _ClientePageState extends State<ClientePage> {
                           //   child: Text("No hay registros para mostrar"),
                           // );
                         }
+                        // } else {
+                        //   return Text("hdbvg ");
+                        // }
                       } else {
                         return Center(
                           child: Column(
@@ -451,6 +661,47 @@ class _ClientePageState extends State<ClientePage> {
     );
   }
 
+  Widget _rowCuentaCorriente(
+      Responsive responsive, String text, String listCliente) {
+    return Row(
+      children: [
+        Container(
+          width: responsive.wp(38),
+          child: ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              primary: Colors.grey[100],
+              side: BorderSide(width: 1, color: Colors.grey[400]),
+            ),
+            onPressed: () {},
+            child: Text(text,
+                style: TextStyle(
+                  fontSize: responsive.ip(1.7),
+                  color: Colors.black87,
+                  //fontWeight: FontWeight.bold
+                )),
+          ),
+        ),
+        SizedBox(width: responsive.wp(3)),
+        Expanded(
+          child: Container(
+            // width: responsive.wp(61),
+            height: responsive.hp(4),
+            //color: Colors.grey[200],
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(3),
+                color: Colors.grey[200],
+                border: Border.all(color: Colors.grey[300])),
+            child: Text(listCliente,
+                style: TextStyle(
+                    fontSize: responsive.ip(1.8),
+                    fontWeight: FontWeight.w400,
+                    color: Colors.black)),
+          ),
+        ),
+      ],
+    );
+  }
+
   Widget _busqueda(Responsive responsive, ClienteBloc clienteBloc) {
     return Container(
       margin: EdgeInsets.symmetric(horizontal: responsive.wp(8)),
@@ -466,6 +717,7 @@ class _ClientePageState extends State<ClientePage> {
               child: TextField(
                   controller: _clienteController,
                   keyboardType: TextInputType.number,
+                  textInputAction: TextInputAction.search,
                   decoration: InputDecoration(
                     hintText: 'Código de Cliente',
                     hintStyle: TextStyle(
@@ -485,8 +737,8 @@ class _ClientePageState extends State<ClientePage> {
           //SizedBox(width: responsive.wp(5)),
           Container(
             height: responsive.hp(7),
-            width: responsive.wp(18),
-            //color: Colors.yellow,
+           // width: responsive.wp(27),
+           // color: Colors.yellow,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
@@ -500,7 +752,7 @@ class _ClientePageState extends State<ClientePage> {
                         clienteBloc.datosCliente('${_clienteController.text}');
                       }
                     }),
-                SizedBox(width: responsive.wp(1)),
+                SizedBox(width: responsive.wp(3)),
                 GestureDetector(
                     child: Icon(Icons.close),
                     onTap: () {
@@ -515,18 +767,18 @@ class _ClientePageState extends State<ClientePage> {
     );
   }
 
-  Widget _buttonVerde(Responsive responsive, String text) {
+  Widget _buttonVerde(Responsive responsive, String text, Color color) {
     return Container(
       width: responsive.wp(30),
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(
-          primary: Color(0xff7eae14),
+          primary: color,
           side: BorderSide(width: 1, color: Color(0xff7eae14)),
         ),
         onPressed: () {},
         child: Text(text,
             style: TextStyle(
-              fontSize: responsive.ip(1.8),
+              fontSize: responsive.ip(1.7),
               color: Colors.white,
               //fontWeight: FontWeight.bold
             )),
@@ -553,7 +805,7 @@ class _ClientePageState extends State<ClientePage> {
       child: Center(
         child: Text(text,
             style: TextStyle(
-              fontSize: responsive.ip(2),
+              fontSize: responsive.ip(1.8),
               fontWeight: FontWeight.w400,
               //color: Colors.black
             )),

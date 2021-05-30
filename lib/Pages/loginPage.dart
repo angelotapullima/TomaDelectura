@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -49,16 +51,37 @@ class _LoginScreenState extends State<LoginScreen> {
     loginBloc.changeCargando(false);
     return Scaffold(
       body: SafeArea(
-        child: ListView(
-          keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
+        child: Stack(
           children: [
-            SizedBox(height: responsive.hp(15)),
-            _seleccion(responsive),
-            // SizedBox(height: responsive.hp(10)),
+        //      Container(
+        //     decoration: BoxDecoration(
+        //       image: DecorationImage(
+        //           image: AssetImage('assets/images/fondof.jpg'), fit: BoxFit.cover),
+        //     ),
+        //     child: new BackdropFilter(
+        //     filter:  ImageFilter.blur(sigmaX: 2.0, sigmaY: 2.0),
+        //     child: new Container(
+        //       decoration: new BoxDecoration(
+        //         color: Colors.white.withOpacity(0.1),
+        //       ),
+        //     ),
+        //   ),
+        // ),
+        // Container(
+        //   color: Colors.grey[200].withOpacity(.1),
+        // ),
+            ListView(
+              keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
+              children: [
+                SizedBox(height: responsive.hp(15)),
+                _seleccion(responsive),
+                // SizedBox(height: responsive.hp(10)),
 
-            LoginPage(loginBloc: loginBloc),
+                LoginPage(loginBloc: loginBloc),
 
-            _botonLogin(context, loginBloc, responsive),
+                _botonLogin(context, loginBloc, responsive),
+              ],
+            ),
           ],
         ),
       ),
@@ -67,49 +90,49 @@ class _LoginScreenState extends State<LoginScreen> {
 
   Widget _seleccion(Responsive responsive) {
     return Column(
-      children: [
-        Container(
-          width: responsive.wp(80),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                'Sede Operativa',
-                style: TextStyle(
-                    fontSize: responsive.ip(1.9), fontWeight: FontWeight.w500),
-              ),
-              SizedBox(
-                height: responsive.hp(.5),
-              ),
-              _sedes(context, responsive),
-            ],
+    children: [
+    Container(
+      width: responsive.wp(80),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            'Sede Operativa',
+            style: TextStyle(
+                fontSize: responsive.ip(1.9), fontWeight: FontWeight.w500),
           ),
-        ),
-        SizedBox(
-          height: responsive.hp(2),
-        ),
-        Container(
-          width: responsive.wp(80),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                'Ciclo',
-                style: TextStyle(
-                    fontSize: responsive.ip(1.9), fontWeight: FontWeight.w500),
-              ),
-              SizedBox(
-                height: responsive.hp(.5),
-              ),
-              _ciclos(context, responsive),
-            ],
+          SizedBox(
+            height: responsive.hp(.5),
           ),
-        ),
-        SizedBox(
-          height: responsive.hp(5),
-        ),
-      ],
-    );
+          _sedes(context, responsive),
+        ],
+      ),
+    ),
+    SizedBox(
+      height: responsive.hp(2),
+    ),
+    Container(
+      width: responsive.wp(80),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            'Ciclo',
+            style: TextStyle(
+                fontSize: responsive.ip(1.9), fontWeight: FontWeight.w500),
+          ),
+          SizedBox(
+            height: responsive.hp(.5),
+          ),
+          _ciclos(context, responsive),
+        ],
+      ),
+    ),
+    SizedBox(
+      height: responsive.hp(5),
+    ),
+    ],
+      );
   }
 
   var list;
@@ -345,9 +368,9 @@ class _LoginScreenState extends State<LoginScreen> {
         final prefs = new Preferences();
         prefs.idCiclo = codCiclo;
 
-        print("fff"+prefs.idCiclo);
+        print("fff" + prefs.idCiclo);
 
-      //Respuesta de la api
+        //Respuesta de la api
         final bool res = await loginbloc.login(
             '${loginbloc.email}', '${loginbloc.password}', codSede);
 
@@ -385,23 +408,23 @@ class _LoginPageState extends State<LoginPage> {
     // final loginBloc = ProviderBloc.login(context);
     // loginBloc.changeCargando(false);
     return StreamBuilder(
-        stream: widget.loginBloc.cargandoStream,
-        builder: (context, AsyncSnapshot<bool> snapshot) {
-          if (snapshot.hasData) {
-            return Stack(
-              children: [
-                _form(context, responsive, widget.loginBloc),
-                (snapshot.data)
-                    ? Center(
-                        child: CircularProgressIndicator(),
-                      )
-                    : Container(),
-              ],
-            );
-          } else {
-            return _form(context, responsive, widget.loginBloc);
-          }
-        });
+    stream: widget.loginBloc.cargandoStream,
+    builder: (context, AsyncSnapshot<bool> snapshot) {
+      if (snapshot.hasData) {
+        return Stack(
+          children: [
+            _form(context, responsive, widget.loginBloc),
+            (snapshot.data)
+                ? Center(
+                    child: CircularProgressIndicator(),
+                  )
+                : Container(),
+          ],
+        );
+      } else {
+        return _form(context, responsive, widget.loginBloc);
+      }
+    });
   }
 
   Widget _form(

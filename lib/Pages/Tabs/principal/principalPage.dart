@@ -63,7 +63,7 @@ class _PrincipalPageState extends State<PrincipalPage> {
                   Text(
                     "Salir",
                     style: TextStyle(
-                        fontSize: responsive.ip(2), color: Colors.black),
+                        fontSize: responsive.ip(1.8), color: Colors.black),
                   ),
                   SizedBox(height: responsive.wp(5)),
                   Icon(Icons.exit_to_app, size: 26)
@@ -105,9 +105,12 @@ class _PrincipalPageState extends State<PrincipalPage> {
                         if (snapshot.hasData) {
                           if (snapshot.data.length > 0) {
                             List<LecturaModel> lectura = snapshot.data;
-                            var lecturasPendientes = lectura.where((l) => l.estadoLecturaInterna == '0').toList();
+                            var lecturasPendientes = lectura
+                                .where((l) => l.estadoLecturaInterna == '0')
+                                .toList();
                             //Definir el valor de la secuencia
-                            _lecturaController.text = lectura[indexLectura].ordenenvio;
+                            _lecturaController.text =
+                                lectura[indexLectura].ordenenvio;
                             return Container(
                               //color: Colors.red,
                               height: responsive.hp(90),
@@ -119,9 +122,9 @@ class _PrincipalPageState extends State<PrincipalPage> {
 
                                   //Secuencia/ orden de envio
                                   _secuencia(responsive, lectura, context),
-                                  SizedBox(
-                                    height: responsive.hp(2),
-                                  ),
+                                  // SizedBox(
+                                  //   height: responsive.hp(2),
+                                  // ),
                                   BusquedaWidgetPage(
                                     lecturas: lectura,
                                     indexLectura: indexLectura,
@@ -156,37 +159,25 @@ class _PrincipalPageState extends State<PrincipalPage> {
   }
 
   Widget _datosUsuario(Responsive responsive, Preferences prefs) {
-    return Container(
-      color: Colors.white,
-      width: responsive.wp(97),
-      height: responsive.hp(10),
-      // decoration: BoxDecoration(
-      //   borderRadius: BorderRadius.circular(8),
-      // //color: Colors.blue[100],
-      //   color: Colors.white,
-      //   boxShadow: [
-      //     BoxShadow(
-      //       color: Colors.grey.withOpacity(0.5),
-      //       spreadRadius: 1,
-      //       blurRadius: 1,
-      //       offset: Offset(0, 2), // changes position of shadow
-      //     ),
-      //   ],
-      // ),
-
-      child: Padding(
-        padding: EdgeInsets.only(left: 5),
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Container(
+        width: responsive.wp(97),
+        height: responsive.hp(7),
+        color: Color(0xFF546e89),
         child: Row(
-          mainAxisAlignment: MainAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text("Inspector:",
+            Text("Inspector: ",
                 style: TextStyle(
-                    fontSize: responsive.ip(2), color: Colors.blue[900])),
+                    fontSize: responsive.ip(1.8),
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white)),
             Text(prefs.personName,
                 style: TextStyle(
-                    fontSize: responsive.ip(2),
+                    fontSize: responsive.ip(1.8),
                     fontWeight: FontWeight.bold,
-                    color: Colors.blue[900])),
+                    color: Colors.white)),
           ],
         ),
       ),
@@ -204,35 +195,42 @@ class _PrincipalPageState extends State<PrincipalPage> {
       color: Colors.white,
       width: responsive.wp(97),
       child: Table(
-        border: TableBorder.all(width: 1, color: Colors.blue[900]),
+        //border: TableBorder.all(width: 1, color: Colors.blue[900]),
         children: [
           TableRow(children: [
             TableCell(
               child: Container(
-                color: Colors.blue,
+                //color: Color(0xFF546e89),
+                // color: Color(0xff21a9ec),
+                height: responsive.hp(7),
+                width: responsive.wp(96),
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(3),
+                    color: Colors.white,
+                    border: Border.all(color: Colors.grey[500])),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
                     Text("SECTOR",
                         style: TextStyle(
-                            fontSize: responsive.ip(2),
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white)),
+                            fontSize: responsive.ip(1.7),
+                            fontWeight: FontWeight.w600,
+                            color: Colors.black)),
                     Text("REGISTRO",
                         style: TextStyle(
-                            fontSize: responsive.ip(2),
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white)),
+                            fontSize: responsive.ip(1.8),
+                            fontWeight: FontWeight.w600,
+                            color: Colors.black)),
                     Text("FALTA",
                         style: TextStyle(
-                            fontSize: responsive.ip(2),
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white)),
+                            fontSize: responsive.ip(1.8),
+                            fontWeight: FontWeight.w600,
+                            color: Colors.black)),
                     Text("TOTAL",
                         style: TextStyle(
-                            fontSize: responsive.ip(2),
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white)),
+                            fontSize: responsive.ip(1.8),
+                            fontWeight: FontWeight.w600,
+                            color: Colors.black)),
                   ],
                 ),
               ),
@@ -243,19 +241,54 @@ class _PrincipalPageState extends State<PrincipalPage> {
               TableCell(
                 child: Container(
                   height: responsive.hp(8),
+                  decoration: BoxDecoration(
+                      //borderRadius: BorderRadius.circular(3),
+                      color: Colors.white,
+                      border: Border(
+                        left: BorderSide(color: Colors.grey[500]),
+                        right: BorderSide(color: Colors.grey[500]),
+                        bottom: BorderSide(color: Colors.grey[500]),
+                        top: BorderSide(color: Colors.grey[100]),
+                        //Border.all(color: Colors.grey[400]),
+                      )),
                   child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    // mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
                       //sector
-                      Container(
-                        width: responsive.wp(23),
-                        child: Text(
-                          lectura[0].nombreSector,
-                          style: TextStyle(
-                              fontSize: responsive.ip(2),
-                              fontWeight: FontWeight.bold),
+                      Expanded(
+                        flex: 1,
+                        child: Container(
+                          // width: responsive.wp(18),
+                          margin: EdgeInsets.symmetric(
+                              horizontal: responsive.wp(1.5)),
+                          height: responsive.hp(4),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(3),
+                            color: Colors.grey[200],
+                            //color: Color(0xffdb3325),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.grey.withOpacity(0.5),
+                                spreadRadius: 1,
+                                blurRadius: 1,
+                                offset:
+                                    Offset(0, 2), // changes position of shadow
+                              ),
+                            ],
+                          ),
+                          child: Center(
+                            child: Text(
+                              lectura[0].nombreSector,
+                              style: TextStyle(
+                                fontSize: responsive.ip(1.7),
+                                fontWeight: FontWeight.w400,
+                              ),
+                            ),
+                          ),
                         ),
                       ),
+
+                     
 
                       // Container(
                       //   height: responsive.hp(7),
@@ -283,48 +316,59 @@ class _PrincipalPageState extends State<PrincipalPage> {
                       //     },
                       //   ),
                       // ),
-                      //registradas
-                      Container(
-                        child: Text(lecturasTerminadas.length.toString(),
-                            style: TextStyle(
-                                fontSize: responsive.ip(2.3),
-                                color: Colors.blue,
-                                fontWeight: FontWeight.bold)),
-                      ),
 
+                      //registradas
+                      _rowDatosResumen(
+                          responsive, lecturasTerminadas.length.toString()),
+                     
                       //faltantes
-                      GestureDetector(
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Container(
+                      Expanded(
+                        flex: 1,
+                        child: GestureDetector(
+                          child: Container(
+                            // width: responsive.wp(16),
+                            margin: EdgeInsets.symmetric(
+                                horizontal: responsive.wp(4)),
+                            height: responsive.hp(4),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(3),
+                              color: Colors.grey[200],
+                              //color: Color(0xffdb3325),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.grey.withOpacity(0.5),
+                                  spreadRadius: 1,
+                                  blurRadius: 1,
+                                  offset: Offset(
+                                      0, 2),
+                                ),
+                              ],
+                            ),
+                            child: Center(
                               child: Text(lecturasPendientes.length.toString(),
                                   style: TextStyle(
                                       decoration: TextDecoration.underline,
                                       //height: 1.5,
-                                      fontSize: responsive.ip(2.3),
-                                      color: Colors.red,
+                                      fontSize: responsive.ip(1.8),
+                                      color: Color(0xffdb3325),
                                       fontWeight: FontWeight.bold)),
                             ),
-                            //Icon(FontAwesomeIcons.handHolding)
-                            // IconButton(
-                            //   mouseCursor: SystemMouseCursors.click,
-                            //   icon: Icon(Icons.mouse_rounded), onPressed: (){})
-                          ],
+                          ),
+                          onTap: () {
+                            final buttonBloc = ProviderBloc.tabs(context);
+                            buttonBloc.changePage(1);
+                          },
                         ),
-                        onTap: () {
-                          final buttonBloc = ProviderBloc.tabs(context);
-                          buttonBloc.changePage(1);
-                        },
                       ),
 
                       //total
-                      Container(
-                        child: Text(lectura.length.toString(),
-                            style: TextStyle(
-                                fontSize: responsive.ip(2.3),
-                                fontWeight: FontWeight.bold)),
-                      )
+                      _rowDatosResumen(responsive, lectura.length.toString()),
+                      // Container(
+                      //   child: Text(lectura.length.toString(),
+                      //       style: TextStyle(
+                      //           fontSize: responsive.ip(1.8),
+                      //           fontWeight: FontWeight.bold)),
+                      // )
                     ],
                   ),
                 ),
@@ -339,26 +383,18 @@ class _PrincipalPageState extends State<PrincipalPage> {
   Widget _secuencia(
       Responsive responsive, List<LecturaModel> lectura, BuildContext context) {
     return Container(
-      //color: Colors.white,
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(8),
-        color: Colors.white,
-        boxShadow: [
-          BoxShadow(
-            color: Colors.grey.withOpacity(0.5),
-            spreadRadius: 1,
-            blurRadius: 1,
-            offset: Offset(0, 2), // changes position of shadow
-          ),
-        ],
-      ),
+          borderRadius: BorderRadius.circular(3),
+          color: Colors.white,
+          border: Border.all(color: Colors.grey[300])),
       width: responsive.wp(97),
       child: Column(
         children: [
           SizedBox(height: responsive.hp(3)),
           Text(
-            "Secuencia",
-            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            "SECUENCIA",
+            style: TextStyle(fontSize: responsive.ip(1.8), fontWeight: FontWeight.bold,
+                                                color: Colors.blue[900]),
           ),
           SizedBox(
             height: responsive.hp(1),
@@ -370,7 +406,8 @@ class _PrincipalPageState extends State<PrincipalPage> {
               children: [
                 Container(
                   decoration: BoxDecoration(
-                      border: Border.all(color: Colors.blue),
+                     color: Colors.grey[100],
+                      border: Border.all(color: Color(0xff19bc9c)),
                       borderRadius: BorderRadius.circular(4)),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -381,13 +418,13 @@ class _PrincipalPageState extends State<PrincipalPage> {
                         child: TextField(
                           controller: _lecturaController,
                           style: TextStyle(
-                              fontSize: 17, fontWeight: FontWeight.bold),
+                              fontSize: 17, fontWeight: FontWeight.bold,color: Colors.blue[900]),
                           keyboardType: TextInputType.number,
                           decoration: InputDecoration(
                             // border: OutlineInputBorder(
                             //   borderSide: BorderSide(color: Colors.green)
                             // ),
-                            
+
                             border: OutlineInputBorder(
                               // borderRadius: BorderRadius.circular(30),
                               borderSide: BorderSide(
@@ -430,7 +467,7 @@ class _PrincipalPageState extends State<PrincipalPage> {
 
                       //suffixIcon:
                       Container(
-                        width: responsive.wp(6.5),
+                        width: responsive.wp(8),
                         height: responsive.hp(8),
                         child: Column(
                           children: [
@@ -452,22 +489,21 @@ class _PrincipalPageState extends State<PrincipalPage> {
                                   );
                                 },
                                 child: Container(
-                                  width: responsive.wp(6.5),
-                                  color: Colors.blue[500],
+                                  width: responsive.wp(8),
+                                  color: Color(0xff19bc9c),
+                                  //color: Color(0xFF546e89),
                                   // Colors.greenAccent,
                                   child: Icon(Icons.arrow_drop_up,
-                                      color: Colors.white, size: 26),
+                                      color: Colors.white, size: 30),
                                 ),
                               ),
                             ),
                             Expanded(
                               flex: 1,
                               child: Container(
-                                color:
-                                    //Colors.greenAccent,
-
-                                    Colors.blue[500],
-                                width: responsive.wp(6.5),
+                               color: Color(0xff19bc9c),
+                                //  color: Color(0xFF546e89),
+                                width: responsive.wp(8),
                                 child: GestureDetector(
                                   onTap: () {
                                     setState(
@@ -482,7 +518,7 @@ class _PrincipalPageState extends State<PrincipalPage> {
                                     );
                                   },
                                   child: Icon(Icons.arrow_drop_down,
-                                      color: Colors.white, size: 26),
+                                      color: Colors.white, size: 30),
                                 ),
                               ),
                             ),
@@ -498,8 +534,8 @@ class _PrincipalPageState extends State<PrincipalPage> {
                 ),
                 ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                    primary: Colors.red[500],
-                    side: BorderSide(width: 1, color: Colors.red),
+                    primary: Color(0xff7eae14),
+                    side: BorderSide(width: 1, color: Color(0xff7eae14)),
                   ),
                   onPressed: () {
                     Navigator.push(
@@ -527,7 +563,7 @@ class _PrincipalPageState extends State<PrincipalPage> {
                   },
                   child: Text("INGRESAR",
                       style: TextStyle(
-                          fontSize: responsive.ip(2),
+                          fontSize: responsive.ip(1.8),
                           color: Colors.white,
                           fontWeight: FontWeight.bold)),
                 )
@@ -535,6 +571,38 @@ class _PrincipalPageState extends State<PrincipalPage> {
             ),
           ),
         ],
+      ),
+    );
+  }
+
+  Widget _rowDatosResumen(Responsive responsive, String text) {
+    return Expanded(
+      flex: 1,
+      child: Container(
+        margin: EdgeInsets.symmetric(horizontal: responsive.wp(6)),
+        // padding: EdgeInsets.symmetric(horizontal: responsive.wp(3)),
+        width: responsive.wp(16),
+        height: responsive.hp(4),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(3),
+          color: Colors.grey[200],
+          boxShadow: [
+            BoxShadow(
+              color: Colors.grey.withOpacity(0.5),
+              spreadRadius: 1,
+              blurRadius: 1,
+              offset: Offset(0, 2), // changes position of shadow
+            ),
+          ],
+        ),
+        child: Center(
+          child: Text(text,
+              style: TextStyle(
+                fontSize: responsive.ip(1.8),
+                fontWeight: FontWeight.w400,
+                //color: Colors.black
+              )),
+        ),
       ),
     );
   }
@@ -571,38 +639,31 @@ class _BusquedaWidgetPageState extends State<BusquedaWidgetPage> {
     final lecturaBloc = ProviderBloc.lectura(context);
     //lecturaBloc.busquedaPorMedidor();
     //lecturaBloc.busquedaPorCliente();
-    return Container(
-      //color: Colors.white,
-      width: responsive.wp(95),
-      height: responsive.hp(45),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(8),
-        color: Colors.white,
-        boxShadow: [
-          BoxShadow(
-            color: Colors.grey.withOpacity(0.5),
-            spreadRadius: 1,
-            blurRadius: 1,
-            offset: Offset(0, 2), // changes position of shadow
+    return Column(
+      children: [
+        //SizedBox(height: responsive.hp(2)),
+        Container(
+          height: responsive.hp(7),
+          width: responsive.wp(96),
+          decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(3),
+              color: Colors.white,
+              border: Border.all(color: Colors.grey[300])),
+          child: Center(
+            child: Text("BUSCAR:",
+                style: TextStyle(fontSize: responsive.ip(1.8),  fontWeight: FontWeight.bold,
+                                                color: Colors.blue[900])),
           ),
-        ],
-      ),
-      child: Column(
-        children: [
-          SizedBox(height: responsive.hp(2)),
-          Text("BUSCAR:",
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-          Divider(
-            color: Colors.grey,
-          ),
-          //Busqueda por nro de medidor
-          _busquedaXMedidor(responsive, widget.lecturas, widget.indexLectura),
-          SizedBox(height: responsive.hp(3)),
-          //Busqueda por id del cliente
-          _busquedaIdCliente(
-              responsive, widget.lecturas, lecturaBloc, widget.indexLectura)
-        ],
-      ),
+        ),
+       
+        //Busqueda por nro de medidor
+        _busquedaXMedidor(responsive, widget.lecturas, widget.indexLectura),
+       // SizedBox(height: responsive.hp(3)),
+
+        //Busqueda por id del cliente
+        _busquedaIdCliente(
+            responsive, widget.lecturas, lecturaBloc, widget.indexLectura)
+      ],
     );
   }
 
@@ -611,64 +672,67 @@ class _BusquedaWidgetPageState extends State<BusquedaWidgetPage> {
     List<LecturaModel> lecturas,
     int indexLectura,
   ) {
-    return Padding(
-      padding: EdgeInsets.only(top: 10),
-      child: Container(
-        width: responsive.wp(80),
-        //height: responsive.hp(5),
-        
-        child: Column(
-          children: [
-            Container(
-              decoration: BoxDecoration(
-        //color: kPrimaryLightColor,
-        //borderRadius: BorderRadius.circular(29),
-      ),
-              child: TextField(
-                controller: _medidorcontroller,
-                autocorrect: true,
-                textCapitalization: TextCapitalization.characters,
-                //obscureText: true,
-                decoration: InputDecoration(
-                    border: OutlineInputBorder(),
-                    enabledBorder:  OutlineInputBorder(
-                                borderSide:  BorderSide(
-                                    color: Colors.grey, width: 1.0),
-                              ),
-                    labelText: 'N° DE MEDIDOR',
-                   // labelStyle: TextStyle(color: Colors.grey),
-                    suffixIcon: IconButton(
-                      icon: Icon(Icons.close),
-                      onPressed: () {
-                        _medidorcontroller.clear();
-                      },
-                    )),
-                onSubmitted: (value) {
-                  value = _medidorcontroller.text;
-                  _submitBusquedaMedidor(value, lecturas, indexLectura);
-                  // _medidorcontroller.clear();
-                },
-              ),
+    return Container(
+      padding: const EdgeInsets.only(top:12.0),
+      height: responsive.hp(20),
+    width: responsive.wp(96),
+    decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(3),
+        color: Colors.white,
+        border: Border.all(color: Colors.grey[300])),
+      child: Column(
+        children: [
+          Container(
+            width: responsive.wp(85),
+            decoration: BoxDecoration(
+              color: Colors.grey[100],
+              //borderRadius: BorderRadius.circular(29),
             ),
-            ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                  primary: Colors.red[500],
-                    side: BorderSide(width: 1, color: Colors.red)),
-              //color:Colors.greenAccent,
-
-              onPressed: () {
-                _submitBusquedaMedidor(
-                    _medidorcontroller.text, lecturas, indexLectura);
+            child: TextField(
+              controller: _medidorcontroller,
+              autocorrect: true,
+              textCapitalization: TextCapitalization.characters,
+              //obscureText: true,
+              decoration: InputDecoration(
+                  border: OutlineInputBorder(),
+                  enabledBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.grey, width: 1.0),
+                  ),
+                  labelText: 'N° DE MEDIDOR',
+                  // labelStyle: TextStyle(
+                  //     fontWeight: FontWeight.w400, color: Colors.black),
+                  suffixIcon: IconButton(
+                    icon: Icon(Icons.close),
+                    onPressed: () {
+                      _medidorcontroller.clear();
+                    },
+                  )),
+              onSubmitted: (value) {
+                value = _medidorcontroller.text;
+                _submitBusquedaMedidor(value, lecturas, indexLectura);
                 // _medidorcontroller.clear();
               },
-              child: Text("BUSCAR",
-                  style: TextStyle(
-                      fontSize: responsive.ip(2),
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold)),
-            )
-          ],
-        ),
+            ),
+          ),
+          ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              primary: Color(0xff7eae14),
+              side: BorderSide(width: 1, color: Color(0xff7eae14)),
+            ),
+            //color:Colors.greenAccent,
+
+            onPressed: () {
+              _submitBusquedaMedidor(
+                  _medidorcontroller.text, lecturas, indexLectura);
+              // _medidorcontroller.clear();
+            },
+            child: Text("BUSCAR",
+                style: TextStyle(
+                    fontSize: responsive.ip(1.8),
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold)),
+          )
+        ],
       ),
     );
   }
@@ -716,51 +780,64 @@ class _BusquedaWidgetPageState extends State<BusquedaWidgetPage> {
     LecturaBloc lecturaBloc,
     int indexLectura,
   ) {
-    return Column(
-      children: [
-        Container(
-          width: responsive.wp(80),
-          child: TextField(
-            controller: _clientecontroller,
-            keyboardType: TextInputType.number,
-            autocorrect: true,
-            decoration: InputDecoration(
-              border: OutlineInputBorder(),
-              enabledBorder:  OutlineInputBorder(
-                              borderSide:  BorderSide(
-                                  color: Colors.grey, width: 1.0),
-                            ),
-              labelText: 'CÓDIGO DEL CLIENTE',
-             // labelStyle: TextStyle(color: Colors.grey),
-              suffixIcon: IconButton(
-                icon: Icon(Icons.close),
-                onPressed: () {
-                  _clientecontroller.clear();
-                },
-              ),
+    return Container(
+       padding: const EdgeInsets.only(top:12.0),
+     // height: responsive.hp(19),
+    width: responsive.wp(96),
+    decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(3),
+        color: Colors.white,
+        border: Border.all(color: Colors.grey[300])),
+      child: Column(
+        children: [
+          Container(
+            width: responsive.wp(80),
+            decoration: BoxDecoration(
+              color: Colors.grey[100],
             ),
-            onSubmitted: (value) {
-              value = _clientecontroller.text;
-              _submitCliente(value, lecturas, indexLectura);
+            child: TextField(
+              controller: _clientecontroller,
+              keyboardType: TextInputType.number,
+              autocorrect: true,
+              decoration: InputDecoration(
+                border: OutlineInputBorder(),
+                enabledBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: Colors.grey, width: 1.0),
+                ),
+                labelText: 'CÓDIGO DEL CLIENTE',
+                // labelStyle:
+                //     TextStyle(fontWeight: FontWeight.w400, color: Colors.black),
+                suffixIcon: IconButton(
+                  icon: Icon(Icons.close),
+                  onPressed: () {
+                    _clientecontroller.clear();
+                  },
+                ),
+              ),
+              onSubmitted: (value) {
+                value = _clientecontroller.text;
+                _submitCliente(value, lecturas, indexLectura);
+                _clientecontroller.clear();
+              },
+            ),
+          ),
+          ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              primary: Color(0xff7eae14),
+              side: BorderSide(width: 1, color: Color(0xff7eae14)),
+            ),
+            onPressed: () {
+              _submitCliente(_clientecontroller.text, lecturas, indexLectura);
               _clientecontroller.clear();
             },
-          ),
-        ),
-        ElevatedButton(
-          style: ElevatedButton.styleFrom(
-              primary: Colors.red[500],
-                    side: BorderSide(width: 1, color: Colors.red)),
-          onPressed: () {
-            _submitCliente(_clientecontroller.text, lecturas, indexLectura);
-            _clientecontroller.clear();
-          },
-          child: Text("BUSCAR",
-              style: TextStyle(
-                  fontSize: responsive.ip(2),
-                  color: Colors.white,
-                  fontWeight: FontWeight.bold)),
-        )
-      ],
+            child: Text("BUSCAR",
+                style: TextStyle(
+                    fontSize: responsive.ip(1.8),
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold)),
+          )
+        ],
+      ),
     );
   }
 

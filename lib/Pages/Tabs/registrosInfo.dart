@@ -25,6 +25,7 @@ class _TabRegistrosLecturaPageState extends State<TabRegistrosLecturaPage>
 
   @override
   Widget build(BuildContext context) {
+    final responsive = Responsive.of(context);
     return Container(
       // height: responsive.hp(30),
       child: Scaffold(
@@ -40,7 +41,7 @@ class _TabRegistrosLecturaPageState extends State<TabRegistrosLecturaPage>
 
           bottom: TabBar(
             labelStyle: TextStyle(
-                fontSize: 18, fontWeight: FontWeight.bold, color: Colors.red),
+                fontSize: responsive.ip(1.8), fontWeight: FontWeight.bold, color: Colors.red),
             controller: _controllerTab,
             labelColor:  Colors.blue[900],
             unselectedLabelColor: Colors.grey,
@@ -223,7 +224,7 @@ class PendientesPages extends StatelessWidget {
                     width: responsive.wp(8),
                     child: Text(
                       (i + 1).toString(),
-                      style: TextStyle(fontSize: responsive.ip(2), color: Colors.black87),
+                      style: TextStyle(fontSize: responsive.ip(1.8), color: Colors.black87),
                     ),
                   ),
                 ),
@@ -270,7 +271,7 @@ class PendientesPages extends StatelessWidget {
                         lectura[i].nromedidor,
                         style: TextStyle(
                           decoration: TextDecoration.underline,
-                            fontSize: responsive.ip(2.1),
+                            fontSize: responsive.ip(1.8),
                             fontWeight: FontWeight.w500, color: Colors.blue[900]),
                       ),
                     ),
@@ -281,7 +282,7 @@ class PendientesPages extends StatelessWidget {
                     color: Colors.white,
                     child: Text(
                       lectura[i].direccion,
-                      style: TextStyle(fontSize: responsive.ip(2), color: Colors.black87),
+                      style: TextStyle(fontSize: responsive.ip(1.8), color: Colors.black87),
                     ),
                   ),
                 ),
@@ -294,7 +295,7 @@ class PendientesPages extends StatelessWidget {
                     child: Center(
                       child: Text(
                         lectura[i].ordenenvio,
-                        style: TextStyle(fontSize: responsive.ip(2), color: Colors.black87),
+                        style: TextStyle(fontSize: responsive.ip(1.8), color: Colors.black87),
                       ),
                     ),
                   ),
@@ -466,7 +467,7 @@ class TerminadasPages extends StatelessWidget {
                     width: responsive.wp(8),
                     child: Text(
                       (i + 1).toString(),
-                      style: TextStyle(fontSize: responsive.ip(2)),
+                      style: TextStyle(fontSize: responsive.ip(1.8)),
                     ),
                   ),
                 ),
@@ -479,7 +480,7 @@ class TerminadasPages extends StatelessWidget {
                     child: Text(
                       lectura[i].nromedidor,
                       style: TextStyle(
-                          fontSize: responsive.ip(2.1),
+                          fontSize: responsive.ip(1.8),
                          // fontWeight: FontWeight.w500
                           ),
                     ),
@@ -490,7 +491,7 @@ class TerminadasPages extends StatelessWidget {
                     color: Colors.white,
                     child: Text(
                       lectura[i].direccion,
-                      style: TextStyle(fontSize: responsive.ip(2)),
+                      style: TextStyle(fontSize: responsive.ip(1.8)),
                     ),
                   ),
                 ),
@@ -503,7 +504,7 @@ class TerminadasPages extends StatelessWidget {
                     child: Center(
                       child: Text(
                         lectura[i].ordenenvio,
-                        style: TextStyle(fontSize: responsive.ip(2)),
+                        style: TextStyle(fontSize: responsive.ip(1.8)),
                       ),
                     ),
                   ),
